@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Stevebauman\Location\Facades\Location;
 use Victorybiz\GeoIPLocation\GeoIPLocation;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\HomepageCacheService;
 use Carbon;
 use Session;
 use URL;
@@ -20,34 +21,34 @@ use Hash;
 use Mail;
 use Nexmo;
 use Crypt;
-use \Redirect  ;
-use App\User  ;
-use App\SystemSetting  ;
-use App\Setting ;
-use App\Video  ;
-use App\Slider  ;
-use App\PpvVideo  ;
-use App\PpvCategory  ;
-use App\VerifyNumber  ;
-use App\Subscription  ;
-use App\PaypalPlan  ;
-use App\ContinueWatching  ;
+use \Redirect;
+use App\User;
+use App\SystemSetting;
+use App\Setting;
+use App\Video;
+use App\Slider;
+use App\PpvVideo;
+use App\PpvCategory;
+use App\VerifyNumber;
+use App\Subscription;
+use App\PaypalPlan;
+use App\ContinueWatching;
 use App\Genre;
 use App\Audio;
 use App\Geofencing;
-use App\Page ;
-use App\HomeSetting ;
+use App\Page;
+use App\HomeSetting;
 use App\Movie;
 use App\BlockVideo;
 use App\Episode;
-use App\LikeDislike ;
+use App\LikeDislike;
 use App\VideoCategory;
 use App\Multiprofile;
-use App\LiveStream  ;
-use App\AudioAlbums  ;
-use App\UserLogs  ;
-use App\CurrencySetting  ;
-use App\SubscriptionPlan  ;
+use App\LiveStream;
+use App\AudioAlbums;
+use App\UserLogs;
+use App\CurrencySetting;
+use App\SubscriptionPlan;
 use Jenssegers\Agent\Agent;
 use App\LoggedDevice;
 use App\ApprovalMailDevice;
@@ -60,16 +61,16 @@ use App\Artist;
 use App\Helpers\LogActivity;
 use App\AdminLandingPage;
 use App\EmailTemplate;
-use App\VideoSchedules ;
-use App\ScheduleVideos ;
-use App\Language ;
-use App\MusicStation ;
-use App\GuestLoggedDevice ;
+use App\VideoSchedules;
+use App\ScheduleVideos;
+use App\Language;
+use App\MusicStation;
+use App\GuestLoggedDevice;
 use App\LanguageVideo;
 use App\CategoryVideo;
-use App\AppSetting  ;
+use App\AppSetting;
 use App\TVLoginCode;
-use App\Watchlater ;
+use App\Watchlater;
 use App\OrderHomeSetting;
 use App\ChannelVideoScheduler;
 use App\AdminAdvertistmentBanners;
@@ -91,7 +92,7 @@ use App\StorageSetting;
 use App\Menu;
 use App\UploadErrorLog;
 use App\DeleteLog;
-use App\EmailSetting ;
+use App\EmailSetting;
 use Illuminate\Support\Facades\File;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -104,26 +105,31 @@ class HomeController extends Controller
      * @return void
      */
     private $construct_name;
+    protected $settings;
+    protected $videos_per_page;
+    protected $HomeSetting;
+    protected $BaseURL;
+    protected $email_settings;
 
     public function __construct()
     {
-        $this->settings = Setting::first();
-        $this->videos_per_page = $this->settings->videos_per_page;
-        $this->email_settings = EmailSetting::first();
+        $this->settings = Setting::first() ?? new \stdClass();
+        $this->videos_per_page = $this->settings->videos_per_page ?? 12; // Default to 12 if not set
+        $this->email_settings = EmailSetting::first() ?: new \stdClass();
 
-        $this->HomeSetting = HomeSetting::first();
+        $this->HomeSetting = HomeSetting::first() ?? new \stdClass();
         Theme::uses($this->HomeSetting->theme_choosen);
 
         $this->BunnyCDNEnable = StorageSetting::pluck('bunny_cdn_storage')->first();
 
-        $this->BaseURL = $this->BunnyCDNEnable == 1 ? StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('/public/uploads') ;
+        $this->BaseURL = (isset($this->BunnyCDNEnable) && $this->BunnyCDNEnable == 1) ? StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('/public/uploads');
 
     }
 
     public function FirstLanging(Request $request)
     {
         $data = Session::all();
-        $settings = $this->settings ;
+        $settings = $this->settings;
         $multiuser = Session::get('subuser_id');
         $getfeching = Geofencing::first();
         $Recomended = $this->HomeSetting;
@@ -134,162 +140,250 @@ class HomeController extends Controller
         $current_timezone = current_timezone();
         $FrontEndQueryController = new FrontEndQueryController();
 
-                        // Order Setting
-            $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value, $key) {
-                return $value === '1' || $value === 1;
-            })->map(function ($value, $key) {
-                switch ($key) {
-                    case 'channel_partner':
-                        return 'ChannelPartner';
-                    case 'content_partner':
-                        return 'ContentPartner';
-                    case 'video_schedule':
-                        return 'video_schedule';
-                    case 'SeriesGenre':
-                        return 'Series_Genre';
-                    case 'SeriesGenre_videos':
-                        return 'Series_Genre_videos';
-                    case 'AudioGenre':
-                        return 'Audio_Genre';
-                    case 'AudioGenre_audios':
-                        return 'Audio_Genre_audios';
-                    case 'my_playlist':
-                        return 'Audio_Genre_audios';
-                    default:
-                        return $key;
-                }
-            })->values()->toArray();
+        // Order Setting
+        $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value, $key) {
+            return $value === '1' || $value === 1;
+        })->map(function ($value, $key) {
+            switch ($key) {
+                case 'channel_partner':
+                    return 'ChannelPartner';
+                case 'content_partner':
+                    return 'ContentPartner';
+                case 'video_schedule':
+                    return 'video_schedule';
+                case 'SeriesGenre':
+                    return 'Series_Genre';
+                case 'SeriesGenre_videos':
+                    return 'Series_Genre_videos';
+                case 'AudioGenre':
+                    return 'Audio_Genre';
+                case 'AudioGenre_audios':
+                    return 'Audio_Genre_audios';
+                case 'my_playlist':
+                    return 'Audio_Genre_audios';
+                default:
+                    return $key;
+            }
+        })->values()->toArray();
 
-        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name', $home_settings_on_value)->orderBy('order_id', 'asc');
         $pagination_value = HomeSetting::pluck('web_pagination_count')->first();
 
-        if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
+        if ($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default") {
             $order_settings = $order_settings->paginate($pagination_value);    // Pagination
-        }else{
+        } else {
             $order_settings = $order_settings->get();
         }
 
         $check_Kidmode = 0;
 
-        if($settings->enable_landing_page == 1 && Auth::guest()){
+        if ($settings->enable_landing_page == 1 && Auth::guest()) {
 
-            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+            $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : "landing-page";
 
-            return redirect()->route('landing_page', $landing_page_slug );
+            return redirect()->route('landing_page', $landing_page_slug);
         }
 
-        if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
-        {
+        if ($settings->access_free == 1 && Auth::guest() && !isset($data['user'])) {
 
 
-            if($this->HomeSetting->theme_choosen == "theme4"){
+            if ($this->HomeSetting->theme_choosen == "theme4") {
                 $FrontEndQueryController = new FrontEndQueryController();
-                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name', $home_settings_on_value)->orderBy('order_id', 'asc');
                 $enableMultipleCompressImage = CompressImage::pluck('enable_multiple_compress_image')->first();
-                $order_settings = $order_settings->paginate($pagination_value);  
-                
+                $order_settings = $order_settings->paginate($pagination_value);
+
                 $data = array(
                     'order_settings_list' => OrderHomeSetting::get(),
-                    'order_settings'  => $order_settings ,
+                    'order_settings' => $order_settings,
                     'multiple_compress_image' => $enableMultipleCompressImage ?: 0,
-                    'getfeching'      => $getfeching ,
-                    'current_theme'     => $this->HomeSetting->theme_choosen,
-                    'current_page'      => 1,
+                    'getfeching' => $getfeching,
+                    'current_theme' => $this->HomeSetting->theme_choosen,
+                    'current_page' => 1,
                     'pagination_url' => '/videos',
-                    'pages'             => Page::all(),
-                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                    'home_settings'       => $this->HomeSetting ,
-                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                    'pages' => Page::all(),
+                    'latest_series' => $FrontEndQueryController->latest_Series()->take(15),
+                    'home_settings' => $this->HomeSetting,
+                    'livetream' => $FrontEndQueryController->livestreams()->take(15),
                     'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                     'videos_expiry_date_status' => $videos_expiry_date_status,
                     'default_vertical_image_url' => $default_vertical_image_url,
                     'default_horizontal_image_url' => $default_horizontal_image_url,
-                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                    'BaseURL'                            => $this->BaseURL,
+                    'VideoJsContinueWatching' => $FrontEndQueryController->VideoJsContinueWatching(),
+                    'VideoJsEpisodeContinueWatching' => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                    'BaseURL' => $this->BaseURL,
                     'Series_Networks_Status' => Series_Networks_Status(),
                 );
 
-                if($request->ajax()) {
+                if ($request->ajax()) {
                     return $data = [
-                        "view" => Theme::watchPartial('home_sections', $data ),
+                        "view" => Theme::watchPartial('home_sections', $data),
                         'url' => $data['order_settings']->nextPageUrl()
                     ];
                 }
 
                 return Theme::view('home', $data);
-                
+
             }
 
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $userIp = $geoip->getip();
             $countryName = $geoip->getCountry();
 
-            $guest_devices_check = GuestLoggedDevice::where('user_ip', '=',$userIp)->where('device_name', '=', 'desktop')->first();
+            $guest_devices_check = GuestLoggedDevice::where('user_ip', '=', $userIp)->where('device_name', '=', 'desktop')->first();
 
-                if (empty($guest_devices_check))
-                {
-                    $adddevice = new GuestLoggedDevice;
-                    $adddevice->device_name = 'desktop';
-                    $adddevice->user_ip = $userIp;
-                    $adddevice->country_name = $countryName;
-                    $adddevice->save();
-                }
+            if (empty($guest_devices_check)) {
+                $adddevice = new GuestLoggedDevice;
+                $adddevice->device_name = 'desktop';
+                $adddevice->user_ip = $userIp;
+                $adddevice->country_name = $countryName;
+                $adddevice->save();
+            }
 
             $genre = Genre::all();
-            $genre_video_display = VideoCategory::where('in_home',1)->orderBy('order','ASC')->limit(15)->get() ;
+            $genre_video_display = VideoCategory::where('in_home', 1)->orderBy('order', 'ASC')->limit(15)->get();
 
-            $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
-                                        ->where('active', '1')->where('status', '1')->where('draft', '1')
-                                        ->where('views', '>', '5')->latest()
-                                        ->limit(15)->get();
+            $trending_videos = Video::select(
+                'id',
+                'title',
+                'slug',
+                'year',
+                'rating',
+                'access',
+                'publish_type',
+                'global_ppv',
+                'publish_time',
+                'publish_status',
+                'ppv_price',
+                'responsive_image',
+                'responsive_player_image',
+                'responsive_tv_image',
+                'duration',
+                'rating',
+                'image',
+                'featured',
+                'age_restrict',
+                'video_tv_image',
+                'player_image',
+                'details',
+                'description'
+            )
+                ->where('active', '1')->where('status', '1')->where('draft', '1')
+                ->where('views', '>', '5')->latest()
+                ->limit(15)->get();
 
 
-            
 
-            $trending_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price',
-                'duration','rating','image','featured','player_image','details','description')
+
+            $trending_audios = Audio::select(
+                'id',
+                'title',
+                'slug',
+                'ppv_status',
+                'year',
+                'rating',
+                'access',
+                'ppv_price',
+                'duration',
+                'rating',
+                'image',
+                'featured',
+                'player_image',
+                'details',
+                'description'
+            )
                 ->where('active', '=', '1')->where('status', '=', '1')
                 ->where('views', '>', '5')
                 ->latest()->limit(15)
                 ->get();
 
-            $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price',
-                'duration','rating','image','featured','player_image','details','description')
+            $latest_audios = Audio::select(
+                'id',
+                'title',
+                'slug',
+                'ppv_status',
+                'year',
+                'rating',
+                'access',
+                'ppv_price',
+                'duration',
+                'rating',
+                'image',
+                'featured',
+                'player_image',
+                'details',
+                'description'
+            )
                 ->where('active', '1')->where('status', '1')
                 ->latest()->limit(15)
                 ->get();
 
-            $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                'duration','rating','image','featured','tv_image','player_image')
+            $trending_episodes = Episode::select(
+                'id',
+                'title',
+                'slug',
+                'rating',
+                'access',
+                'series_id',
+                'season_id',
+                'ppv_price',
+                'responsive_image',
+                'responsive_player_image',
+                'responsive_tv_image',
+                'duration',
+                'rating',
+                'image',
+                'featured',
+                'tv_image',
+                'player_image'
+            )
                 ->where('active', '=', '1')->where('views', '>', '0')
                 ->orderBy('id', 'DESC')
                 ->limit(15)
                 ->get();
 
-          
-            
+
+
 
             $pages = Page::all();
 
-            if (!Auth::guest())
-            {
-                $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->where('type','!=','embed')->pluck('videoid')->toArray();
+            if (!Auth::guest()) {
+                $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->where('type', '!=', 'embed')->pluck('videoid')->toArray();
 
-                $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
-                                        ->with('cnt_watch')
-                                        ->where('active', '1')
-                                        ->where('status', '1')
-                                        ->where('draft', '1')
-                                        ->whereIn('id', $getcnt_watching)->latest('videos.created_at')
-                                        ->limit(15)
-                                        ->get();
+                $cnt_watching = Video::select(
+                    'id',
+                    'title',
+                    'slug',
+                    'year',
+                    'rating',
+                    'access',
+                    'publish_type',
+                    'global_ppv',
+                    'publish_time',
+                    'publish_status',
+                    'ppv_price',
+                    'responsive_image',
+                    'responsive_player_image',
+                    'responsive_tv_image',
+                    'duration',
+                    'rating',
+                    'image',
+                    'featured',
+                    'age_restrict',
+                    'video_tv_image',
+                    'player_image',
+                    'details',
+                    'description'
+                )
+                    ->with('cnt_watch')
+                    ->where('active', '1')
+                    ->where('status', '1')
+                    ->where('draft', '1')
+                    ->whereIn('id', $getcnt_watching)->latest('videos.created_at')
+                    ->limit(15)
+                    ->get();
 
-            }
-            else
-            {
+            } else {
                 $cnt_watching = [];
             }
 
@@ -301,90 +395,88 @@ class HomeController extends Controller
 
             $data = array(
                 'currency' => $currency,
-                'videos'    =>$FrontEndQueryController->Latest_videos(),
-                'current_theme'     => $this->HomeSetting->theme_choosen,
-                'sliders'            => $FrontEndQueryController->sliders(),
-                'live_banner'        => $FrontEndQueryController->live_banners(),
-                'video_banners'      => $FrontEndQueryController->video_banners(),
-                'series_sliders'     => $FrontEndQueryController->series_sliders(),
+                'videos' => $FrontEndQueryController->Latest_videos(),
+                'current_theme' => $this->HomeSetting->theme_choosen,
+                'sliders' => $FrontEndQueryController->sliders(),
+                'live_banner' => $FrontEndQueryController->live_banners(),
+                'video_banners' => $FrontEndQueryController->video_banners(),
+                'series_sliders' => $FrontEndQueryController->series_sliders(),
                 'live_event_banners' => $FrontEndQueryController->live_event_banners(),
-                'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
+                'Episode_sliders' => $FrontEndQueryController->Episode_sliders(),
                 'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
-                'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15) ,
-                'Epg'                 => $FrontEndQueryController->Epg()->take(15),
-                'current_page'      => 1,
+                'Video_Based_Category' => $FrontEndQueryController->Video_Based_Category()->take(15),
+                'Epg' => $FrontEndQueryController->Epg()->take(15),
+                'current_page' => 1,
                 'pagination_url' => '/videos',
-                'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                'cnt_watching'      => $cnt_watching,
-                'trendings'         => $trending_videos,
-                'latest_video'      => $FrontEndQueryController->Latest_videos()->take(15),
-                'latest_videos'     => $FrontEndQueryController->Latest_videos()->take(15),
-                'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
-                'latest_movies'     => $FrontEndQueryController->Latest_videos(),
-                'trending_audios'   => $trending_audios,
-                'latest_audios'     => $latest_audios,
-                'featured_videos'   => $FrontEndQueryController->featured_videos()->take(15),
+                'latest_series' => $FrontEndQueryController->latest_Series()->take(15),
+                'cnt_watching' => $cnt_watching,
+                'trendings' => $trending_videos,
+                'latest_video' => $FrontEndQueryController->Latest_videos()->take(15),
+                'latest_videos' => $FrontEndQueryController->Latest_videos()->take(15),
+                'latestViewedVideos' => $FrontEndQueryController->latestViewedVideos()->take(15),
+                'latest_movies' => $FrontEndQueryController->Latest_videos(),
+                'trending_audios' => $trending_audios,
+                'latest_audios' => $latest_audios,
+                'featured_videos' => $FrontEndQueryController->featured_videos()->take(15),
                 'featured_episodes' => $FrontEndQueryController->featured_episodes()->take(15),
                 'genre_video_display' => $genre_video_display,
-                'genres'              => $genre_video_display ,
-                'settings'            => $settings,
-                'pages'               => $pages,
-                'trending_videos'     => $trending_videos,
-                'suggested_videos'    => $trending_videos,
-                'video_categories'    => $genre_video_display ,
-                'home_settings'       => $this->HomeSetting ,
-                'livetream'              => $FrontEndQueryController->livestreams()->take(15),
-                'audios'              => $latest_audios ,
-                'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get()->take(15) ,
-                'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
-                'top_most_watched'    => !empty($top_most_watched) ? $top_most_watched : [],
-                'Most_watched_country'   => !empty($Most_watched_country) ? $Most_watched_country : [],
-                'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
-                'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
-                'Family_Mode'           => $Family_Mode = 2,
-                'Kids_Mode'             => $Kids_Mode = 2,
-                'ThumbnailSetting'      => $ThumbnailSetting,
-                'artist'                => Artist::all(),
+                'genres' => $genre_video_display,
+                'settings' => $settings,
+                'pages' => $pages,
+                'trending_videos' => $trending_videos,
+                'suggested_videos' => $trending_videos,
+                'video_categories' => $genre_video_display,
+                'home_settings' => $this->HomeSetting,
+                'livetream' => $FrontEndQueryController->livestreams()->take(15),
+                'audios' => $latest_audios,
+                'albums' => AudioAlbums::orderBy('created_at', 'DESC')->get()->take(15),
+                'most_watch_user' => !empty($most_watch_user) ? $most_watch_user : [],
+                'top_most_watched' => !empty($top_most_watched) ? $top_most_watched : [],
+                'Most_watched_country' => !empty($Most_watched_country) ? $Most_watched_country : [],
+                'preference_genres' => !empty($preference_gen) ? $preference_gen : [],
+                'preference_Language' => !empty($preference_Lan) ? $preference_Lan : [],
+                'Family_Mode' => $Family_Mode = 2,
+                'Kids_Mode' => $Kids_Mode = 2,
+                'ThumbnailSetting' => $ThumbnailSetting,
+                'artist' => Artist::all(),
                 'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                 'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category(),
-                'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
-                'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
-                'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
+                'VideoSchedules' => VideoSchedules::where('in_home', 1)->limit(15)->get(),
+                'LiveCategory' => LiveCategory::orderBy('order', 'ASC')->limit(15)->get(),
+                'AudioCategory' => AudioCategory::orderBy('order', 'ASC')->limit(15)->get(),
                 'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
+                'SeriesGenre' => SeriesGenre::orderBy('order', 'ASC')->limit(15)->get(),
                 'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
                 'order_settings_list' => OrderHomeSetting::get(),
-                'order_settings'  => $order_settings ,
-                'getfeching'      => $getfeching ,
+                'order_settings' => $order_settings,
+                'getfeching' => $getfeching,
                 'videos_expiry_date_status' => $videos_expiry_date_status,
                 'Series_Networks_Status' => Series_Networks_Status(),
-                'latest_episode'  => $FrontEndQueryController->latest_episodes() ,
+                'latest_episode' => $FrontEndQueryController->latest_episodes(),
                 'default_vertical_image_url' => $default_vertical_image_url,
                 'default_horizontal_image_url' => $default_horizontal_image_url,
-                'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
-                'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
-                'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
-                'ugc_users'         => $FrontEndQueryController->UGCUsers(),
-                'button_text'         => $button_text,
-                'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
-                'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
+                'artist_live_event' => LiveEventArtist::where("active", 1)->where('status', 1)->latest()->get(),
+                'ugc_videos' => $FrontEndQueryController->UGCVideos(),
+                'ugc_shorts_minis' => $FrontEndQueryController->UGCShortsMinis(),
+                'ugc_users' => $FrontEndQueryController->UGCUsers(),
+                'button_text' => $button_text,
+                'top_ten_videos' => $FrontEndQueryController->TopTenVideos(),
+                'VideoJsContinueWatching' => $FrontEndQueryController->VideoJsContinueWatching(),
+                'VideoJsEpisodeContinueWatching' => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                'radiostations' => $FrontEndQueryController->RadioStation()->take(15),
             );
 
-            if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
-                if($request->ajax()) {
+            if ($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default") {
+                if ($request->ajax()) {
                     return $data = [
-                        "view" => Theme::watchPartial('home_sections', $data ),
+                        "view" => Theme::watchPartial('home_sections', $data),
                         'url' => $data['order_settings']->nextPageUrl()
                     ];
                 }
             }
 
             return Theme::view('home', $data);
-        }
-        else
-        {
+        } else {
 
             $agent = new Agent();
 
@@ -397,53 +489,50 @@ class HomeController extends Controller
             $data = Session::all();
             $user = User::where('id', 1)->first();
 
-            if (Auth::guest() && !isset($data['user']))
-            {
+            if (Auth::guest() && !isset($data['user'])) {
                 return Theme::view('auth.login');
-            }
-            else
-            {
+            } else {
 
-                if($this->HomeSetting->theme_choosen == "theme4"){
+                if ($this->HomeSetting->theme_choosen == "theme4") {
                     $FrontEndQueryController = new FrontEndQueryController();
-                    $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+                    $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name', $home_settings_on_value)->orderBy('order_id', 'asc');
                     $enableMultipleCompressImage = CompressImage::pluck('enable_multiple_compress_image')->first();
-                    $order_settings = $order_settings->paginate($pagination_value);  
-                    
+                    $order_settings = $order_settings->paginate($pagination_value);
+
                     $data = array(
                         'order_settings_list' => OrderHomeSetting::get(),
-                        'order_settings'  => $order_settings ,
+                        'order_settings' => $order_settings,
                         'multiple_compress_image' => $enableMultipleCompressImage ?: 0,
-                        'getfeching'      => $getfeching ,
-                        'current_theme'     => $this->HomeSetting->theme_choosen,
-                        'current_page'      => 1,
+                        'getfeching' => $getfeching,
+                        'current_theme' => $this->HomeSetting->theme_choosen,
+                        'current_page' => 1,
                         'pagination_url' => '/videos',
-                        'pages'             => Page::all(),
-                        'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                        'home_settings'       => $this->HomeSetting ,
-                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                        'pages' => Page::all(),
+                        'latest_series' => $FrontEndQueryController->latest_Series()->take(15),
+                        'home_settings' => $this->HomeSetting,
+                        'livetream' => $FrontEndQueryController->livestreams()->take(15),
                         'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                         'videos_expiry_date_status' => $videos_expiry_date_status,
                         'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
-                        'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                        'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                        'BaseURL'                            => $this->BaseURL,
+                        'VideoJsContinueWatching' => $FrontEndQueryController->VideoJsContinueWatching(),
+                        'VideoJsEpisodeContinueWatching' => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                        'BaseURL' => $this->BaseURL,
                         'Series_Networks_Status' => Series_Networks_Status(),
                     );
-    
-                    if($request->ajax()) {
+
+                    if ($request->ajax()) {
                         return $data = [
-                            "view" => Theme::watchPartial('home_sections', $data ),
+                            "view" => Theme::watchPartial('home_sections', $data),
                             'url' => $data['order_settings']->nextPageUrl()
                         ];
                     }
-    
+
                     return Theme::view('home', $data);
-                    
+
                 }
 
-                
+
 
                 $device_name = '';
                 switch (true) {
@@ -481,14 +570,11 @@ class HomeController extends Controller
                     ->where('subscriptions.user_id', Auth::User()->id)
                     ->get();
 
-                if (count($subscription_device_limit) >= 1)
-                {
+                if (count($subscription_device_limit) >= 1) {
                     $device_limit = $subscription_device_limit[0]->devices;
                     $limit = explode(",", $device_limit);
                     $device_limit = count($limit);
-                }
-                else
-                {
+                } else {
                     $device_limit = 0;
                 }
 
@@ -497,9 +583,9 @@ class HomeController extends Controller
                 $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)->get();
                 $devices_check = LoggedDevice::where('user_id', '=', Auth::User()->id)->where('device_name', '=', $device_name)->first();
 
-                $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-                ->where('active', '1')->orderBy('created_at', 'DESC')->limit(15)
-                ->get();
+                $latest_series = Series::select('id', 'title', 'slug', 'year', 'rating', 'access', 'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'details', 'description')
+                    ->where('active', '1')->orderBy('created_at', 'DESC')->limit(15)
+                    ->get();
 
                 $username = Auth::User()->username;
                 $email = Auth::User()->email;
@@ -567,54 +653,51 @@ class HomeController extends Controller
                 // else
                 // {
 
-                    $device_name = '';
-                    switch (true) {
-                        case $agent->isDesktop():
-                            $device_name = 'desktop';
-                            break;
-                        case $agent->isTablet():
-                            $device_name = 'tablet';
-                            break;
-                        case $agent->isMobile():
-                            $device_name = 'mobile';
-                            break;
-                        case $agent->isTv():
-                            $device_name = 'tv';
-                            break;
-                        default:
-                            $device_name = 'unknown';
-                            break;
+                $device_name = '';
+                switch (true) {
+                    case $agent->isDesktop():
+                        $device_name = 'desktop';
+                        break;
+                    case $agent->isTablet():
+                        $device_name = 'tablet';
+                        break;
+                    case $agent->isMobile():
+                        $device_name = 'mobile';
+                        break;
+                    case $agent->isTv():
+                        $device_name = 'tv';
+                        break;
+                    default:
+                        $device_name = 'unknown';
+                        break;
+                }
+
+
+                if (!empty($device_name)) {
+
+                    $devices_check = LoggedDevice::where('user_id', Auth::User()->id)->where('device_name', '=', $device_name)->first();
+
+                    if (empty($devices_check)) {
+                        $adddevice = new LoggedDevice;
+                        $adddevice->user_id = Auth::User()->id;
+                        $adddevice->user_ip = $userIp;
+                        $adddevice->device_name = $device_name;
+                        $adddevice->save();
                     }
-
-
-                    if (!empty($device_name))
-                    {
-
-                        $devices_check = LoggedDevice::where('user_id', Auth::User()->id)->where('device_name', '=', $device_name)->first();
-
-                        if (empty($devices_check))
-                        {
-                            $adddevice = new LoggedDevice;
-                            $adddevice->user_id = Auth::User()->id;
-                            $adddevice->user_ip = $userIp;
-                            $adddevice->device_name = $device_name;
-                            $adddevice->save();
-                        }
-                    }
+                }
                 // }
 
                 $logged = UserLogs::where('user_id', '=', Auth::User()->id)
                     ->orderBy('created_at', 'DESC')
                     ->whereDate('created_at', '>=', \Carbon\Carbon::now()
-                    ->today())
+                        ->today())
                     ->first();
 
-                if (!empty($logged))
-                {
+                if (!empty($logged)) {
                     $today_old_log = UserLogs::where('user_id', '=', Auth::User()->id)
                         ->orderBy('created_at', 'DESC')
                         ->whereDate('created_at', '>=', \Carbon\Carbon::now()
-                        ->today())
+                            ->today())
                         ->delete();
                     $new_login = new UserLogs;
                     $new_login->user_id = Auth::User()->id;
@@ -623,9 +706,7 @@ class HomeController extends Controller
                     $new_login->regionname = Region_name();
                     $new_login->cityname = city_name();
                     $new_login->save();
-                }
-                else
-                {
+                } else {
                     $new_login = new UserLogs;
                     $new_login->user_id = Auth::User()->id;
                     $new_login->user_ip = $userIp;
@@ -639,511 +720,635 @@ class HomeController extends Controller
                     ->today())
                     ->count();
 
-                    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-                    $settings = $this->settings ;
-                    $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
+                $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+                $settings = $this->settings ?? Setting::first();
+                $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
 
-                    $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-                        ->where('active', '1')->latest()->limit(15)->get();
+                $latest_series = Series::select('id', 'title', 'slug', 'year', 'rating', 'access', 'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'details', 'description')
+                    ->where('active', '1')->latest()->limit(15)->get();
 
-                    $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null ;
+                $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
 
-                    $genre = Genre::all();
+                $genre = Genre::all();
 
-                    $genre_video_display = VideoCategory::where('in_home',1)->orderBy('order','ASC')->limit(15)->get();
+                $genre_video_display = VideoCategory::where('in_home', 1)->orderBy('order', 'ASC')->limit(15)->get();
 
-                    // blocked videos
-                    $block_videos = BlockVideo::where('country_id', $countryName)->get();
-                    if (!$block_videos->isEmpty())
-                    {
-                        foreach ($block_videos as $block_video)
-                        {
-                            $blockvideos[] = $block_video->video_id;
-                        }
+                // blocked videos
+                $block_videos = BlockVideo::where('country_id', $countryName)->get();
+                if (!$block_videos->isEmpty()) {
+                    foreach ($block_videos as $block_video) {
+                        $blockvideos[] = $block_video->video_id;
                     }
-                    else
-                    {
-                        $blockvideos[] = '';
+                } else {
+                    $blockvideos[] = '';
+                }
+
+                // Mode - Family & Kids
+
+                $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+
+                $Family_Mode = $Mode['FamilyMode'];
+                $Kids_Mode = $Mode['Kidsmode'];
+
+                $check_Kidmode = 0;
+                // $Multiuser = Multiprofile::where('id', $multiuser)->first();
+
+
+
+
+
+                // Most watched videos By user
+
+
+                if ($Recomended->Recommendation == 1) {
+
+                    $most_watch_user = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')
+                        ->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')
+                        ->groupBy('video_id');
+                    if ($multiuser != null) {
+                        $most_watch_user = $most_watch_user->where('recent_views.sub_user', $multiuser);
+                    } else {
+                        $most_watch_user = $most_watch_user->where('recent_views.user_id', Auth::user()->id);
                     }
-
-                    // Mode - Family & Kids
-
-                    $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
-
-                    $Family_Mode = $Mode['FamilyMode'];
-                    $Kids_Mode = $Mode['Kidsmode'];
-
-                    $check_Kidmode = 0 ;
-                    // $Multiuser = Multiprofile::where('id', $multiuser)->first();
-
-                   
-
-                   
-
-                    // Most watched videos By user
-
-
-                    if ($Recomended->Recommendation == 1)
-                    {
-
-                        $most_watch_user = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                            ->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')
-                            ->where('videos.active', '=', '1')
-                            ->groupBy('video_id');
-                        if ($multiuser != null)
-                        {
-                            $most_watch_user = $most_watch_user->where('recent_views.sub_user', $multiuser);
-                        }
-                        else
-                        {
-                            $most_watch_user = $most_watch_user->where('recent_views.user_id', Auth::user()->id);
-                        }
-                        if ($Family_Mode == 1)
-                        {
-                            $most_watch_user = $most_watch_user->where('age_restrict', '<', 18);
-                        }
-                        if ($Kids_Mode == 1)
-                        {
-                            $most_watch_user = $most_watch_user->where('age_restrict', '<', 10);
-                        }
-                        $most_watch_user = $most_watch_user->orderByRaw('count DESC')
-                            ->limit(15)
-                            ->get();
+                    if ($Family_Mode == 1) {
+                        $most_watch_user = $most_watch_user->where('age_restrict', '<', 18);
                     }
-
-                    // Most watched videos In Flicknexs
-                    if ($getfeching->geofencing == 'ON')
-                    {
-
-                        $Blocking_videos = BlockVideo::where('country_id', $countryName)->get();
-                        if (!$Blocking_videos->isEmpty())
-                        {
-                            foreach ($Blocking_videos as $Blocking_video)
-                            {
-                                $blocking_videos[] = $Blocking_video->video_id;
-                            }
-                        }
-                        else
-                        {
-                            $blocking_videos = [];
-                        }
+                    if ($Kids_Mode == 1) {
+                        $most_watch_user = $most_watch_user->where('age_restrict', '<', 10);
                     }
-                    else
-                    {
+                    $most_watch_user = $most_watch_user->orderByRaw('count DESC')
+                        ->limit(15)
+                        ->get();
+                }
+
+                // Most watched videos In Flicknexs
+                if ($getfeching->geofencing == 'ON') {
+
+                    $Blocking_videos = BlockVideo::where('country_id', $countryName)->get();
+                    if (!$Blocking_videos->isEmpty()) {
+                        foreach ($Blocking_videos as $Blocking_video) {
+                            $blocking_videos[] = $Blocking_video->video_id;
+                        }
+                    } else {
                         $blocking_videos = [];
                     }
+                } else {
+                    $blocking_videos = [];
+                }
 
-                    if ($Recomended->Recommendation == 1)
-                    {
-                        $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
-                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                            ->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')
-                            ->where('videos.active', '=', '1')
-                            ->groupBy('video_id')
-                            ->whereNotIn('videos.id', $blocking_videos);
-                        if ($Family_Mode == 1)
-                        {
-                            $top_most_watched = $top_most_watched->where('age_restrict', '<', 18);
-                        }
-                        if ($Kids_Mode == 1)
-                        {
-                            $top_most_watched = $top_most_watched->where('age_restrict', '<', 10);
-                        }
-                        $top_most_watched = $top_most_watched->orderByRaw('count DESC')
-                            ->limit(15)
-                            ->get();
+                if ($Recomended->Recommendation == 1) {
+                    $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+                        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')
+                        ->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')
+                        ->groupBy('video_id')
+                        ->whereNotIn('videos.id', $blocking_videos);
+                    if ($Family_Mode == 1) {
+                        $top_most_watched = $top_most_watched->where('age_restrict', '<', 18);
                     }
-
-
-                    // Most Watched Videos in country
-                    if ($Recomended->Recommendation == 1)
-                    {
-
-                        $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                            ->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')
-                            ->where('videos.active', '=', '1')
-                            ->groupBy('video_id')
-                            ->orderByRaw('count DESC');
-                        if ($Family_Mode == 1)
-                        {
-                            $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 18);
-                        }
-                        if ($Kids_Mode == 1)
-                        {
-                            $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
-                        }
-                        $Most_watched_country = $Most_watched_country->where('country', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(15)
-                            ->get();
+                    if ($Kids_Mode == 1) {
+                        $top_most_watched = $top_most_watched->where('age_restrict', '<', 10);
                     }
+                    $top_most_watched = $top_most_watched->orderByRaw('count DESC')
+                        ->limit(15)
+                        ->get();
+                }
 
-                    // User Preferences
-                    if ($Recomended->Recommendation == 1)
-                    {
-                        $preference_genres = User::where('id', Auth::user()->id)->pluck('preference_genres')->first();
-                        $preference_language = User::where('id', Auth::user()->id)->pluck('preference_language')->first();
 
-                        if ($preference_genres != null)
-                        {
-                            $video_genres = json_decode($preference_genres);
-                            $preference_gen = Video::whereIn('video_category_id', $video_genres)
+                // Most Watched Videos in country
+                if ($Recomended->Recommendation == 1) {
+
+                    $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                        ->where('videos.status', '=', '1')
+                        ->where('videos.draft', '=', '1')
+                        ->where('videos.active', '=', '1')
+                        ->groupBy('video_id')
+                        ->orderByRaw('count DESC');
+                    if ($Family_Mode == 1) {
+                        $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 18);
+                    }
+                    if ($Kids_Mode == 1) {
+                        $Most_watched_country = $Most_watched_country->where('age_restrict', '<', 10);
+                    }
+                    $Most_watched_country = $Most_watched_country->where('country', $countryName)->whereNotIn('videos.id', $blocking_videos)->limit(15)
+                        ->get();
+                }
+
+                // User Preferences
+                if ($Recomended->Recommendation == 1) {
+                    $preference_genres = User::where('id', Auth::user()->id)->pluck('preference_genres')->first();
+                    $preference_language = User::where('id', Auth::user()->id)->pluck('preference_language')->first();
+
+                    if ($preference_genres != null) {
+                        $video_genres = json_decode($preference_genres);
+                        $preference_gen = Video::whereIn('video_category_id', $video_genres)
                             ->whereNotIn('videos.id', $blocking_videos)
                             ->where('active', '1')->where('status', '1')->where('draft', '1');
 
-                            if ($Family_Mode == 1)
-                            {
-                                $preference_gen = $preference_gen->where('age_restrict', '<', 18);
-                            }
-                            if ($Kids_Mode == 1)
-                            {
-                                $preference_gen = $preference_gen->where('age_restrict', '<', 10);
-                            }
-                            $preference_gen = $preference_gen->get();
+                        if ($Family_Mode == 1) {
+                            $preference_gen = $preference_gen->where('age_restrict', '<', 18);
                         }
-
-                        if ($preference_language != null)
-                        {
-                            $video_language = json_decode($preference_language);
-                            $preference_Lan = Video::whereIn('language', $video_language)->whereNotIn('videos.id', $blocking_videos)
-                                                    ->where('status', '1')
-                                                    ->where('draft', '1')
-                                                    ->where('active', '1');
-
-                            if ($Family_Mode == 1)
-                            {
-                                $preference_Lan = $preference_Lan->where('age_restrict', '<', 18);
-                            }
-                            if ($Kids_Mode == 1)
-                            {
-                                $preference_Lan = $preference_Lan->where('age_restrict', '<', 10);
-                            }
-                            $preference_Lan = $preference_Lan->get();
+                        if ($Kids_Mode == 1) {
+                            $preference_gen = $preference_gen->where('age_restrict', '<', 10);
                         }
+                        $preference_gen = $preference_gen->get();
                     }
 
-                    // family & Kids Mode Restriction
-                    $Subuser = Session::get('subuser_id');
-                    if ($Subuser != null)
-                    {
-                        $Mode = Multiprofile::where('id', $Subuser)->first();
-                    }
-                    else
-                    {
-                        $Mode = User::where('id', Auth::user()->id)->first();
-                    }
+                    if ($preference_language != null) {
+                        $video_language = json_decode($preference_language);
+                        $preference_Lan = Video::whereIn('language', $video_language)->whereNotIn('videos.id', $blocking_videos)
+                            ->where('status', '1')
+                            ->where('draft', '1')
+                            ->where('active', '1');
 
-
-
-                    $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-                                                    ->where('active', '1')->latest()->limit(15)
-                                                    ->get();
-
-                    $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description')
-                                                    ->where('active', '1')->where('status', '1')
-                                                    ->latest()->limit(15)->get();
-
-                    $trending_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('active', '=', '1')->where('status', '=', '1')
-                                                    ->where('draft', '=', '1')->where('views', '>', '5')
-                                                    ->latest()->limit(15)->get();
-
-                    $trending_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price',
-                                                    'duration','rating','image','featured','player_image','details','description')
-                                                    ->where('active', '1')->where('status', '1')->where('views', '>', '5')
-                                                    ->latest()->limit(15)->get();
-
-
-                    $trending_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','duration','rating','image','featured','tv_image','player_image','active')
-                                                ->where('active', '1')->where('views', '>', '0')
-                                                ->latest()->limit(15)->get();
-
-                    $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                'duration','rating','image','featured','tv_image','player_image')
-                                                ->where('active', '1')->latest()->limit(15)
-                                                ->get()->map(function($item){
-                                                    $item['series'] = Series::where('id',$item->series_id)->first();
-                                                    return $item ;
-                                                });
-
-                    $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                        'duration','rating','image','featured','tv_image','player_image','active')
-                                                    ->where('active', '1')->where('featured', '1')
-                                                    ->latest()->limit(15)
-                                                    ->get();
-
-
-
-                    if ($multiuser != null)
-                    {
-                        $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')->toArray();
-
-                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')
-                                                ->where('active', '1')->where('status', '1')
-                                                ->where('draft', '1')->where('type','!=','embed')
-                                                ->whereIn('id', $getcnt_watching)
-                                                ->limit(15)->get();
-                    }
-                    elseif (!Auth::guest())
-                    {
-
-                        $continue_watching = ContinueWatching::where('user_id', Auth::user()->id)->first();
-
-                        if ($continue_watching != null && $continue_watching->multiuser == null)
-                        {
-                            $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->pluck('videoid')->toArray();
-
-                            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
-                            ->where('draft', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
-                            if ($getfeching != null && $getfeching->geofencing == 'ON')
-                            {
-                                $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
-                            }
-                            $cnt_watching = $cnt_watching->limit(15)->get();
+                        if ($Family_Mode == 1) {
+                            $preference_Lan = $preference_Lan->where('age_restrict', '<', 18);
                         }
-                        else
-                        {
-                            $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
-                                ->where('multiuser', 'data')
-                                ->pluck('videoid')
-                                ->toArray();
-
-                            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
-                            ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
-
-                            if ($getfeching != null && $getfeching->geofencing == 'ON')
-                            {
-                                $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
-                            }
-                            $cnt_watching = $cnt_watching->limit(15)->get();
+                        if ($Kids_Mode == 1) {
+                            $preference_Lan = $preference_Lan->where('age_restrict', '<', 10);
                         }
-
+                        $preference_Lan = $preference_Lan->get();
                     }
-                    else
-                    {
-                        $cnt_watching = '';
-                    }
+                }
 
-                    $currency = CurrencySetting::first();
+                // family & Kids Mode Restriction
+                $Subuser = Session::get('subuser_id');
+                if ($Subuser != null) {
+                    $Mode = Multiprofile::where('id', $Subuser)->first();
+                } else {
+                    $Mode = User::where('id', Auth::user()->id)->first();
+                }
 
-                    $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
-                                                    'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
-                                                    'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                                    'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                                ->where('active', 1)
-                                                ->where('status', 1)
-                                                ->latest()
-                                                ->limit(15)
-                                                ->get();
 
-                    $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
-                        if ($livestream->publish_type === 'recurring_program') {
 
-                            $Current_time = Carbon\Carbon::now($current_timezone);
-                            $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
-                            $convert_time = $Current_time->copy()->timezone($recurring_timezone);
-                            $midnight = $convert_time->copy()->startOfDay();
+                $latest_series = Series::select('id', 'title', 'slug', 'year', 'rating', 'access', 'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'details', 'description')
+                    ->where('active', '1')->latest()->limit(15)
+                    ->get();
 
-                            switch ($livestream->recurring_program) {
-                                case 'custom':
-                                    $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                                    break;
-                                case 'daily':
-                                    $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                                    break;
-                                case 'weekly':
-                                    $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
-                                    break;
-                                case 'monthly':
-                                    $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                                    break;
-                                default:
-                                    $recurring_program_Status = false;
-                                    break;
-                            }
+                $latest_audios = Audio::select('id', 'title', 'slug', 'ppv_status', 'year', 'rating', 'access', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'player_image', 'details', 'description')
+                    ->where('active', '1')->where('status', '1')
+                    ->latest()->limit(15)->get();
 
-                            switch ($livestream->recurring_program) {
-                                case 'custom':
-                                    $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
-                                    break;
-                                case 'daily':
-                                    $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                                    break;
-                                case 'weekly':
-                                    $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                                    break;
-                                case 'monthly':
-                                    $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                                    break;
-                                default:
-                                    $recurring_program_live_animation = false;
-                                    break;
-                            }
+                $trending_videos = Video::select(
+                    'id',
+                    'title',
+                    'slug',
+                    'year',
+                    'rating',
+                    'access',
+                    'publish_type',
+                    'global_ppv',
+                    'publish_time',
+                    'publish_status',
+                    'ppv_price',
+                    'responsive_image',
+                    'responsive_player_image',
+                    'responsive_tv_image',
+                    'duration',
+                    'rating',
+                    'image',
+                    'featured',
+                    'age_restrict',
+                    'video_tv_image',
+                    'player_image',
+                    'details',
+                    'description'
+                )->where('active', '=', '1')->where('status', '=', '1')
+                    ->where('draft', '=', '1')->where('views', '>', '5')
+                    ->latest()->limit(15)->get();
 
-                            $livestream->recurring_program_live_animation = $recurring_program_live_animation;
+                $trending_audios = Audio::select(
+                    'id',
+                    'title',
+                    'slug',
+                    'ppv_status',
+                    'year',
+                    'rating',
+                    'access',
+                    'ppv_price',
+                    'duration',
+                    'rating',
+                    'image',
+                    'featured',
+                    'player_image',
+                    'details',
+                    'description'
+                )
+                    ->where('active', '1')->where('status', '1')->where('views', '>', '5')
+                    ->latest()->limit(15)->get();
 
-                            return $recurring_program_Status;
-                        }
-                        return true;
+
+                $trending_episodes = Episode::select('id', 'title', 'slug', 'rating', 'access', 'series_id', 'season_id', 'ppv_price', 'responsive_image', 'responsive_player_image', 'responsive_tv_image', 'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'active')
+                    ->where('active', '1')->where('views', '>', '0')
+                    ->latest()->limit(15)->get();
+
+                $latest_episode = Episode::select(
+                    'id',
+                    'title',
+                    'slug',
+                    'rating',
+                    'access',
+                    'series_id',
+                    'season_id',
+                    'ppv_price',
+                    'responsive_image',
+                    'responsive_player_image',
+                    'responsive_tv_image',
+                    'duration',
+                    'rating',
+                    'image',
+                    'featured',
+                    'tv_image',
+                    'player_image'
+                )
+                    ->where('active', '1')->latest()->limit(15)
+                    ->get()->map(function ($item) {
+                        $item['series'] = Series::where('id', $item->series_id)->first();
+                        return $item;
                     });
 
-                    $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description')
-                                        ->where('active', '1')->latest()->limit(15)->get();
+                $featured_episodes = Episode::select(
+                    'id',
+                    'title',
+                    'slug',
+                    'rating',
+                    'access',
+                    'series_id',
+                    'season_id',
+                    'ppv_price',
+                    'responsive_image',
+                    'responsive_player_image',
+                    'responsive_tv_image',
+                    'duration',
+                    'rating',
+                    'image',
+                    'featured',
+                    'tv_image',
+                    'player_image',
+                    'active'
+                )
+                    ->where('active', '1')->where('featured', '1')
+                    ->latest()->limit(15)
+                    ->get();
 
-                        // Series_based_on_Networks
-
-                    $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
-
-                        $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                        ->where('network_id', 'LIKE', '%"'.$item->id.'"%')
 
 
-                                    ->latest('series.created_at')->get()->map(function ($item) {
+                if ($multiuser != null) {
+                    $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')->toArray();
 
-                            $item['image_url']        = !is_null($item->image)  ? $this->BaseURL.('/images/'.$item->image) : default_vertical_image() ;
-                            $item['Player_image_url'] = !is_null($item->player_image)  ? $this->BaseURL.('/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                    $cnt_watching = Video::select(
+                        'id',
+                        'title',
+                        'slug',
+                        'year',
+                        'rating',
+                        'access',
+                        'publish_type',
+                        'global_ppv',
+                        'publish_time',
+                        'publish_status',
+                        'ppv_price',
+                        'responsive_image',
+                        'responsive_player_image',
+                        'responsive_tv_image',
+                        'duration',
+                        'rating',
+                        'image',
+                        'featured',
+                        'age_restrict',
+                        'video_tv_image',
+                        'player_image',
+                        'details',
+                        'description'
+                    )->with('cnt_watch')
+                        ->where('active', '1')->where('status', '1')
+                        ->where('draft', '1')->where('type', '!=', 'embed')
+                        ->whereIn('id', $getcnt_watching)
+                        ->limit(15)->get();
+                } elseif (!Auth::guest()) {
 
-                            $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY');
+                    $continue_watching = ContinueWatching::where('user_id', Auth::user()->id)->first();
 
-                            $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
+                    if ($continue_watching != null && $continue_watching->multiuser == null) {
+                        $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->pluck('videoid')->toArray();
+
+                        $cnt_watching = Video::select(
+                            'id',
+                            'title',
+                            'slug',
+                            'year',
+                            'rating',
+                            'access',
+                            'publish_type',
+                            'global_ppv',
+                            'publish_time',
+                            'publish_status',
+                            'ppv_price',
+                            'responsive_image',
+                            'responsive_player_image',
+                            'responsive_tv_image',
+                            'duration',
+                            'rating',
+                            'image',
+                            'featured',
+                            'age_restrict',
+                            'video_tv_image',
+                            'player_image',
+                            'details',
+                            'description'
+                        )->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '1')->where('type', '!=', 'embed')->whereIn('id', $getcnt_watching);
+                        if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                            $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+                        }
+                        $cnt_watching = $cnt_watching->limit(15)->get();
+                    } else {
+                        $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
+                            ->where('multiuser', 'data')
+                            ->pluck('videoid')
+                            ->toArray();
+
+                        $cnt_watching = Video::select(
+                            'id',
+                            'title',
+                            'slug',
+                            'year',
+                            'rating',
+                            'access',
+                            'publish_type',
+                            'global_ppv',
+                            'publish_time',
+                            'publish_status',
+                            'ppv_price',
+                            'responsive_image',
+                            'responsive_player_image',
+                            'responsive_tv_image',
+                            'duration',
+                            'rating',
+                            'image',
+                            'featured',
+                            'age_restrict',
+                            'video_tv_image',
+                            'player_image',
+                            'details',
+                            'description'
+                        )->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '=', '1')->where('type', '!=', 'embed')->whereIn('id', $getcnt_watching);
+
+                        if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                            $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+                        }
+                        $cnt_watching = $cnt_watching->limit(15)->get();
+                    }
+
+                } else {
+                    $cnt_watching = '';
+                }
+
+                $currency = CurrencySetting::first();
+
+                $livestreams = LiveStream::select(
+                    'id',
+                    'title',
+                    'slug',
+                    'year',
+                    'rating',
+                    'access',
+                    'publish_type',
+                    'publish_time',
+                    'publish_status',
+                    'ppv_price',
+                    'duration',
+                    'rating',
+                    'image',
+                    'featured',
+                    'Tv_live_image',
+                    'player_image',
+                    'details',
+                    'description',
+                    'free_duration',
+                    'recurring_program',
+                    'program_start_time',
+                    'program_end_time',
+                    'custom_start_program_time',
+                    'custom_end_program_time',
+                    'recurring_timezone',
+                    'recurring_program_week_day',
+                    'recurring_program_month_day'
+                )
+                    ->where('active', 1)
+                    ->where('status', 1)
+                    ->latest()
+                    ->limit(15)
+                    ->get();
+
+                $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+                    if ($livestream->publish_type === 'recurring_program') {
+
+                        $Current_time = Carbon\Carbon::now($current_timezone);
+                        $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                        $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                        $midnight = $convert_time->copy()->startOfDay();
+
+                        switch ($livestream->recurring_program) {
+                            case 'custom':
+                                $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >= Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i');
+                                break;
+                            case 'daily':
+                                $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            case 'weekly':
+                                $recurring_program_Status = ($livestream->recurring_program_week_day == $convert_time->format('N')) && $convert_time->greaterThanOrEqualTo($midnight) && ($livestream->program_end_time >= $convert_time->format('H:i'));
+                                break;
+                            case 'monthly':
+                                $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            default:
+                                $recurring_program_Status = false;
+                                break;
+                        }
+
+                        switch ($livestream->recurring_program) {
+                            case 'custom':
+                                $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                                break;
+                            case 'daily':
+                                $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            case 'weekly':
+                                $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            case 'monthly':
+                                $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                                break;
+                            default:
+                                $recurring_program_live_animation = false;
+                                break;
+                        }
+
+                        $livestream->recurring_program_live_animation = $recurring_program_live_animation;
+
+                        return $recurring_program_Status;
+                    }
+                    return true;
+                });
+
+                $latest_series = Series::select('id', 'title', 'slug', 'year', 'rating', 'access', 'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'details', 'description')
+                    ->where('active', '1')->latest()->limit(15)->get();
+
+                // Series_based_on_Networks
+
+                $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
+
+                    $item['Series_depends_Networks'] = Series::where('series.active', 1)
+                        ->where('network_id', 'LIKE', '%"' . $item->id . '"%')
+
+
+                        ->latest('series.created_at')->get()->map(function ($item) {
+
+                            $item['image_url'] = !is_null($item->image) ? $this->BaseURL . ('/images/' . $item->image) : default_vertical_image();
+                            $item['Player_image_url'] = !is_null($item->player_image) ? $this->BaseURL . ('/images/' . $item->player_image) : default_horizontal_image_url();
+
+                            $item['upload_on'] = Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY');
+
+                            $item['duration_format'] = !is_null($item->duration) ? Carbon\Carbon::parse($item->duration)->format('G\H i\M') : null;
 
                             $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
-                                                                    ->map(function ($item) {
-                                                                    $item['image_url']  = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : default_vertical_image() ;
-                                                                    return $item;
-                                                                });
+                                ->map(function ($item) {
+                                    $item['image_url'] = !is_null($item->image) ? $this->BaseURL . ('/images/' . $item->image) : default_vertical_image();
+                                    return $item;
+                                });
                             $item['has_more'] = count($item['Series_depends_episodes']) > 14;
                             $item['source'] = 'Series';
                             return $item;
 
                         });
+                    return $item;
+                });
+
+                $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
+                    ->with([
+                        'category_series' => function ($series) {
+                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
+                        },
+                    ])
+                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
+                    ->orderBy('series_genre.order')
+                    ->get();
+
+                $Series_based_on_category->each(function ($category) {
+                    $category->category_series->transform(function ($item) {
+
+                        $item['image_url'] = !is_null($item->image) ? $this->BaseURL . ('/images/' . $item->image) : default_vertical_image();
+                        $item['Player_image_url'] = !is_null($item->player_image) ? $this->BaseURL . ('/images/' . $item->player_image) : default_horizontal_image_url();
+
+                        $item['upload_on'] = Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY');
+
+                        $item['duration_format'] = !is_null($item->duration) ? Carbon\Carbon::parse($item->duration)->format('G\H i\M') : null;
+
+                        $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                            ->map(function ($item) {
+                                $item['image_url'] = !is_null($item->image) ? $this->BaseURL . ('/images/' . $item->image) : default_vertical_image();
+                                return $item;
+                            });
+
+                        $item['source'] = 'Series';
                         return $item;
                     });
+                    $category->source = 'Series_Genre';
+                    return $category;
+                });
 
-                    $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
-                        ->with([
-                            'category_series' => function ($series) {
-                                $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
-                            },
-                        ])
-                        ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
-                        ->orderBy('series_genre.order')
-                        ->get();
+                $button_text = ButtonText::first();
 
-                    $Series_based_on_category->each(function ($category) {
-                        $category->category_series->transform(function ($item) {
-
-                            $item['image_url']        = !is_null($item->image)  ? $this->BaseURL.('/images/'.$item->image) : default_vertical_image() ;
-                            $item['Player_image_url'] = !is_null($item->player_image)  ? $this->BaseURL.('/images/'.$item->player_image ) : default_horizontal_image_url() ;
-
-                            $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY');
-
-                            $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-
-                            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
-                                                                    ->map(function ($item) {
-                                                                        $item['image_url']  = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : default_vertical_image() ;
-                                                                        return $item;
-                                                                });
-
-                            $item['source'] = 'Series';
-                            return $item;
-                        });
-                        $category->source = 'Series_Genre';
-                        return $category;
-                    });
-                    
-                    $button_text = ButtonText::first();
-
-                    $data = array(
-                        'currency' => $currency,
-                        'videos' => $FrontEndQueryController->Latest_videos() ,
-                        'current_theme'     => $this->HomeSetting->theme_choosen,
-                        'sliders'            => $FrontEndQueryController->sliders(),
-                        'live_banner'        => $FrontEndQueryController->live_banners(),
-                        'video_banners'      => $FrontEndQueryController->video_banners(),
-                        'series_sliders'     => $FrontEndQueryController->series_sliders(),
-                        'live_event_banners' => $FrontEndQueryController->live_event_banners(),
-                        'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
-                        'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
-                        'Epg'                 => $FrontEndQueryController->Epg(),
-                        'current_page'      => 1,
-                        'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                        'cnt_watching'      => $cnt_watching,
-                        'latest_videos'     => $FrontEndQueryController->Latest_videos()->take(15),
-                        'latest_video'      => $FrontEndQueryController->Latest_videos()->take(15),
-                        'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
-                        'trending_audios'   => $trending_audios,
-                        'latest_audios'     => $latest_audios,
-                        'featured_videos'   => $FrontEndQueryController->featured_videos()->take(15),
-                        'featured_episodes' => $featured_episodes,
-                        'genre_video_display' => $genre_video_display,
-                        'genres'              => $genre_video_display  ,
-                        'pagination_url'      => '/videos',
-                        'settings'            => $settings,
-                        'pages'               => Page::all(),
-                        'trending_videos'     => $trending_videos,
-                        'ppv_gobal_price'     => $ppv_gobal_price,
-                        'suggested_videos'      => $trending_videos,
-                        'video_categories'      => $genre_video_display  ,
-                        'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15) ,
-                        'home_settings'         => $this->HomeSetting ,
-                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
-                        'audios'                => $latest_audios ,
-                        'albums'                => AudioAlbums::latest()->limit(15)->get() ,
-                        'countryName'            => $countryName,
-                        'most_watch_user'        => !empty($most_watch_user) ? $most_watch_user : [],
-                        'top_most_watched'       => !empty($top_most_watched) ? $top_most_watched : [],
-                        'Most_watched_country'   =>!empty($Most_watched_country) ? $Most_watched_country : [],
-                        'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
-                        'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
-                        'Family_Mode'            => $Family_Mode,
-                        'Kids_Mode'              => $Kids_Mode,
-                        'Mode'                   => $Mode,
-                        'ThumbnailSetting'       => $ThumbnailSetting,
-                        'artist'                 => Artist::limit(15)->get(),
-                        'VideoSchedules'         => VideoSchedules::where('in_home',1)->limit(15)->get(),
-                        'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
-                        'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
-                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
-                        'Series_based_on_category' => $Series_based_on_category ,
-                        'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                        'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
-                        'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
-                        'order_settings_list' => OrderHomeSetting::get(),
-                        'order_settings'  => $order_settings ,
-                        'getfeching'      => $getfeching ,
-                        'videos_expiry_date_status' => $videos_expiry_date_status,
-                        'Series_Networks_Status' => Series_Networks_Status(),
-                        'latest_episode'  => $latest_episode ,
-                        'default_vertical_image_url' => $default_vertical_image_url,
-                        'default_horizontal_image_url' => $default_horizontal_image_url,
-                        'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
-                        'ugc_videos'        => $FrontEndQueryController->UGCVideos()->take(15),
-                        'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
-                        'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
-                        'button_text'         => $button_text,
-                        'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
-                        'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                        'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                        'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
-                        'BaseURL'                            => $this->BaseURL
-                    );
-                    if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
-                        if($request->ajax()) {
-                            return $data = [
-                                "view" => Theme::watchPartial('home_sections', $data ),
-                                'url' => $data['order_settings']->nextPageUrl()
-                            ];
-                        }
+                $data = array(
+                    'currency' => $currency,
+                    'videos' => $FrontEndQueryController->Latest_videos(),
+                    'current_theme' => $this->HomeSetting->theme_choosen,
+                    'sliders' => $FrontEndQueryController->sliders(),
+                    'live_banner' => $FrontEndQueryController->live_banners(),
+                    'video_banners' => $FrontEndQueryController->video_banners(),
+                    'series_sliders' => $FrontEndQueryController->series_sliders(),
+                    'live_event_banners' => $FrontEndQueryController->live_event_banners(),
+                    'Episode_sliders' => $FrontEndQueryController->Episode_sliders(),
+                    'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
+                    'Epg' => $FrontEndQueryController->Epg(),
+                    'current_page' => 1,
+                    'latest_series' => $FrontEndQueryController->latest_Series()->take(15),
+                    'cnt_watching' => $cnt_watching,
+                    'latest_videos' => $FrontEndQueryController->Latest_videos()->take(15),
+                    'latest_video' => $FrontEndQueryController->Latest_videos()->take(15),
+                    'latestViewedVideos' => $FrontEndQueryController->latestViewedVideos()->take(15),
+                    'trending_audios' => $trending_audios,
+                    'latest_audios' => $latest_audios,
+                    'featured_videos' => $FrontEndQueryController->featured_videos()->take(15),
+                    'featured_episodes' => $featured_episodes,
+                    'genre_video_display' => $genre_video_display,
+                    'genres' => $genre_video_display,
+                    'pagination_url' => '/videos',
+                    'settings' => $settings,
+                    'pages' => Page::all(),
+                    'trending_videos' => $trending_videos,
+                    'ppv_gobal_price' => $ppv_gobal_price,
+                    'suggested_videos' => $trending_videos,
+                    'video_categories' => $genre_video_display,
+                    'Video_Based_Category' => $FrontEndQueryController->Video_Based_Category()->take(15),
+                    'home_settings' => $this->HomeSetting,
+                    'livetream' => $FrontEndQueryController->livestreams()->take(15),
+                    'audios' => $latest_audios,
+                    'albums' => AudioAlbums::latest()->limit(15)->get(),
+                    'countryName' => $countryName,
+                    'most_watch_user' => !empty($most_watch_user) ? $most_watch_user : [],
+                    'top_most_watched' => !empty($top_most_watched) ? $top_most_watched : [],
+                    'Most_watched_country' => !empty($Most_watched_country) ? $Most_watched_country : [],
+                    'preference_genres' => !empty($preference_gen) ? $preference_gen : [],
+                    'preference_Language' => !empty($preference_Lan) ? $preference_Lan : [],
+                    'Family_Mode' => $Family_Mode,
+                    'Kids_Mode' => $Kids_Mode,
+                    'Mode' => $Mode,
+                    'ThumbnailSetting' => $ThumbnailSetting,
+                    'artist' => Artist::limit(15)->get(),
+                    'VideoSchedules' => VideoSchedules::where('in_home', 1)->limit(15)->get(),
+                    'LiveCategory' => LiveCategory::orderBy('order', 'ASC')->limit(15)->get(),
+                    'AudioCategory' => AudioCategory::orderBy('order', 'ASC')->limit(15)->get(),
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                    'Series_based_on_category' => $Series_based_on_category,
+                    'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                    'SeriesGenre' => SeriesGenre::orderBy('order', 'ASC')->limit(15)->get(),
+                    'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
+                    'order_settings_list' => OrderHomeSetting::get(),
+                    'order_settings' => $order_settings,
+                    'getfeching' => $getfeching,
+                    'videos_expiry_date_status' => $videos_expiry_date_status,
+                    'Series_Networks_Status' => Series_Networks_Status(),
+                    'latest_episode' => $latest_episode,
+                    'default_vertical_image_url' => $default_vertical_image_url,
+                    'default_horizontal_image_url' => $default_horizontal_image_url,
+                    'artist_live_event' => LiveEventArtist::where("active", 1)->where('status', 1)->latest()->get(),
+                    'ugc_videos' => $FrontEndQueryController->UGCVideos()->take(15),
+                    'ugc_shorts_minis' => $FrontEndQueryController->UGCShortsMinis(),
+                    'ugc_users' => $FrontEndQueryController->UGCUsers(),
+                    'button_text' => $button_text,
+                    'top_ten_videos' => $FrontEndQueryController->TopTenVideos(),
+                    'VideoJsContinueWatching' => $FrontEndQueryController->VideoJsContinueWatching(),
+                    'VideoJsEpisodeContinueWatching' => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                    'radiostations' => $FrontEndQueryController->RadioStation()->take(15),
+                    'BaseURL' => $this->BaseURL
+                );
+                if ($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default") {
+                    if ($request->ajax()) {
+                        return $data = [
+                            "view" => Theme::watchPartial('home_sections', $data),
+                            'url' => $data['order_settings']->nextPageUrl()
+                        ];
                     }
-                    return Theme::view('home', $data);
                 }
+                return Theme::view('home', $data);
             }
+        }
 
     }
     /**
@@ -1173,23 +1378,19 @@ class HomeController extends Controller
 
         $block_videos = BlockVideo::where('country_id', $countryName)->get();
 
-        if (!$block_videos->isEmpty())
-        {
-            foreach ($block_videos as $block_video)
-            {
+        if (!$block_videos->isEmpty()) {
+            foreach ($block_videos as $block_video) {
                 $blockvideos[] = $block_video->video_id;
             }
-        }
-        else
-        {
+        } else {
             $blockvideos[] = '';
         }
 
-        if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
+        if ($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null) {
 
             unset($data['password_hash']);
 
-            if(!empty($data['user'])){
+            if (!empty($data['user'])) {
                 unset($data['expiresIn']);
                 unset($data['providertoken']);
                 unset($data['user']);
@@ -1211,21 +1412,20 @@ class HomeController extends Controller
 
         }
 
-        if($settings->enable_landing_page == 1 && Auth::guest()){
+        if ($settings->enable_landing_page == 1 && Auth::guest()) {
 
-            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+            $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : "landing-page";
 
-            return redirect()->route('landing_page', $landing_page_slug );
+            return redirect()->route('landing_page', $landing_page_slug);
         }
 
-        if ($settings->access_free == 1 && Auth::guest() && !isset($data['user'])){
+        if ($settings->access_free == 1 && Auth::guest() && !isset($data['user'])) {
 
 
 
-            $guest_devices_check = GuestLoggedDevice::where('user_ip', '=',$userIp)->where('device_name', '=', 'desktop')->first();
+            $guest_devices_check = GuestLoggedDevice::where('user_ip', '=', $userIp)->where('device_name', '=', 'desktop')->first();
 
-            if (empty($guest_devices_check))
-            {
+            if (empty($guest_devices_check)) {
                 $adddevice = new GuestLoggedDevice;
                 $adddevice->device_name = 'desktop';
                 $adddevice->user_ip = $userIp;
@@ -1235,7 +1435,7 @@ class HomeController extends Controller
 
             return Redirect::to('/');
 
-        }else {
+        } else {
 
             $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value, $key) {
                 return $value === '1' || $value === 1;
@@ -1262,52 +1462,52 @@ class HomeController extends Controller
                 }
             })->values()->toArray();
 
-            $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+            $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name', $home_settings_on_value)->orderBy('order_id', 'asc');
             $pagination_value = HomeSetting::pluck('web_pagination_count')->first();
 
-            if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
+            if ($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default") {
                 $order_settings = $order_settings->paginate($pagination_value);    // Pagination
-            }else{
+            } else {
                 $order_settings = $order_settings->get();
             }
 
             $FrontEndQueryController = new FrontEndQueryController();
 
 
-            if($this->HomeSetting->theme_choosen == "theme4"){
+            if ($this->HomeSetting->theme_choosen == "theme4") {
                 $enableMultipleCompressImage = CompressImage::pluck('enable_multiple_compress_image')->first();
-                
+
                 $data = array(
                     'order_settings_list' => OrderHomeSetting::get(),
-                    'order_settings'  => $order_settings ,
+                    'order_settings' => $order_settings,
                     'multiple_compress_image' => $enableMultipleCompressImage ?: 0,
-                    'getfeching'      => $getfeching ,
-                    'current_theme'     => $this->HomeSetting->theme_choosen,
-                    'current_page'      => 1,
+                    'getfeching' => $getfeching,
+                    'current_theme' => $this->HomeSetting->theme_choosen,
+                    'current_page' => 1,
                     'pagination_url' => '/videos',
-                    'pages'             => Page::all(),
-                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                    'home_settings'       => $this->HomeSetting ,
-                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                    'pages' => Page::all(),
+                    'latest_series' => $FrontEndQueryController->latest_Series()->take(15),
+                    'home_settings' => $this->HomeSetting,
+                    'livetream' => $FrontEndQueryController->livestreams()->take(15),
                     'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
-                    'videos_expiry_date_status'    => videos_expiry_date_status(),
+                    'videos_expiry_date_status' => videos_expiry_date_status(),
                     'default_vertical_image_url' => $default_vertical_image_url,
                     'default_horizontal_image_url' => $default_horizontal_image_url,
-                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                    'BaseURL'                            => $this->BaseURL,
+                    'VideoJsContinueWatching' => $FrontEndQueryController->VideoJsContinueWatching(),
+                    'VideoJsEpisodeContinueWatching' => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                    'BaseURL' => $this->BaseURL,
                     'Series_Networks_Status' => Series_Networks_Status(),
                 );
 
-                if($request->ajax()) {
+                if ($request->ajax()) {
                     return $data = [
-                        "view" => Theme::watchPartial('home_sections', $data ),
+                        "view" => Theme::watchPartial('home_sections', $data),
                         'url' => $data['order_settings']->nextPageUrl()
                     ];
                 }
 
                 return Theme::view('home', $data);
-                
+
             }
 
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -1319,12 +1519,9 @@ class HomeController extends Controller
             $system_settings = SystemSetting::first();
             $user = User::where('id', 1)->first();
 
-            if (Auth::guest() && !isset($data['user']))
-            {
+            if (Auth::guest() && !isset($data['user'])) {
                 return Theme::view('auth.login');
-            }
-            else
-            {
+            } else {
 
                 $device_name = '';
 
@@ -1363,25 +1560,25 @@ class HomeController extends Controller
                     ->where('subscriptions.user_id', Auth::User()->id)
                     ->get();
 
-                if (count($subscription_device_limit) >= 1){
+                if (count($subscription_device_limit) >= 1) {
 
                     $device_limit = $subscription_device_limit[0]->devices;
                     $limit = explode(",", $device_limit);
                     $device_limit = count($limit);
 
-                }else{
+                } else {
                     $device_limit = 0;
                 }
 
-                $devices_check = LoggedDevice::where('user_id',Auth::User()->id)->where('device_name', $device_name)->first();
+                $devices_check = LoggedDevice::where('user_id', Auth::User()->id)->where('device_name', $device_name)->first();
 
                 $already_logged = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                ->where('user_ip',  $userIp)->where('device_name', $device_name)->count();
+                    ->where('user_ip', $userIp)->where('device_name', $device_name)->count();
 
-                if($already_logged > 0){
+                if ($already_logged > 0) {
                     $already_logged = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                    ->where('user_ip', $userIp)
-                    ->where('device_name', $device_name)->delete();
+                        ->where('user_ip', $userIp)
+                        ->where('device_name', $device_name)->delete();
                 }
 
                 $username = Auth::User()->username;
@@ -1440,47 +1637,44 @@ class HomeController extends Controller
 
                 // }else{
 
-                    $device_name = '';
+                $device_name = '';
 
-                    switch (true) {
-                        case $agent->isDesktop():
-                            $device_name = 'desktop';
-                            break;
-                        case $agent->isTablet():
-                            $device_name = 'tablet';
-                            break;
-                        case $agent->isMobile():
-                            $device_name = 'mobile';
-                            break;
-                        case $agent->isTv():
-                            $device_name = 'tv';
-                            break;
-                        default:
-                            $device_name = 'unknown';
-                            break;
+                switch (true) {
+                    case $agent->isDesktop():
+                        $device_name = 'desktop';
+                        break;
+                    case $agent->isTablet():
+                        $device_name = 'tablet';
+                        break;
+                    case $agent->isMobile():
+                        $device_name = 'mobile';
+                        break;
+                    case $agent->isTv():
+                        $device_name = 'tv';
+                        break;
+                    default:
+                        $device_name = 'unknown';
+                        break;
+                }
+
+                if (!empty($device_name)) {
+
+                    $devices_check = LoggedDevice::where('user_id', Auth::User()->id)->where('device_name', '=', $device_name)->first();
+
+                    if (empty($devices_check)) {
+                        $adddevice = new LoggedDevice;
+                        $adddevice->user_id = Auth::User()->id;
+                        $adddevice->user_ip = $userIp;
+                        $adddevice->device_name = $device_name;
+                        $adddevice->save();
                     }
-
-                    if (!empty($device_name))
-                    {
-
-                        $devices_check = LoggedDevice::where('user_id', Auth::User()->id)->where('device_name', '=', $device_name)->first();
-
-                        if (empty($devices_check))
-                        {
-                            $adddevice = new LoggedDevice;
-                            $adddevice->user_id = Auth::User()->id;
-                            $adddevice->user_ip = $userIp;
-                            $adddevice->device_name = $device_name;
-                            $adddevice->save();
-                        }
-                    }
+                }
                 // }
 
                 $logged = UserLogs::where('user_id', Auth::User()->id)->latest()
                     ->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
 
-                if (!empty($logged))
-                {
+                if (!empty($logged)) {
                     $today_old_log = UserLogs::where('user_id', '=', Auth::User()->id)
                         ->latest()->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())
                         ->delete();
@@ -1493,7 +1687,7 @@ class HomeController extends Controller
                     $new_login->cityname = city_name();
                     $new_login->save();
 
-                }else{
+                } else {
 
                     $new_login = new UserLogs;
                     $new_login->user_id = Auth::User()->id;
@@ -1512,52 +1706,115 @@ class HomeController extends Controller
 
                 $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
 
-                if ($multiuser != null)
-                {
+                if ($multiuser != null) {
                     $getcnt_watching = ContinueWatching::where('multiuser', $multiuser)->pluck('videoid')->toArray();
 
-                    $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                    'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
-                                            ->where('draft', '1')->where('type','!=','embed')
-                                            ->whereIn('id', $getcnt_watching)->limit(15)->get();
+                    $cnt_watching = Video::select(
+                        'id',
+                        'title',
+                        'slug',
+                        'year',
+                        'rating',
+                        'access',
+                        'publish_type',
+                        'global_ppv',
+                        'publish_time',
+                        'publish_status',
+                        'ppv_price',
+                        'responsive_image',
+                        'responsive_player_image',
+                        'responsive_tv_image',
+                        'duration',
+                        'rating',
+                        'image',
+                        'featured',
+                        'age_restrict',
+                        'video_tv_image',
+                        'player_image',
+                        'details',
+                        'description'
+                    )->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+                        ->where('draft', '1')->where('type', '!=', 'embed')
+                        ->whereIn('id', $getcnt_watching)->limit(15)->get();
 
-                }elseif (!Auth::guest()){
+                } elseif (!Auth::guest()) {
 
                     $continue_watching = ContinueWatching::where('user_id', Auth::user()->id)->first();
 
-                    if ($continue_watching != null && $continue_watching->multiuser == null)
-                    {
+                    if ($continue_watching != null && $continue_watching->multiuser == null) {
                         $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)->pluck('videoid')->toArray();
 
-                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
-                                                 ->where('draft', '1')
-                                                 ->where('type','!=','embed')
-                                                 ->whereIn('id', $getcnt_watching);
-                                                if ($getfeching != null && $getfeching->geofencing == 'ON')
-                                                {
-                                                    $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
-                                                }
-                                                $cnt_watching = $cnt_watching->limit(15)->get();
-                    }
-                    else
-                    {
+                        $cnt_watching = Video::select(
+                            'id',
+                            'title',
+                            'slug',
+                            'year',
+                            'rating',
+                            'access',
+                            'publish_type',
+                            'global_ppv',
+                            'publish_time',
+                            'publish_status',
+                            'ppv_price',
+                            'responsive_image',
+                            'responsive_player_image',
+                            'responsive_tv_image',
+                            'duration',
+                            'rating',
+                            'image',
+                            'featured',
+                            'age_restrict',
+                            'video_tv_image',
+                            'player_image',
+                            'details',
+                            'description'
+                        )->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '1')
+                            ->where('type', '!=', 'embed')
+                            ->whereIn('id', $getcnt_watching);
+                        if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                            $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+                        }
+                        $cnt_watching = $cnt_watching->limit(15)->get();
+                    } else {
                         $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                             ->where('multiuser', 'data')
                             ->pluck('videoid')
                             ->toArray();
 
-                        $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
-                                                ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching);
-                                                if ($getfeching != null && $getfeching->geofencing == 'ON')
-                                                {
-                                                    $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
-                                                }
-                                                $cnt_watching = $cnt_watching->limit(15)->get();
+                        $cnt_watching = Video::select(
+                            'id',
+                            'title',
+                            'slug',
+                            'year',
+                            'rating',
+                            'access',
+                            'publish_type',
+                            'global_ppv',
+                            'publish_time',
+                            'publish_status',
+                            'ppv_price',
+                            'responsive_image',
+                            'responsive_player_image',
+                            'responsive_tv_image',
+                            'duration',
+                            'rating',
+                            'image',
+                            'featured',
+                            'age_restrict',
+                            'video_tv_image',
+                            'player_image',
+                            'details',
+                            'description'
+                        )->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+                            ->where('draft', '=', '1')->where('type', '!=', 'embed')->whereIn('id', $getcnt_watching);
+                        if ($getfeching != null && $getfeching->geofencing == 'ON') {
+                            $cnt_watching = $cnt_watching->whereNotIn('id', $blockvideos);
+                        }
+                        $cnt_watching = $cnt_watching->limit(15)->get();
                     }
 
-                }else{
+                } else {
                     $cnt_watching = '';
                 }
 
@@ -1566,133 +1823,133 @@ class HomeController extends Controller
                 // Order Setting
 
 
-                
 
-                
+
+
                 $button_text = ButtonText::first();
 
-                if($this->HomeSetting->theme_choosen == "theme4"){
+                if ($this->HomeSetting->theme_choosen == "theme4") {
                     $data = array(
 
-                        'currency'          => $currency,
-                        'current_theme'     => $this->HomeSetting->theme_choosen,
-                        'settings'          => $settings,
-                        'pages'             => Page::all(),
-                        'current_page'      => 1,
-                        'pagination_url'    => '/videos',
-                        'cnt_watching'      => $cnt_watching,
-                        'ppv_gobal_price'   => $ppv_gobal_price,
-                        'countryName'       => $countryName,
-                        'Family_Mode'       => 2,
-                        'Kids_Mode'         => $Mode['Kids_Mode'],
-                        'Mode'              => $Mode,
-                        'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                        'currency' => $currency,
+                        'current_theme' => $this->HomeSetting->theme_choosen,
+                        'settings' => $settings,
+                        'pages' => Page::all(),
+                        'current_page' => 1,
+                        'pagination_url' => '/videos',
+                        'cnt_watching' => $cnt_watching,
+                        'ppv_gobal_price' => $ppv_gobal_price,
+                        'countryName' => $countryName,
+                        'Family_Mode' => 2,
+                        'Kids_Mode' => $Mode['Kids_Mode'],
+                        'Mode' => $Mode,
+                        'ThumbnailSetting' => $FrontEndQueryController->ThumbnailSetting(),
                         'order_settings_list' => OrderHomeSetting::get(),
-                        'order_settings'      => $order_settings ,
-                        'getfeching'          => $getfeching ,
-                        'home_settings'       => $this->HomeSetting ,
-                        'videos_expiry_date_status'    => videos_expiry_date_status(),
-                        'Series_Networks_Status'       => Series_Networks_Status(),
-                        'default_vertical_image_url'   => $default_vertical_image_url,
+                        'order_settings' => $order_settings,
+                        'getfeching' => $getfeching,
+                        'home_settings' => $this->HomeSetting,
+                        'videos_expiry_date_status' => videos_expiry_date_status(),
+                        'Series_Networks_Status' => Series_Networks_Status(),
+                        'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
-                        'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                        'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                         'featured_episodes' => $FrontEndQueryController->featured_episodes()->take(15),
-                        'latest_episode'      => $FrontEndQueryController->latest_episodes()->take(15),
-                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
-                        'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                        'LiveCategory'           => $FrontEndQueryController->LiveCategory()->take(15),
+                        'latest_episode' => $FrontEndQueryController->latest_episodes()->take(15),
+                        'livetream' => $FrontEndQueryController->livestreams()->take(15),
+                        'latest_series' => $FrontEndQueryController->latest_Series()->take(15),
+                        'LiveCategory' => $FrontEndQueryController->LiveCategory()->take(15),
                         'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                         'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category()->take(15),
                         'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
-                        'Epg'                 => $FrontEndQueryController->Epg(),
-                        'button_text'         => $button_text, 
-                        'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                        'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                        'BaseURL'                            => $this->BaseURL
+                        'Epg' => $FrontEndQueryController->Epg(),
+                        'button_text' => $button_text,
+                        'VideoJsContinueWatching' => $FrontEndQueryController->VideoJsContinueWatching(),
+                        'VideoJsEpisodeContinueWatching' => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                        'BaseURL' => $this->BaseURL
                     );
-                }else{
+                } else {
 
                     $data = array(
 
-                        'currency'          => $currency,
-                        'current_theme'     => $this->HomeSetting->theme_choosen,
-                        'settings'          => $settings,
-                        'pages'             => Page::all(),
-                        'current_page'      => 1,
-                        'pagination_url'    => '/videos',
-                        'cnt_watching'      => $cnt_watching,
-                        'ppv_gobal_price'   => $ppv_gobal_price,
-                        'countryName'       => $countryName,
-                        'Family_Mode'       => 2,
-                        'Kids_Mode'         => $Mode['Kids_Mode'],
-                        'Mode'              => $Mode,
-                        'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                        'currency' => $currency,
+                        'current_theme' => $this->HomeSetting->theme_choosen,
+                        'settings' => $settings,
+                        'pages' => Page::all(),
+                        'current_page' => 1,
+                        'pagination_url' => '/videos',
+                        'cnt_watching' => $cnt_watching,
+                        'ppv_gobal_price' => $ppv_gobal_price,
+                        'countryName' => $countryName,
+                        'Family_Mode' => 2,
+                        'Kids_Mode' => $Mode['Kids_Mode'],
+                        'Mode' => $Mode,
+                        'ThumbnailSetting' => $FrontEndQueryController->ThumbnailSetting(),
                         'order_settings_list' => OrderHomeSetting::get(),
-                        'order_settings'      => $order_settings ,
-                        'getfeching'          => $getfeching ,
-                        'home_settings'       => $this->HomeSetting ,
-                        'videos_expiry_date_status'    => videos_expiry_date_status(),
-                        'Series_Networks_Status'       => Series_Networks_Status(),
-                        'default_vertical_image_url'   => $default_vertical_image_url,
+                        'order_settings' => $order_settings,
+                        'getfeching' => $getfeching,
+                        'home_settings' => $this->HomeSetting,
+                        'videos_expiry_date_status' => videos_expiry_date_status(),
+                        'Series_Networks_Status' => Series_Networks_Status(),
+                        'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
-                        'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                        'videos'            => $FrontEndQueryController->Latest_videos()->take(15),
-                        'latest_video'      => $FrontEndQueryController->Latest_videos()->take(15),
-                        'latest_videos'     => $FrontEndQueryController->Latest_videos()->take(15),
-                        'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
-                        'trendings'         => $FrontEndQueryController->trending_videos()->take(15),
-                        'trending_videos'   => $FrontEndQueryController->trending_videos()->take(15),
-                        'suggested_videos'  => $FrontEndQueryController->trending_videos()->take(15),
-                        'latest_audios'     => $FrontEndQueryController->latest_audios()->take(15),
-                        'audios'            => $FrontEndQueryController->latest_audios()->take(15),
-                        'featured_videos'   => $FrontEndQueryController->featured_videos()->take(15),
+                        'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                        'videos' => $FrontEndQueryController->Latest_videos()->take(15),
+                        'latest_video' => $FrontEndQueryController->Latest_videos()->take(15),
+                        'latest_videos' => $FrontEndQueryController->Latest_videos()->take(15),
+                        'latestViewedVideos' => $FrontEndQueryController->latestViewedVideos()->take(15),
+                        'trendings' => $FrontEndQueryController->trending_videos()->take(15),
+                        'trending_videos' => $FrontEndQueryController->trending_videos()->take(15),
+                        'suggested_videos' => $FrontEndQueryController->trending_videos()->take(15),
+                        'latest_audios' => $FrontEndQueryController->latest_audios()->take(15),
+                        'audios' => $FrontEndQueryController->latest_audios()->take(15),
+                        'featured_videos' => $FrontEndQueryController->featured_videos()->take(15),
                         'featured_episodes' => $FrontEndQueryController->featured_episodes()->take(15),
                         'genre_video_display' => $FrontEndQueryController->genre_video_display()->take(15),
-                        'genres'              => $FrontEndQueryController->genre_video_display()->take(15),
-                        'video_categories'    => $FrontEndQueryController->genre_video_display()->take(15),
-                        'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15),
-                        'albums'              => $FrontEndQueryController->AudioAlbums()->take(15),
-                        'latest_episode'      => $FrontEndQueryController->latest_episodes()->take(15),
-                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
-                        'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                        'artist'                 => $FrontEndQueryController->artist()->take(15),
-                        'VideoSchedules'         => $FrontEndQueryController->VideoSchedules()->take(15),
-                        'LiveCategory'           => $FrontEndQueryController->LiveCategory()->take(15),
-                        'AudioCategory'          => $FrontEndQueryController->AudioCategory()->take(15),
+                        'genres' => $FrontEndQueryController->genre_video_display()->take(15),
+                        'video_categories' => $FrontEndQueryController->genre_video_display()->take(15),
+                        'Video_Based_Category' => $FrontEndQueryController->Video_Based_Category()->take(15),
+                        'albums' => $FrontEndQueryController->AudioAlbums()->take(15),
+                        'latest_episode' => $FrontEndQueryController->latest_episodes()->take(15),
+                        'livetream' => $FrontEndQueryController->livestreams()->take(15),
+                        'latest_series' => $FrontEndQueryController->latest_Series()->take(15),
+                        'artist' => $FrontEndQueryController->artist()->take(15),
+                        'VideoSchedules' => $FrontEndQueryController->VideoSchedules()->take(15),
+                        'LiveCategory' => $FrontEndQueryController->LiveCategory()->take(15),
+                        'AudioCategory' => $FrontEndQueryController->AudioCategory()->take(15),
                         'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                         'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category()->take(15),
-                        'artist_live_event'         => $FrontEndQueryController->LiveEventArtist()->take(15),
-                        'SeriesGenre'               =>  $FrontEndQueryController->SeriesGenre()->take(15),
-                        'trending_audios'           => $FrontEndQueryController->trending_audios()->take(15),
+                        'artist_live_event' => $FrontEndQueryController->LiveEventArtist()->take(15),
+                        'SeriesGenre' => $FrontEndQueryController->SeriesGenre()->take(15),
+                        'trending_audios' => $FrontEndQueryController->trending_audios()->take(15),
                         'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
-                        'sliders'            => $FrontEndQueryController->sliders(),
-                        'live_banner'        => $FrontEndQueryController->live_banners(),
-                        'video_banners'      => $FrontEndQueryController->video_banners(),
-                        'series_sliders'     => $FrontEndQueryController->series_sliders(),
+                        'sliders' => $FrontEndQueryController->sliders(),
+                        'live_banner' => $FrontEndQueryController->live_banners(),
+                        'video_banners' => $FrontEndQueryController->video_banners(),
+                        'series_sliders' => $FrontEndQueryController->series_sliders(),
                         'live_event_banners' => $FrontEndQueryController->live_event_banners(),
-                        'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
+                        'Episode_sliders' => $FrontEndQueryController->Episode_sliders(),
                         'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
-                        'most_watch_user'      => $FrontEndQueryController->Most_watched_videos_users(),
-                        'top_most_watched'     => $FrontEndQueryController->Most_watched_videos_site(),
-                        'Most_watched_country'   =>  $FrontEndQueryController->Most_watched_videos_country(),
-                        'preference_genres'      => $FrontEndQueryController->preference_genres(),
-                        'preference_Language'    => $FrontEndQueryController->preference_language(),
-                        'Epg'                 => $FrontEndQueryController->Epg(),
-                        'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
-                        'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
-                        'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
-                        'button_text'         => $button_text, 
-                        'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(), 
-                        'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                        'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                        'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
+                        'most_watch_user' => $FrontEndQueryController->Most_watched_videos_users(),
+                        'top_most_watched' => $FrontEndQueryController->Most_watched_videos_site(),
+                        'Most_watched_country' => $FrontEndQueryController->Most_watched_videos_country(),
+                        'preference_genres' => $FrontEndQueryController->preference_genres(),
+                        'preference_Language' => $FrontEndQueryController->preference_language(),
+                        'Epg' => $FrontEndQueryController->Epg(),
+                        'ugc_videos' => $FrontEndQueryController->UGCVideos(),
+                        'ugc_shorts_minis' => $FrontEndQueryController->UGCShortsMinis(),
+                        'ugc_users' => $FrontEndQueryController->UGCUsers(),
+                        'button_text' => $button_text,
+                        'top_ten_videos' => $FrontEndQueryController->TopTenVideos(),
+                        'VideoJsContinueWatching' => $FrontEndQueryController->VideoJsContinueWatching(),
+                        'VideoJsEpisodeContinueWatching' => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                        'radiostations' => $FrontEndQueryController->RadioStation()->take(15),
                     );
                 }
                 // dd($data['order_settings']->first()->video_name);
-                if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
-                    if($request->ajax()) {
+                if ($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default") {
+                    if ($request->ajax()) {
                         return $data = [
-                            "view" => Theme::watchPartial('home_sections', $data ),
+                            "view" => Theme::watchPartial('home_sections', $data),
                             "section_name" => $data['order_settings']->first()->video_name,
                             'url' => $data['order_settings']->nextPageUrl()
                         ];
@@ -1765,13 +2022,14 @@ class HomeController extends Controller
 
     public function VerifyRequest(Request $request)
     {
-        session()->put('message',"Thanks, Your Account has been Submitted for Approval.");
+        session()->put('message', "Thanks, Your Account has been Submitted for Approval.");
 
         return Theme::view('emails.verify_request');
 
     }
 
-    public function VerifyRequestNotsent(){
+    public function VerifyRequestNotsent()
+    {
 
         return Theme::view('emails.Not_sent_verify_request');
 
@@ -1780,92 +2038,93 @@ class HomeController extends Controller
     public function PostcreateStep1(Request $request)
     {
 
-        if ($request->has('ref'))
-        {
-            session(['referrer' => $request->query('ref') ]);
+        if ($request->has('ref')) {
+            session(['referrer' => $request->query('ref')]);
         }
 
         $SiteTheme = SiteTheme::first();
-        if($SiteTheme->signup_theme == 1){
+        if ($SiteTheme->signup_theme == 1) {
 
             $SignupMenu = \App\SignupMenu::first();
-            if($SignupMenu->username == 1){
+            if ($SignupMenu->username == 1) {
                 $validatedData = $request->validate([
-                    'username' =>  ['required', 'string'],
+                    'username' => ['required', 'string'],
                 ]);
             }
 
-            if($SignupMenu->email == 1){
+            if ($SignupMenu->email == 1) {
                 $validatedData = $request->validate([
-                    'email' =>  ['required', 'string', 'email', 'unique:users'],
+                    'email' => ['required', 'string', 'email', 'unique:users'],
                 ]);
             }
-            if($SignupMenu->password == 1){
+            if ($SignupMenu->password == 1) {
                 $validatedData = $request->validate([
                     // 'password' => 'required|string|min:6|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
                     'password' => 'required',
 
                 ]);
             }
-            if($SignupMenu->mobile == 1){
+            if ($SignupMenu->mobile == 1) {
                 $validatedData = $request->validate([
                     'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
                 ]);
             }
-            if($SignupMenu->dob == 1){
+            if ($SignupMenu->dob == 1) {
                 $validatedData = $request->validate([
-                    'dob' =>  ['required', 'date'],
+                    'dob' => ['required', 'date'],
                 ]);
             }
 
-            if($SignupMenu->password_confirm == 1){
+            if ($SignupMenu->password_confirm == 1) {
                 $validatedData = $request->validate([
                     // 'password_confirmation' => 'required',
                     'password_confirmation' => 'required'
                 ]);
             }
-            if($SignupMenu->country == 1){
+            if ($SignupMenu->country == 1) {
                 $validatedData = $request->validate([
-                    'country' =>  ['required'],
+                    'country' => ['required'],
                 ]);
             }
-            if($SignupMenu->state == 1){
+            if ($SignupMenu->state == 1) {
                 $validatedData = $request->validate([
-                    'state' =>  ['required'],
+                    'state' => ['required'],
                 ]);
             }
-            if($SignupMenu->city == 1){
+            if ($SignupMenu->city == 1) {
                 $validatedData = $request->validate([
-                    'city' =>  ['required'],
+                    'city' => ['required'],
                 ]);
             }
-            if($SignupMenu->support_username == 1){
+            if ($SignupMenu->support_username == 1) {
                 $validatedData = $request->validate([
-                    'support_username' =>  ['required'],
+                    'support_username' => ['required'],
                 ]);
             }
 
             $validatedData = $request->validate([
                 'g-recaptcha-response' => get_enable_captcha_signup() == 1 ? 'required|captcha' : '',
             ]);
-        }else{
+        } else {
 
             $validatedData = $request->validate(
-                [   'username' => ['required', 'string'],
+                [
+                    'username' => ['required', 'string'],
                     'email' => ['required', 'string', 'email', 'unique:users'],
                     // 'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
                     // 'password_confirmation' => 'required',
                     'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
                     // 'password_confirmation' => 'required|confirmed',
                     'g-recaptcha-response' => get_enable_captcha_signup() == 1 ? 'required|captcha' : '',
-                 ]);
+                ]
+            );
         }
 
 
         $free_registration = FreeRegistration();
         $length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $ref_token = substr(str_shuffle(str_repeat($pool, 5)) , 0, $length);
+        $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
 
         $email = $request->get('email');
         $name = $request->get('username');
@@ -1875,14 +2134,11 @@ class HomeController extends Controller
         $get_password = $request->get('password');
         $path = public_path() . '/uploads/avatars/';
         $logo = $request->file('avatar');
-        if ($logo != '')
-        {
+        if ($logo != '') {
             //code for remove old file
-            if ($logo != '' && $logo != null)
-            {
+            if ($logo != '' && $logo != null) {
                 $file_old = $path . $logo;
-                if (file_exists($file_old))
-                {
+                if (file_exists($file_old)) {
                     unlink($file_old);
                 }
             }
@@ -1891,34 +2147,28 @@ class HomeController extends Controller
             $avatar = $file->getClientOriginalName();
             $file->move($path, $avatar);
 
-        }
-        else
-        {
+        } else {
             $avatar = 'default.png';
         }
 
         $referrer_code = $request->get('referrer_code');
         $ExpireDate = Date('d-m-Y', strtotime('+3 days'));
 
-        if (isset($referrer_code) && !empty($referrer_code))
-        {
+        if (isset($referrer_code) && !empty($referrer_code)) {
             $referred_user = User::where('referral_token', '=', $referrer_code)->first();
             $referred_user_id = $referred_user->id;
             $coupon_expired = $ExpireDate;
-        }
-        else
-        {
+        } else {
             $referred_user_id = null;
             $coupon_expired = '';
         }
         $settings = Setting::first();
-        if($settings->activation_email == 1){
+        if ($settings->activation_email == 1) {
 
 
             $email_count = User::where('email', '=', $email)->count();
             $string = Str::random(60);
-            if ($email_count == 0)
-            {             
+            if ($email_count == 0) {
                 $new_user = new User();
                 $new_user->name = $name;
                 $new_user->username = $name;
@@ -1947,48 +2197,51 @@ class HomeController extends Controller
                 // verify email
                 try {
                     if ($this->email_settings->enable_microsoft365 == 1) {
-                        sendMicrosoftMail( $email, $email_subject, 'emails.verify', [
+                        sendMicrosoftMail($email, $email_subject, 'emails.verify', [
                             'activation_code' => $string,
                             'website_name' => $settings->website_name,
                         ]);
                     } else {
-                        \Mail::send('emails.verify', array(
-                            'activation_code' => $string,
-                            'website_name' => $settings->website_name
-                        ) , 
-                        function($message) use ($request) {
-                            $message->from(AdminMail(),GetWebsiteName());
-                            $message->to($request->email, $request->name)->subject('Verify your email address');
-                        });
+                        \Mail::send(
+                            'emails.verify',
+                            array(
+                                'activation_code' => $string,
+                                'website_name' => $settings->website_name
+                            ),
+                            function ($message) use ($request) {
+                                $message->from(AdminMail(), GetWebsiteName());
+                                $message->to($request->email, $request->name)->subject('Verify your email address');
+                            }
+                        );
                     }
 
-                    $email_log      = 'Mail Sent Successfully from Verify';
+                    $email_log = 'Mail Sent Successfully from Verify';
                     $email_template = "verify";
                     $user_id = $new_user->id;
 
-                    Email_sent_log($user_id,$email_log,$email_template);
+                    Email_sent_log($user_id, $email_log, $email_template);
 
                     return redirect('/verify-request');
 
-               } catch (\Throwable $th) {
-            
-                    $email_log      = $th->getMessage();
+                } catch (\Throwable $th) {
+
+                    $email_log = $th->getMessage();
                     $email_template = "verify";
                     $user_id = $new_user->id;
 
-                    Email_notsent_log($user_id,$email_log,$email_template);
+                    Email_notsent_log($user_id, $email_log, $email_template);
 
                     return redirect('/verify-request-sent');
 
-               }
+                }
 
 
-            // welcome Email
+                // welcome Email
 
                 try {
 
                     $data = array(
-                        'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+                        'email_subject' => EmailTemplate::where('id', 1)->pluck('heading')->first(),
                     );
 
                     if ($this->email_settings->enable_microsoft365 == 1) {
@@ -2000,44 +2253,46 @@ class HomeController extends Controller
                             'password' => $get_password,
                         ]);
                     } else {
-                        Mail::send('emails.welcome', array(
-                            'username' => $name,
-                            'website_name' => GetWebsiteName(),
-                            'url' => URL::to('/'),
-                            'useremail' => $email,
-                            'password' => $get_password,
-                        ),
-                        function($message) use ($data,$request) {
-                            $message->from(AdminMail(),GetWebsiteName());
-                            $message->to($request->email, $request->name)->subject($data['email_subject']);
-                        });
+                        Mail::send(
+                            'emails.welcome',
+                            array(
+                                'username' => $name,
+                                'website_name' => GetWebsiteName(),
+                                'url' => URL::to('/'),
+                                'useremail' => $email,
+                                'password' => $get_password,
+                            ),
+                            function ($message) use ($data, $request) {
+                                $message->from(AdminMail(), GetWebsiteName());
+                                $message->to($request->email, $request->name)->subject($data['email_subject']);
+                            }
+                        );
                     }
 
-                    $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+                    $email_log = 'Mail Sent Successfully from Welcome E-Mail';
                     $email_template = "1";
                     $user_id = $new_user->id;
 
-                    Email_sent_log($user_id,$email_log,$email_template);
+                    Email_sent_log($user_id, $email_log, $email_template);
 
-                }catch (\Exception $e) {
+                } catch (\Exception $e) {
 
-                    $email_log      = $e->getMessage();
+                    $email_log = $e->getMessage();
                     $email_template = "1";
                     $user_id = $new_user->id;
 
-                    Email_notsent_log($user_id,$email_log,$email_template);
+                    Email_notsent_log($user_id, $email_log, $email_template);
 
                 }
 
             }
-        }else{
+        } else {
 
             $email_count = User::where('email', '=', $email)->count();
 
 
             $string = Str::random(60);
-            if ($email_count == 0)
-            {
+            if ($email_count == 0) {
                 $new_user = new User();
                 $new_user->name = $name;
                 $new_user->username = $name;
@@ -2061,15 +2316,15 @@ class HomeController extends Controller
                 $new_user->gender = $request->get('gender');
                 $new_user->save();
 
-                 // welcome Email
+                // welcome Email
 
                 try {
 
                     $data = array(
-                        'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
+                        'email_subject' => EmailTemplate::where('id', 1)->pluck('heading')->first(),
                     );
 
-                      if ($this->email_settings->enable_microsoft365 == 1) {
+                    if ($this->email_settings->enable_microsoft365 == 1) {
                         sendMicrosoftMail($request->email, $data['email_subject'], 'emails.welcome', [
                             'username' => $name,
                             'website_name' => GetWebsiteName(),
@@ -2078,35 +2333,38 @@ class HomeController extends Controller
                             'password' => $get_password,
                         ]);
                     } else {
-                        Mail::send('emails.welcome', array(
-                            'username' => $name,
-                            'website_name' => GetWebsiteName(),
-                            'url' => URL::to('/'),
-                            'useremail' => $email,
-                            'password' => $get_password,
-                        ),
-                        function($message) use ($data,$request) {
-                            $message->from(AdminMail(),GetWebsiteName());
-                            $message->to($request->email, $request->name)->subject($data['email_subject']);
-                        });
+                        Mail::send(
+                            'emails.welcome',
+                            array(
+                                'username' => $name,
+                                'website_name' => GetWebsiteName(),
+                                'url' => URL::to('/'),
+                                'useremail' => $email,
+                                'password' => $get_password,
+                            ),
+                            function ($message) use ($data, $request) {
+                                $message->from(AdminMail(), GetWebsiteName());
+                                $message->to($request->email, $request->name)->subject($data['email_subject']);
+                            }
+                        );
                     }
 
-                    $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
+                    $email_log = 'Mail Sent Successfully from Welcome E-Mail';
                     $email_template = "1";
                     $user_id = $new_user->id;
 
-                    Email_sent_log($user_id,$email_log,$email_template);
+                    Email_sent_log($user_id, $email_log, $email_template);
 
-                }catch (\Exception $e) {
+                } catch (\Exception $e) {
 
-                    $email_log      = $e->getMessage();
+                    $email_log = $e->getMessage();
                     $email_template = "1";
                     $user_id = $new_user->id;
 
-                    Email_notsent_log($user_id,$email_log,$email_template);
+                    Email_notsent_log($user_id, $email_log, $email_template);
 
                 }
-                session()->put('register.email',$email);
+                session()->put('register.email', $email);
                 return redirect('/register2')->with('message', 'You have successfully verified your account. Please login below.');
             }
         }
@@ -2127,270 +2385,272 @@ class HomeController extends Controller
 
         $settings = Setting::first();
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             $videos = Video::select('videos.*', 'categoryvideos.category_id', 'categoryvideos.video_id', 'video_categories.id', 'video_categories.name as category_name')
-                            ->leftJoin('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                            ->leftJoin('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                            ->where('videos.active', 1)
-                            ->where('videos.status', 1) 
-                            ->where(function ($query) use ($settings, $request) {
-                                // search filters start
-                                if ($settings->search_tags_status) {
-                                    $query->orWhere('videos.search_tags', 'LIKE', '%' . $request->country . '%');
-                                }
-                                if ($settings->search_title_status) {
-                                    $query->orWhere('videos.title', 'LIKE', '%' . $request->country . '%');
-                                }
-                                if ($settings->search_category_status) {
-                                    $query->orWhere('video_categories.name', 'LIKE', '%' . $request->country . '%');
-                                }
-                                if ($settings->search_description_status) {
-                                    $query->orWhere('videos.description', 'LIKE', '%' . $request->country . '%');
-                                }
-                                if ($settings->search_details_status) {
-                                    $query->orWhere('videos.details', 'LIKE', '%' . $request->country . '%');
-                                }
-                            })
-                            ->when(Geofencing() != null && Geofencing()->geofencing == 'ON', function ($query) {
-                                return $query->whereNotIn('videos.id', Block_videos());
-                            })
-                            ->orderBy('created_at', 'desc')
-                            ->groupBy('videos.id')
-                            ->limit(10)
-                            ->get();
+                ->leftJoin('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
+                ->leftJoin('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+                ->where('videos.active', 1)
+                ->where('videos.status', 1)
+                ->where(function ($query) use ($settings, $request) {
+                    // search filters start
+                    if ($settings->search_tags_status) {
+                        $query->orWhere('videos.search_tags', 'LIKE', '%' . $request->country . '%');
+                    }
+                    if ($settings->search_title_status) {
+                        $query->orWhere('videos.title', 'LIKE', '%' . $request->country . '%');
+                    }
+                    if ($settings->search_category_status) {
+                        $query->orWhere('video_categories.name', 'LIKE', '%' . $request->country . '%');
+                    }
+                    if ($settings->search_description_status) {
+                        $query->orWhere('videos.description', 'LIKE', '%' . $request->country . '%');
+                    }
+                    if ($settings->search_details_status) {
+                        $query->orWhere('videos.details', 'LIKE', '%' . $request->country . '%');
+                    }
+                })
+                ->when(Geofencing() != null && Geofencing()->geofencing == 'ON', function ($query) {
+                    if (function_exists('Block_videos')) {
+                        return $query->whereNotIn('videos.id', Block_videos());
+                    }
+                    return $query;
+                })
+                ->orderBy('created_at', 'desc')
+                ->groupBy('videos.id')
+                ->limit(10)
+                ->get();
 
-            $livestream = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name','livecategories.category_id','live_categories.id')
-                            ->leftJoin('livecategories','livecategories.live_id','=','live_streams.id')
-                            ->leftJoin('live_categories','live_categories.id','=','livecategories.category_id')
+            $livestream = LiveStream::Select('live_streams.*', 'livecategories.live_id', 'live_categories.name', 'livecategories.category_id', 'live_categories.id')
+                ->leftJoin('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
+                ->leftJoin('live_categories', 'live_categories.id', '=', 'livecategories.category_id')
 
-                            ->when($settings->search_tags_status, function ($query) use ($request) {
-                                return $query->orwhere('live_streams.search_tags', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_tags_status, function ($query) use ($request) {
+                    return $query->orwhere('live_streams.search_tags', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_title_status, function ($query) use ($request) {
-                                return $query ->orwhere('live_streams.title', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_title_status, function ($query) use ($request) {
+                    return $query->orwhere('live_streams.title', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_description_status, function ($query) use ($request) {
-                                return $query->orwhere('live_streams.description', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_description_status, function ($query) use ($request) {
+                    return $query->orwhere('live_streams.description', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_details_status, function ($query) use ($request) {
-                                return $query->orwhere('live_streams.details', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_details_status, function ($query) use ($request) {
+                    return $query->orwhere('live_streams.details', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_category_status, function ($query) use ($request) {
-                                return $query->orwhere('live_categories.name', 'LIKE', '%' . $request->country . '%');
-                            })
-                            ->where('live_streams.active', '=', '1')
-                            // ->where('status', '=', '1')
-                            ->limit('10')
-                            ->groupBy('live_streams.id')
-                            ->get();
+                ->when($settings->search_category_status, function ($query) use ($request) {
+                    return $query->orwhere('live_categories.name', 'LIKE', '%' . $request->country . '%');
+                })
+                ->where('live_streams.active', '=', '1')
+                // ->where('status', '=', '1')
+                ->limit('10')
+                ->groupBy('live_streams.id')
+                ->get();
 
-            $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id')
-                            ->leftJoin('category_audios','category_audios.audio_id','=','audio.id')
-                            ->leftJoin('audio_categories','audio_categories.id','=','category_audios.category_id')
-
-
-                            ->when($settings->search_tags_status, function ($query) use ($request) {
-                                return $query->orwhere('search_tags', 'LIKE', '%' . $request->country . '%');
-                            })
-
-                            ->when($settings->search_title_status, function ($query) use ($request) {
-                                return $query ->orwhere('title', 'LIKE', '%' . $request->country . '%');
-                            })
-
-                            ->when($settings->search_description_status, function ($query) use ($request) {
-                                return $query->orwhere('description', 'LIKE', '%' . $request->country . '%');
-                            })
-
-                            ->when($settings->search_details_status, function ($query) use ($request) {
-                                return $query->orwhere('details', 'LIKE', '%' . $request->country . '%');
-                            })
-
-                            ->when($settings->search_category_status, function ($query) use ($request) {
-                                return $query->orwhere('audio_categories.name', 'LIKE', '%' . $request->country . '%');
-                            })
-
-                            ->where('audio.active', '1')->where('audio.status', '1')
-
-                        ->limit('10')
-                        ->get();
+            $audio = Audio::Select('audio.*', 'category_audios.audio_id', 'audio_categories.name', 'category_audios.category_id', 'audio_categories.id')
+                ->leftJoin('category_audios', 'category_audios.audio_id', '=', 'audio.id')
+                ->leftJoin('audio_categories', 'audio_categories.id', '=', 'category_audios.category_id')
 
 
-            $Episode = Episode::Select('episodes.*','series.id','series_categories.category_id')
-                            ->leftJoin('series','series.id','=','episodes.series_id')
-                            ->leftJoin('series_categories','series_categories.series_id','=','series.id')
-                            ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
+                ->when($settings->search_tags_status, function ($query) use ($request) {
+                    return $query->orwhere('search_tags', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_tags_status, function ($query) use ($request) {
-                                return $query->orwhere('episodes.search_tags', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_title_status, function ($query) use ($request) {
+                    return $query->orwhere('title', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_title_status, function ($query) use ($request) {
-                                return $query ->orwhere('episodes.title', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_description_status, function ($query) use ($request) {
+                    return $query->orwhere('description', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_description_status, function ($query) use ($request) {
-                                return $query->orwhere('episodes.episode_description', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_details_status, function ($query) use ($request) {
+                    return $query->orwhere('details', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_category_status, function ($query) use ($request) {
-                                return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_category_status, function ($query) use ($request) {
+                    return $query->orwhere('audio_categories.name', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->where('episodes.active', '=', '1')
-                            ->where('episodes.status', '=', '1')
-                            ->groupBy('episodes.id')
-                            ->limit('10')
-                            ->get();
+                ->where('audio.active', '1')->where('audio.status', '1')
 
-            $Series = Series::Select('series.*','series_categories.category_id')
-                            ->leftJoin('series_categories','series_categories.series_id','=','series.id')
-                            ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
+                ->limit('10')
+                ->get();
 
 
-                            ->when($settings->search_tags_status, function ($query) use ($request) {
-                                return $query->orwhere('series.search_tag', 'LIKE', '%' . $request->country . '%');
-                            })
+            $Episode = Episode::Select('episodes.*', 'series.id', 'series_categories.category_id')
+                ->leftJoin('series', 'series.id', '=', 'episodes.series_id')
+                ->leftJoin('series_categories', 'series_categories.series_id', '=', 'series.id')
+                ->leftJoin('series_genre', 'series_genre.id', '=', 'series_categories.category_id')
 
-                            ->when($settings->search_title_status, function ($query) use ($request) {
-                                return $query ->orwhere('series.title', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_tags_status, function ($query) use ($request) {
+                    return $query->orwhere('episodes.search_tags', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_description_status, function ($query) use ($request) {
-                                return $query->orwhere('series.description', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_title_status, function ($query) use ($request) {
+                    return $query->orwhere('episodes.title', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_details_status, function ($query) use ($request) {
-                                return $query->orwhere('series.details', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_description_status, function ($query) use ($request) {
+                    return $query->orwhere('episodes.episode_description', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->when($settings->search_category_status, function ($query) use ($request) {
-                                return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->country . '%');
-                            })
+                ->when($settings->search_category_status, function ($query) use ($request) {
+                    return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->country . '%');
+                })
 
-                            ->orwhere('.search_tag', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('.title', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('.name', 'LIKE', '%' . $request->country . '%')
+                ->where('episodes.active', '=', '1')
+                ->where('episodes.status', '=', '1')
+                ->groupBy('episodes.id')
+                ->limit('10')
+                ->get();
 
-                            ->where('series.active', '=', '1')
-                            ->groupBy('series.id')
-                            ->limit('10')
-                            ->get();
+            $Series = Series::Select('series.*', 'series_categories.category_id')
+                ->leftJoin('series_categories', 'series_categories.series_id', '=', 'series.id')
+                ->leftJoin('series_genre', 'series_genre.id', '=', 'series_categories.category_id')
+
+
+                ->when($settings->search_tags_status, function ($query) use ($request) {
+                    return $query->orwhere('series.search_tag', 'LIKE', '%' . $request->country . '%');
+                })
+
+                ->when($settings->search_title_status, function ($query) use ($request) {
+                    return $query->orwhere('series.title', 'LIKE', '%' . $request->country . '%');
+                })
+
+                ->when($settings->search_description_status, function ($query) use ($request) {
+                    return $query->orwhere('series.description', 'LIKE', '%' . $request->country . '%');
+                })
+
+                ->when($settings->search_details_status, function ($query) use ($request) {
+                    return $query->orwhere('series.details', 'LIKE', '%' . $request->country . '%');
+                })
+
+                ->when($settings->search_category_status, function ($query) use ($request) {
+                    return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->country . '%');
+                })
+
+                ->orwhere('.search_tag', 'LIKE', '%' . $request->country . '%')
+                ->orwhere('.title', 'LIKE', '%' . $request->country . '%')
+                ->orwhere('.name', 'LIKE', '%' . $request->country . '%')
+
+                ->where('series.active', '=', '1')
+                ->groupBy('series.id')
+                ->limit('10')
+                ->get();
 
             $station_audio = MusicStation::where('station_name', 'LIKE', '%' . $request->country . '%')
-                            ->orwhere('station_slug', 'LIKE', '%' . $request->country . '%')
-                            ->limit('10')
-                            ->get();
+                ->orwhere('station_slug', 'LIKE', '%' . $request->country . '%')
+                ->limit('10')
+                ->get();
 
 
-            if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 || count($Series) > 0 && !empty($request->country) )
-            {
+            if (count($videos) > 0 || count($livestream) > 0 || count($Episode) > 0 || count($audio) > 0 || count($Series) > 0 && !empty($request->country)) {
 
                 // videos Search
-                    if(count($videos) > 0){
-                        $output = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                        $output .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Videos</h6>";
-                        foreach ($videos as $row)
-                        {
-                            $output .= '<li class="list-group-item">
+                if (count($videos) > 0) {
+                    $output = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                    $output .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Videos</h6>";
+                    foreach ($videos as $row) {
+                        $output .= '<li class="list-group-item">
                             <a href="' . URL::to('/') . '/category/videos/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div>' . $row->title . '</div></a></li>';
-                        }
-
-                    }else{
-                        $output  = null ;
                     }
+
+                } else {
+                    $output = null;
+                }
 
                 // livestream Search
-                    if(count($livestream) > 0){
+                if (count($livestream) > 0) {
 
-                        $livestreams = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                        $livestreams .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Live Videos</h6>";
-                        foreach ($livestream as $row)
-                        {
-                            $livestreams .= '<li class="list-group-item">
-                            <a href="' . URL::to('/') . '/live' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div><' . $row->title . '</div></a></li>';
-                        }
+                    $livestreams = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                    $livestreams .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Live Videos</h6>";
+                    foreach ($livestream as $row) {
+                        $livestreams .= '<li class="list-group-item">
+                            <a href="' . URL::to('/') . '/live' . '/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div><' . $row->title . '</div></a></li>';
                     }
-                    else{
-                        $livestreams = null ;
-                    }
+                } else {
+                    $livestreams = null;
+                }
 
                 // Audio Search
 
-                    if(count($audio) > 0){
-                        $audios = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                        $audios .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Audio </h6>";
-                        foreach ($audio as $row)
-                        {
-                            $audios .= '<li class="list-group-item">
+                if (count($audio) > 0) {
+                    $audios = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                    $audios .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Audio </h6>";
+                    foreach ($audio as $row) {
+                        $audios .= '<li class="list-group-item">
                             <a href="' . URL::to('/') . '/audio/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div>' . $row->title . '</div></a></li>';
-                        }
                     }
-                    else{
-                        $audios = null ;
-                    }
+                } else {
+                    $audios = null;
+                }
 
                 // Episode
 
-                    if(count($Episode) > 0){
-                        $Episodes = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
-                        $Episodes .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Episode </h6>";
-                        foreach ($Episode as $row)
-                        {
-                            if( $row->slug != null ){
+                if (count($Episode) > 0) {
+                    $Episodes = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
+                    $Episodes .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Episode </h6>";
+                    foreach ($Episode as $row) {
+                        if ($row->slug != null) {
 
-                                $series_slug = Series::select('id','title','slug','year','rating','access',
-                                                'duration','rating','image','featured','tv_image','player_image','details','description')
-                                                ->where('id',$row->series_id)->pluck('slug')->first();
-                                $Episodes .= '<li class="list-group-item">
-                                <a href="' . URL::to('/') . '/episode' .'/'. $series_slug . '/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div>' . $row->title . '</div></a></li>';
-                            }
+                            $series_slug = Series::select(
+                                'id',
+                                'title',
+                                'slug',
+                                'year',
+                                'rating',
+                                'access',
+                                'duration',
+                                'rating',
+                                'image',
+                                'featured',
+                                'tv_image',
+                                'player_image',
+                                'details',
+                                'description'
+                            )
+                                ->where('id', $row->series_id)->pluck('slug')->first();
+                            $Episodes .= '<li class="list-group-item">
+                                <a href="' . URL::to('/') . '/episode' . '/' . $series_slug . '/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div>' . $row->title . '</div></a></li>';
                         }
                     }
-                    else{
-                        $Episodes = null ;
-                    }
+                } else {
+                    $Episodes = null;
+                }
 
                 // Series Search
 
-                if(count($Series) > 0){
+                if (count($Series) > 0) {
 
                     $Series_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
                     $Series_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Series Videos</h6>";
-                    foreach ($Series as $row)
-                    {
+                    foreach ($Series as $row) {
                         $Series_search .= '<li class="list-group-item">
-                        <a href="' . URL::to('/') . '/play_series' .'/'. $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div>' . $row->title . '</div></a></li>';
+                        <a href="' . URL::to('/') . '/play_series' . '/' . $row->slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div>' . $row->title . '</div></a></li>';
                     }
-                }
-                else{
-                    $Series_search = null ;
+                } else {
+                    $Series_search = null;
                 }
 
                 // station Search
 
-                if(count($station_audio) > 0){
+                if (count($station_audio) > 0) {
 
                     $station_search = '<ul class="list-group" style="display: block; position: relative; z-index: 999999;;margin-bottom: 0;border-radius: 0;">';
                     $station_search .= "<h6 style='margin: 0;text-align: left;padding: 10px;'> Music Station </h6>";
-                    foreach ($station_audio as $row)
-                    {
+                    foreach ($station_audio as $row) {
                         $station_search .= '<li class="list-group-item">
-                        <a href="' . URL::to('/') . '/music-station' .'/'. $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div>' . $row->station_name . '</div></a></li>';
+                        <a href="' . URL::to('/') . '/music-station' . '/' . $row->station_slug . '" style="font-color: #c61f1f00;color: #000;text-decoration: none;"><div>' . $row->station_name . '</div></a></li>';
                     }
-                }
-                else{
-                    $station_search = null ;
+                } else {
+                    $station_search = null;
                 }
 
-                return $output.$audios.$livestreams.$Episodes.$Series_search.$station_search;
-            }
-            else
-            {
+                return $output . $audios . $livestreams . $Episodes . $Series_search . $station_search;
+            } else {
                 $output = '<li class="list-group-item">' . 'No results' . '</li>';
 
                 return $output;
@@ -2424,14 +2684,11 @@ class HomeController extends Controller
         $basic = new \Nexmo\Client\Credentials\Basic('8c2c8892', '05D2vuG2VbYw2tQZ');
         $client = new \Nexmo\Client($basic);
 
-        if ($user_mobile_exist > 0)
-        {
+        if ($user_mobile_exist > 0) {
 
             return response()->json(['status' => false, 'message' => 'This number already Exist, try with another number']);
 
-        }
-        elseif ($user_count > 0)
-        {
+        } elseif ($user_count > 0) {
             $user = VerifyNumber::find($user_id->id);
             $user->otp = $string;
             $user->number = $ccode . $mobile;
@@ -2456,9 +2713,7 @@ class HomeController extends Controller
             return response()
                 ->json(['status' => true, 'verify' => $verification_id, 'message' => 'OTP has been sent to your number and Your Mail', 'mobile' => $mobile_number]);
 
-        }
-        else
-        {
+        } else {
             $user = new VerifyNumber;
             $user->otp = $string;
             $user->number = $ccode . $mobile;
@@ -2528,37 +2783,61 @@ class HomeController extends Controller
             $currency = CurrencySetting::first();
             $PPV_settings = Setting::where('ppv_status', 1)->first();
 
-            $ppv_gobal_price = !empty($PPV_settings ) ? $PPV_settings->ppv_price :  null;
+            $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
 
-            if(!Auth::guest() ){
+            if (!Auth::guest()) {
 
                 $multiuser = Session::get('subuser_id');
 
-                $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+                $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
 
-                $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+                $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0;
             }
 
 
-            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
-                                    ->where('videos.active', '1')->where('videos.status', '1')
-                                    ->where('videos.draft', '1')->where('videos.featured','1');
+            $featured_videos = Video::select(
+                'id',
+                'title',
+                'slug',
+                'year',
+                'rating',
+                'access',
+                'publish_type',
+                'global_ppv',
+                'publish_time',
+                'publish_status',
+                'ppv_price',
+                'responsive_image',
+                'responsive_player_image',
+                'responsive_tv_image',
+                'duration',
+                'rating',
+                'image',
+                'featured',
+                'age_restrict',
+                'video_tv_image',
+                'player_image',
+                'details',
+                'description'
+            )
+                ->where('videos.active', '1')->where('videos.status', '1')
+                ->where('videos.draft', '1')->where('videos.featured', '1');
 
-                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                    $featured_videos = $featured_videos  ->whereNotIn('videos.id',Block_videos());
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                if (function_exists('Block_videos')) {
+                    $featured_videos = $featured_videos->whereNotIn('videos.id', Block_videos());
                 }
+            }
 
-                if( !Auth::guest() && $check_Kidmode == 1 )
-                {
-                    $featured_videos = $featured_videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-                }
+            if (!Auth::guest() && $check_Kidmode == 1) {
+                $featured_videos = $featured_videos->whereBetween('videos.age_restrict', [0, 12]);
+            }
 
-                if (videos_expiry_date_status() == 1 ) {
-                    $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                }
+            if (videos_expiry_date_status() == 1) {
+                $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i'));
+            }
 
-                $featured_videos = $featured_videos->orderBy('videos.created_at','desc')->limit(50)->paginate($this->videos_per_page);
+            $featured_videos = $featured_videos->orderBy('videos.created_at', 'desc')->limit(50)->paginate($this->videos_per_page);
 
             $data = array(
                 'featured_videos' => $featured_videos,
@@ -2580,57 +2859,77 @@ class HomeController extends Controller
     {
         $settings = Setting::first();
 
-        if($settings->enable_landing_page == 1 && Auth::guest()){
+        if ($settings->enable_landing_page == 1 && Auth::guest()) {
 
-            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+            $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : "landing-page";
 
-            return redirect()->route('landing_page', $landing_page_slug );
+            return redirect()->route('landing_page', $landing_page_slug);
         }
 
         return redirect()->to('/Latest_videos');
 
         $multiuser = Session::get('subuser_id');
 
-        if(!Auth::guest()):
+        if (!Auth::guest()):
 
-            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+            $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
         else:
 
-            $Mode['user_type'] = null ;
+            $Mode['user_type'] = null;
         endif;
 
 
-        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0;
 
 
         $latest_videos_count = Video::select('id')->where('active', '=', '1')->where('status', '=', '1')
-                                ->where('draft', '=', '1')->latest()->count();
+            ->where('draft', '=', '1')->latest()->count();
 
-        if ($latest_videos_count > 0)
-        {
-            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')
+        if ($latest_videos_count > 0) {
+            $latest_videos = Video::select(
+                'id',
+                'title',
+                'slug',
+                'year',
+                'rating',
+                'access',
+                'publish_type',
+                'global_ppv',
+                'publish_time',
+                'publish_status',
+                'ppv_price',
+                'responsive_image',
+                'responsive_player_image',
+                'responsive_tv_image',
+                'duration',
+                'rating',
+                'image',
+                'featured',
+                'age_restrict',
+                'video_tv_image',
+                'player_image',
+                'details',
+                'description'
+            )
                 ->where('active', '=', '1')->where('status', '=', '1')
                 ->where('draft', '=', '1')->latest();
 
-                if (Geofencing() != null && Geofencing()->geofencing == 'ON')
-                {
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                if (function_exists('Block_videos')) {
                     $latest_videos = $latest_videos->whereNotIn('videos.id', Block_videos());
                 }
+            }
 
-                if( $check_Kidmode == 1 )
-                {
-                    $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-                }
+            if ($check_Kidmode == 1) {
+                $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [0, 12]);
+            }
 
-                if (videos_expiry_date_status() == 1 ) {
-                    $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                }
+            if (videos_expiry_date_status() == 1) {
+                $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i'));
+            }
 
             $latest_videos = $latest_videos->limit(50)->paginate($this->videos_per_page);
-        }
-        else
-        {
+        } else {
             $latest_videos = array();
         }
 
@@ -2639,13 +2938,13 @@ class HomeController extends Controller
         $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
 
         $data = array(
-            'latest_videos'    => $latest_videos,
-            'ppv_gobal_price'  => $ppv_gobal_price,
-            'currency'         => CurrencySetting::first(),
+            'latest_videos' => $latest_videos,
+            'ppv_gobal_price' => $ppv_gobal_price,
+            'currency' => CurrencySetting::first(),
             'ThumbnailSetting' => ThumbnailSetting::first(),
         );
 
-        return Theme::view('latestvideo',['latestvideo'=>$data]);
+        return Theme::view('latestvideo', ['latestvideo' => $data]);
     }
 
     public function ScheduledVideo()
@@ -2662,10 +2961,10 @@ class HomeController extends Controller
         $data = array(
             'currency' => $currency,
             'ThumbnailSetting' => $ThumbnailSetting,
-            'Video_Schedules' => VideoSchedules::where('in_home',1)->get(),
+            'Video_Schedules' => VideoSchedules::where('in_home', 1)->get(),
         );
 
-        return Theme::view('VideoSchedule',$data);
+        return Theme::view('VideoSchedule', $data);
 
     }
 
@@ -2675,69 +2974,110 @@ class HomeController extends Controller
 
             $FrontEndQueryController = new FrontEndQueryController();
 
-            $LanguageVideo = LanguageVideo::where('language_id',$lanid)->groupBy('video_id')->pluck('video_id');
+            $LanguageVideo = LanguageVideo::where('language_id', $lanid)->groupBy('video_id')->pluck('video_id');
 
             $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
                 ->where('language_id', '=', $lanid)->where('active', '=', '1')->where('status', '=', '1')
                 ->where('draft', '=', '1');
 
-                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                    $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
-                }
+            if (function_exists('Block_videos') && Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                $language_videos = $language_videos->whereNotIn('videos.id', Block_videos());
+            }
 
             $language_videos = $language_videos->latest('videos.created_at')->get();
 
 
             $Most_watched_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
-                        ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                        ->where('videos.status', '=', '1')->where('videos.draft', '=', '1')
-                        ->where('videos.active', '=', '1')->groupBy('video_id')
-                        ->orderByRaw('count DESC');
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+                ->where('videos.status', '=', '1')->where('videos.draft', '=', '1')
+                ->where('videos.active', '=', '1')->groupBy('video_id')
+                ->orderByRaw('count DESC');
 
-                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                    $Most_watched_country = $Most_watched_country->whereNotIn('videos.id', Block_videos());
-                }
+            $geofencing = Geofencing();
+            $blockVideosEnabled = function_exists('Block_videos') && $geofencing && $geofencing->geofencing === 'ON';
+            
+            $Most_watched_country = $Most_watched_country
+                ->where('recent_views.country_name', function_exists('Country_name') ? Country_name() : '')
+                ->when($blockVideosEnabled, function($query) {
+                    return $query->whereNotIn('videos.id', Block_videos());
+                })
+                ->when(!empty($LanguageVideo), function($query) use ($LanguageVideo) {
+                    return $query->whereIn('videos.id', $LanguageVideo);
+                })
+                ->limit(15)
+                ->get()
+                ->map(function ($item) {
+                    $item['categories'] = CategoryVideo::select(
+                            'categoryvideos.*', 
+                            'category_id', 
+                            'video_id', 
+                            'video_categories.name as name', 
+                            'video_categories.slug'
+                        )
+                        ->join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
+                        ->where('video_id', $item->id ?? $item->video_id)
+                        ->pluck('name')
+                        ->implode(',');
 
-            $Most_watched_country = $Most_watched_country->where('recent_views.country_name', Country_name())
-                            ->whereNotIn('videos.id',Block_videos() )->whereIn('videos.id',$LanguageVideo)
-                            ->limit(15)->get()->map(function ($item) {
-
-                            $item['categories'] =  CategoryVideo::select('categoryvideos.*','category_id','video_id','video_categories.name as name','video_categories.slug')
-                                                        ->join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                                        ->where('video_id', $item->video_id )
-                                                        ->pluck('name')
-                                                        ->implode(',');
-
-                                return $item;
-            });
+                    return $item;
+                });
 
             $top_most_watched = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
-                            ->join('videos', 'videos.id', '=', 'recent_views.video_id')->where('videos.status', '=', '1')
-                            ->where('videos.draft', '=', '1')->where('videos.active', '=', '1')
-                            ->whereIn('videos.id',$LanguageVideo)
-                            ->groupBy('video_id');
+                ->join('videos', 'videos.id', '=', 'recent_views.video_id')->where('videos.status', '=', '1')
+                ->where('videos.draft', '=', '1')->where('videos.active', '=', '1')
+                ->whereIn('videos.id', $LanguageVideo)
+                ->groupBy('video_id');
 
-                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                                $top_most_watched = $top_most_watched->whereNotIn('videos.id', Block_videos());
-                            }
+            if (function_exists('Block_videos') && Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                $top_most_watched = $top_most_watched->whereNotIn('videos.id', Block_videos());
+            }
 
             $top_most_watched = $top_most_watched->orderByRaw('count DESC')->limit(15)->get();
 
-            $video_banners = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description','video_title_image','enable_video_title_image', 'trailer','trailer_type','video_title_image','enable_video_title_image')->where('active', '=', '1')->whereIn('videos.id',$LanguageVideo)
-                                        ->where('draft', '1')->where('status', '1')
-                                        ->where('banner', '1')->latest()
-                                        ->get() ;
+            $video_banners = Video::select(
+                'id',
+                'title',
+                'slug',
+                'year',
+                'rating',
+                'access',
+                'publish_type',
+                'global_ppv',
+                'publish_time',
+                'publish_status',
+                'ppv_price',
+                'responsive_image',
+                'responsive_player_image',
+                'responsive_tv_image',
+                'duration',
+                'rating',
+                'image',
+                'featured',
+                'age_restrict',
+                'video_tv_image',
+                'player_image',
+                'details',
+                'description',
+                'video_title_image',
+                'enable_video_title_image',
+                'trailer',
+                'trailer_type',
+                'video_title_image',
+                'enable_video_title_image'
+            )->where('active', '=', '1')->whereIn('videos.id', $LanguageVideo)
+                ->where('draft', '1')->where('status', '1')
+                ->where('banner', '1')->latest()
+                ->get();
 
             $language_name = Language::where('id', $lanid)->pluck('name')->first();
 
             $data = array(
                 'lang_videos' => $language_videos,
                 'language_name' => $language_name,
-                'Most_watched_country' => $Most_watched_country ,
-                'top_most_watched'     => $top_most_watched ,
-                'video_banners'        => $FrontEndQueryController->video_banners(),
-                'currency'         => CurrencySetting::first(),
+                'Most_watched_country' => $Most_watched_country,
+                'top_most_watched' => $top_most_watched,
+                'video_banners' => $FrontEndQueryController->video_banners(),
+                'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first()
             );
 
@@ -2756,10 +3096,8 @@ class HomeController extends Controller
         $user = Auth::user();
         $subscriptions = Subscription::where('user_id', $user->id)
             ->first();
-        if ($subscriptions != null)
-        {
-            if ($request->payment_method == "Stripe")
-            {
+        if ($subscriptions != null) {
+            if ($request->payment_method == "Stripe") {
 
                 $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                     ->where('type', '=', $request->payment_method)
@@ -2780,22 +3118,17 @@ class HomeController extends Controller
 
                 $request->session()
                     ->put('become_plan', $plans->plan_id);
-                if (!empty($plans->plan_id))
-                {
+                if (!empty($plans->plan_id)) {
                     $plan_id = $plans->plan_id;
-                }
-                else
-                {
+                } else {
                     $plan_id = $plans->plan_id;
                 }
                 $data = array(
                     'plan_name' => $plan_id
                 );
-                return Theme::view('register.become_subscription', ['intent' => $user->createSetupIntent() ]);
+                return Theme::view('register.become_subscription', ['intent' => $user->createSetupIntent()]);
 
-            }
-            elseif ($request->payment_method == "PayPal")
-            {
+            } elseif ($request->payment_method == "PayPal") {
 
                 $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                     ->where('type', '=', $request->payment_method)
@@ -2817,47 +3150,41 @@ class HomeController extends Controller
                     ->get('register');
                 $plan_name = $request->get('register.email');
 
-            }
-            elseif($request->payment_method == "Razorpay"){
+            } elseif ($request->payment_method == "Razorpay") {
 
                 $plans = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                     ->where('type', '=', $request->payment_method)
                     ->first();
 
-                    $PlanId =Crypt::encryptString($plans->plan_id);
-                    return Redirect::route('RazorpayIntegration',$PlanId);
+                $PlanId = Crypt::encryptString($plans->plan_id);
+                return Redirect::route('RazorpayIntegration', $PlanId);
             }
-        }
-        else
-        {
+        } else {
             //
             $plan_details = SubscriptionPlan::where('plans_name', '=', $request->modal_plan_name)
                 ->where('type', '=', $request->payment_method)
                 ->first();
 
-
-            if($plan_details['type'] == "Razorpay"){
-                $PlanId =Crypt::encryptString($plan_details->plan_id);
-                return Redirect::route('RazorpayIntegration',$PlanId);
+            if (!$plan_details) {
+                return redirect()->back()->with('error', 'Plan details not found');
             }
 
-            $request->session()
-                ->put('planname', $request->modal_plan_name);
-            $request->session()
-                ->put('plan_id', $plan_details->plan_id);
-            $request->session()
-                ->put('payment_type', $plan_details->payment_type);
-            $register = $request->session()
-                ->get('register');
-            $plan_name = $request->get('register.email');
+            // Handle Razorpay payment flow
+            if (isset($plan_details->type) && $plan_details->type === 'Razorpay') {
+                $planId = Crypt::encryptString($plan_details->plan_id);
+                return Redirect::route('RazorpayIntegration', $planId);
+            }
 
+            // Set all session variables at once for better performance and readability
+            $request->session()->put([
+                'planname' => $request->modal_plan_name ?? null,
+                'plan_id' => $plan_details->plan_id ?? null,
+                'payment_type' => $plan_details->payment_type ?? null,
+                'become_plan' => $plan_details->plan_id ?? null
+            ]);
+
+            // Get authenticated user (if needed for future use)
             $user = Auth::user();
-            $plan_name = $plan_details->plan_id;
-
-            $request->session()
-                ->put('become_plan', $plan_details->plan_id);
-            //     if(!empty($plans->plan_id)){
-            //        $plan_id = $plans->plan_id;
             //     }else{
             //         $plan_id = $plans->plan_id;
             //     }
@@ -2869,10 +3196,8 @@ class HomeController extends Controller
             $payment_type = $plan_details->payment_type;
             // dd($plan_id);
             $user = Auth::user();
-            if ($plan_details->payment_type == "recurring")
-            {
-                if ($user->stripe_id == NULL)
-                {
+            if ($plan_details->payment_type == "recurring") {
+                if ($user->stripe_id == NULL) {
                     $stripeCustomer = $user->createAsStripeCustomer();
                 }
                 $response = array(
@@ -2880,12 +3205,9 @@ class HomeController extends Controller
                     "plan_id" => $plan_id,
                     "payment_type" => $plan_details->payment_type
                 );
-                return view('register.upgrade.stripe_upgrade', ['intent' => $user->createSetupIntent() ], $response);
-            }
-            else
-            {
-                if ($user->stripe_id == NULL)
-                {
+                return view('register.upgrade.stripe_upgrade', ['intent' => $user->createSetupIntent()], $response);
+            } else {
+                if ($user->stripe_id == NULL) {
                     $stripeCustomer = $user->createAsStripeCustomer();
                 }
                 $response = array(
@@ -2893,7 +3215,7 @@ class HomeController extends Controller
                     "plan_id" => $plan_id,
                     "payment_type" => $plan_details->payment_type
                 );
-                return Theme::view('register.upgrade.stripe', ['intent' => $user->createSetupIntent() ], $response);
+                return Theme::view('register.upgrade.stripe', ['intent' => $user->createSetupIntent()], $response);
             }
         }
     }
@@ -2913,22 +3235,21 @@ class HomeController extends Controller
         $result = $client->verify()
             ->check($verification, $otp);
 
-        return response()->json(['status' => true, 'message' => 'Your Mobile number Verification is Success', ]);
+        return response()->json(['status' => true, 'message' => 'Your Mobile number Verification is Success',]);
 
     }
     public function stripes(Request $request)
     {
         $user = Auth::User();
 
-        if ($user->stripe_id == NULL)
-        {
+        if ($user->stripe_id == NULL) {
             $stripeCustomer = $user->createAsStripeCustomer();
 
         }
         $plan_name = $request->get('plan_name');
         $request->session()
             ->put('become_plan', $plan_name);
-        return view('register.become', ['intent' => $user->createSetupIntent() , compact('data') ]);
+        return view('register.become', ['intent' => $user->createSetupIntent(), compact('data')]);
 
     }
 
@@ -2972,16 +3293,14 @@ class HomeController extends Controller
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         $result = curl_exec($ch);
-        if (curl_errno($ch))
-        {
+        if (curl_errno($ch)) {
             echo 'Error:' . curl_error($ch);
         }
         curl_close($ch);
         \Mail::send('emails.paypal_cancel', array(
             'name' => $user->username
-        ) , function ($message) use ($user)
-        {
-            $message->from(AdminMail() , GetWebsiteName());
+        ), function ($message) use ($user) {
+            $message->from(AdminMail(), GetWebsiteName());
             $message->to($user->email, $user->username)
                 ->subject('Subscription Renewal');
         });
@@ -2998,7 +3317,7 @@ class HomeController extends Controller
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $headers = array(
             "Content-Type: application/json",
-            GetAccessToken() ,
+            GetAccessToken(),
         );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         //for debug only!
@@ -3011,8 +3330,7 @@ class HomeController extends Controller
 
         //            echo "<pre>"; print_r($json);
         //            exit;
-        if ($status == 'ACTIVE')
-        {
+        if ($status == 'ACTIVE') {
             $date1 = gmdate('c');
             $date2 = $json
                 ->billing_info->next_billing_time;
@@ -3031,9 +3349,7 @@ class HomeController extends Controller
                 'plan_id' => $json->plan_id
             );
 
-        }
-        else
-        {
+        } else {
             $data = array(
                 'status' => $status,
                 'start_time' => $json->start_time,
@@ -3055,8 +3371,7 @@ class HomeController extends Controller
     public function StoreWatching(Request $request)
     {
         $data = $request->all();
-        if (Auth::user())
-        {
+        if (Auth::user()) {
             $user_id = Auth::user()->id;
             $video_id = $request->video_id;
             $duration = $request->duration;
@@ -3064,21 +3379,17 @@ class HomeController extends Controller
             $watch_percentage = ($currentTime * 100 / $duration);
             $cnt = ContinueWatching::where("videoid", $video_id)->where("user_id", $user_id)->count();
             $get_cnt = ContinueWatching::where("videoid", $video_id)->where("user_id", $user_id)->first();
-            if ($cnt > 0 && $get_cnt->watch_percentage >= "99")
-            {
+            if ($cnt > 0 && $get_cnt->watch_percentage >= "99") {
                 ContinueWatching::where("videoid", $video_id)->where("user_id", $user_id)->delete();
             }
-            if ($cnt == 0)
-            {
+            if ($cnt == 0) {
                 $video = new ContinueWatching;
                 $video->videoid = $request->video_id;
                 $video->user_id = $user_id;
                 $video->currentTime = $request->currentTime;
                 $video->watch_percentage = $watch_percentage;
                 $video->save();
-            }
-            else
-            {
+            } else {
                 $cnt_watch = ContinueWatching::where("videoid", $video_id)->where("user_id", $user_id)->first();
                 $cnt_watch->currentTime = $request->currentTime;
                 $cnt_watch->watch_percentage = $watch_percentage;
@@ -3092,43 +3403,41 @@ class HomeController extends Controller
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-        $video_id = $request->videoid ;
-        $like     = $request->like ;
+        $video_id = $request->videoid;
+        $like = $request->like;
 
         // return $like ;
 
         $video_count = LikeDisLike::where("video_id", $video_id);
 
-        if( !Auth::guest() ){
+        if (!Auth::guest()) {
             $video_count = $video_count->where("user_id", Auth::User()->id);
 
-        }else{
-            $video_count = $video_count->where("users_ip_address",  $geoip->getIP() );
+        } else {
+            $video_count = $video_count->where("users_ip_address", $geoip->getIP());
         }
 
         $video_count = $video_count->count();
 
-        if ($video_count > 0)
-        {
+        if ($video_count > 0) {
 
             $video_new = LikeDisLike::where("video_id", $video_id);
 
-            if( !Auth::guest() ){
+            if (!Auth::guest()) {
                 $video_new = $video_new->where("user_id", Auth::User()->id);
 
-            }else{
-                $video_new = $video_new->where("users_ip_address",  $geoip->getIP() );
+            } else {
+                $video_new = $video_new->where("users_ip_address", $geoip->getIP());
             }
 
             $video_new = $video_new->first();
 
-            if ($like == 1)
-            {
-                if( !Auth::guest() ){
+            if ($like == 1) {
+                if (!Auth::guest()) {
                     $video_new->user_id = Auth::user()->id;
 
-                }else{
-                    $video_new->users_ip_address = $geoip->getIP() ;
+                } else {
+                    $video_new->users_ip_address = $geoip->getIP();
                 }
 
                 $video_new->video_id = $video_id;
@@ -3136,15 +3445,13 @@ class HomeController extends Controller
                 $video_new->disliked = 0;
                 $video_new->save();
 
-                $response = array('status' => "liked" );
-            }
-            elseif( $like == 0 )
-            {
-                if( !Auth::guest() ){
+                $response = array('status' => "liked");
+            } elseif ($like == 0) {
+                if (!Auth::guest()) {
                     $video_new->user_id = Auth::user()->id;
 
-                }else{
-                    $video_new->users_ip_address = $geoip->getIP() ;
+                } else {
+                    $video_new->users_ip_address = $geoip->getIP();
                 }
                 $video_new->video_id = $video_id;
                 $video_new->liked = 0;
@@ -3154,23 +3461,21 @@ class HomeController extends Controller
                     'status' => "unliked"
                 );
             }
-        }
-        else
-        {
+        } else {
             $video_new = new LikeDisLike;
             $video_new->video_id = $video_id;
 
-            if( !Auth::guest() ){
+            if (!Auth::guest()) {
                 $video_new->user_id = Auth::user()->id;
 
-            }else{
-                $video_new->users_ip_address = $geoip->getIP() ;
+            } else {
+                $video_new->users_ip_address = $geoip->getIP();
             }
 
             $video_new->liked = $like;
             $video_new->disliked = 0;
             $video_new->save();
-            $response = array( 'status' => 'liked');
+            $response = array('status' => 'liked');
         }
 
         return response()->json($response, 200);
@@ -3186,35 +3491,33 @@ class HomeController extends Controller
 
         $d_like = Likedislike::where("video_id", $video_id);
 
-            if( !Auth::guest() ){
-                $d_like = $d_like->where("user_id", Auth::User()->id);
+        if (!Auth::guest()) {
+            $d_like = $d_like->where("user_id", Auth::User()->id);
 
-            }else{
-                $d_like = $d_like->where("users_ip_address",  $geoip->getIP() );
-            }
+        } else {
+            $d_like = $d_like->where("users_ip_address", $geoip->getIP());
+        }
 
         $d_like = $d_like->count();
 
-        if ($d_like > 0)
-        {
+        if ($d_like > 0) {
             $new_vide_dislike = Likedislike::where("video_id", $video_id);
 
-                if( !Auth::guest() ){
-                    $new_vide_dislike = $new_vide_dislike->where("user_id", Auth::User()->id);
+            if (!Auth::guest()) {
+                $new_vide_dislike = $new_vide_dislike->where("user_id", Auth::User()->id);
 
-                }else{
-                    $new_vide_dislike = $new_vide_dislike->where("users_ip_address",  $geoip->getIP() );
-                }
+            } else {
+                $new_vide_dislike = $new_vide_dislike->where("users_ip_address", $geoip->getIP());
+            }
 
             $new_vide_dislike = $new_vide_dislike->first();
 
-            if ($dislike == 1)
-            {
-                if( !Auth::guest() ){
+            if ($dislike == 1) {
+                if (!Auth::guest()) {
                     $new_vide_dislike->user_id = Auth::user()->id;
 
-                }else{
-                    $new_vide_dislike->users_ip_address = $geoip->getIP() ;
+                } else {
+                    $new_vide_dislike->users_ip_address = $geoip->getIP();
                 }
 
                 $new_vide_dislike->video_id = $video_id;
@@ -3222,15 +3525,13 @@ class HomeController extends Controller
                 $new_vide_dislike->disliked = 1;
                 $new_vide_dislike->save();
 
-                $response = array('status' => "disliked" );
-            }
-            else
-            {
-                if( !Auth::guest() ){
+                $response = array('status' => "disliked");
+            } else {
+                if (!Auth::guest()) {
                     $new_vide_dislike->user_id = Auth::user()->id;
 
-                }else{
-                    $new_vide_dislike->users_ip_address = $geoip->getIP() ;
+                } else {
+                    $new_vide_dislike->users_ip_address = $geoip->getIP();
                 }
                 $new_vide_dislike->video_id = $video_id;
                 $new_vide_dislike->disliked = 0;
@@ -3240,16 +3541,14 @@ class HomeController extends Controller
                     'status' => "undisliked"
                 );
             }
-        }
-        else
-        {
+        } else {
             $new_vide_dislike = new Likedislike;
 
-            if( !Auth::guest() ){
+            if (!Auth::guest()) {
                 $new_vide_dislike->user_id = Auth::user()->id;
 
-            }else{
-                $new_vide_dislike->users_ip_address = $geoip->getIP() ;
+            } else {
+                $new_vide_dislike->users_ip_address = $geoip->getIP();
             }
             $new_vide_dislike->video_id = $video_id;
             $new_vide_dislike->liked = 0;
@@ -3269,16 +3568,16 @@ class HomeController extends Controller
 
         $settings = Setting::first();
 
-        if(Auth::user() == null){
+        if (Auth::user() == null) {
             return redirect::to('/login');
         }
 
-        if($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null){
+        if ($settings->activation_email == 1 && !Auth::guest() && Auth::user()->activation_code != null) {
 
 
             unset($data['password_hash']);
 
-            if(!empty($data['user'])){
+            if (!empty($data['user'])) {
                 unset($data['expiresIn']);
                 unset($data['providertoken']);
                 unset($data['user']);
@@ -3300,9 +3599,9 @@ class HomeController extends Controller
 
         }
 
-        $enable_choose_profile =  Setting::pluck('enable_choose_profile')->first() ;
+        $enable_choose_profile = Setting::pluck('enable_choose_profile')->first();
 
-        if( $enable_choose_profile == 0 ){
+        if ($enable_choose_profile == 0) {
 
             return redirect::to('/home');
         }
@@ -3312,17 +3611,14 @@ class HomeController extends Controller
         $subcriber_user = User::where('id', $parent_id)->first();
 
         $screen_image = ChooseProfileScene::pluck('choosenprofile_screen')->first();
-        if (!empty($screen_image))
-        {
+        if (!empty($screen_image)) {
             $screen = URL::to('public/uploads/avatars/' . $screen_image);
-        }
-        else
-        {
+        } else {
             $screen = "";
         }
         $users = Multiprofile::where('parent_id', $parent_id)->get();
 
-        $redirection_url = session()->get('url.intended', URL::to('/home') );
+        $redirection_url = session()->get('url.intended', URL::to('/home'));
 
         $data = array(
             'users' => $users,
@@ -3330,8 +3626,8 @@ class HomeController extends Controller
             'screen' => $screen,
             'subcriber_user' => $subcriber_user,
             'multiuser_limit' => Setting::pluck('multiuser_limit')->first(),
-            'sub_user_count'  => Multiprofile::where('parent_id', Auth::user()->id )->count(),
-            'redirection_url' => $redirection_url ,
+            'sub_user_count' => Multiprofile::where('parent_id', Auth::user()->id)->count(),
+            'redirection_url' => $redirection_url,
         );
 
 
@@ -3339,7 +3635,8 @@ class HomeController extends Controller
 
     }
 
-    public function subcriberuser($id){
+    public function subcriberuser($id)
+    {
         $session = Session::put('subuser_id', null);
         return redirect::to('/home');
     }
@@ -3355,15 +3652,12 @@ class HomeController extends Controller
     {
         $Subuser = Session::get('subuser_id');
 
-        if ($Subuser != null)
-        {
+        if ($Subuser != null) {
             $User = Multiprofile::find($Subuser);
             $User->Kidsmode = $request->kids_mode;
             $User->FamilyMode = 0;
             $User->save();
-        }
-        else
-        {
+        } else {
             $user_id = Auth::User()->id;
             $User = User::find($user_id);
             $User->Kidsmode = $request->kids_mode;
@@ -3378,15 +3672,12 @@ class HomeController extends Controller
     {
         $Subuser = Session::get('subuser_id');
 
-        if ($Subuser != null)
-        {
+        if ($Subuser != null) {
             $User = Multiprofile::find($Subuser);
             $User->FamilyMode = $request->family_mode;
             $User->Kidsmode = 0;
             $User->save();
-        }
-        else
-        {
+        } else {
             $user_id = Auth::User()->id;
             $User = User::find($user_id);
             $User->FamilyMode = $request->family_mode;
@@ -3402,15 +3693,12 @@ class HomeController extends Controller
     {
         $Subuser = Session::get('subuser_id');
 
-        if ($Subuser != null)
-        {
+        if ($Subuser != null) {
             $User = Multiprofile::find($Subuser);
             $User->FamilyMode = $request->family_mode;
             $User->Kidsmode = 0;
             $User->save();
-        }
-        else
-        {
+        } else {
             $user_id = Auth::User()->id;
             $User = User::find($user_id);
             $User->FamilyMode = $request->family_mode;
@@ -3425,15 +3713,12 @@ class HomeController extends Controller
     {
         $Subuser = Session::get('subuser_id');
 
-        if ($Subuser != null)
-        {
+        if ($Subuser != null) {
             $User = Multiprofile::find($Subuser);
             $User->Kidsmode = $request->kids_mode;
             $User->FamilyMode = 0;
             $User->save();
-        }
-        else
-        {
+        } else {
             $user_id = Auth::User()->id;
             $User = User::find($user_id);
             $User->Kidsmode = $request->kids_mode;
@@ -3450,34 +3735,74 @@ class HomeController extends Controller
         $Recomended = HomeSetting::first();
         $home_settings = HomeSetting::first();
 
-        $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-        'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->where('status', '=', '1')->take(10)
-        ->where('active', '=', '1')
-        ->where('draft', '=', '1')
+        $latest_videos = Video::select(
+            'id',
+            'title',
+            'slug',
+            'year',
+            'rating',
+            'access',
+            'publish_type',
+            'global_ppv',
+            'publish_time',
+            'publish_status',
+            'ppv_price',
+            'responsive_image',
+            'responsive_player_image',
+            'responsive_tv_image',
+            'duration',
+            'rating',
+            'image',
+            'featured',
+            'age_restrict',
+            'video_tv_image',
+            'player_image',
+            'details',
+            'description'
+        )->where('status', '=', '1')->take(10)
+            ->where('active', '=', '1')
+            ->where('draft', '=', '1')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        if (!Auth::guest())
-        {
+        if (!Auth::guest()) {
             $getcnt_watching = ContinueWatching::where('user_id', Auth::user()->id)
                 ->pluck('videoid')
                 ->toArray();
-            $cnt_watching = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','publish_status','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-            'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description')->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
-            ->where('draft', '=', '1')->where('type','!=','embed')->whereIn('id', $getcnt_watching)->get();
-        }
-        else
-        {
+            $cnt_watching = Video::select(
+                'id',
+                'title',
+                'slug',
+                'year',
+                'rating',
+                'access',
+                'publish_type',
+                'global_ppv',
+                'publish_time',
+                'publish_status',
+                'ppv_price',
+                'responsive_image',
+                'responsive_player_image',
+                'responsive_tv_image',
+                'duration',
+                'rating',
+                'image',
+                'featured',
+                'age_restrict',
+                'video_tv_image',
+                'player_image',
+                'details',
+                'description'
+            )->with('cnt_watch')->where('active', '=', '1')->where('status', '=', '1')
+                ->where('draft', '=', '1')->where('type', '!=', 'embed')->whereIn('id', $getcnt_watching)->get();
+        } else {
             $cnt_watching = '';
         }
 
         $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
-        if (!empty($PPV_settings))
-        {
+        if (!empty($PPV_settings)) {
             $ppv_gobal_price = $PPV_settings->ppv_price;
-        }
-        else
-        {
+        } else {
             $ppv_gobal_price = null;
         }
 
@@ -3495,15 +3820,14 @@ class HomeController extends Controller
     public function ThemeModeSave(Request $request)
     {
 
-        if($request->input('mode') == 'true'){
+        if ($request->input('mode') == 'true') {
             $theme_modes = "light";
-        }
-        elseif($request->input('mode') == 'false'){
+        } elseif ($request->input('mode') == 'false') {
             $theme_modes = "dark";
         }
 
         $theme_mode = SiteTheme::first();
-        $theme_mode->theme_mode =  $theme_modes;
+        $theme_mode->theme_mode = $theme_modes;
         $theme_mode->update();
 
         return $theme_modes;
@@ -3517,12 +3841,11 @@ class HomeController extends Controller
 
     public function logActivity()
     {
-        $user =  User::where('id',1)->first();
+        $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
 
-        if ($current_date > $duedate)
-        {
+        if ($current_date > $duedate) {
 
             $client = new Client();
             $url = "https://flicknexs.com/userapi/allplans";
@@ -3536,35 +3859,35 @@ class HomeController extends Controller
             $response = $client->request('post', $url, [
                 'json' => $params,
                 'headers' => $headers,
-                'verify'  => false,
+                'verify' => false,
             ]);
 
             $responseBody = json_decode($response->getBody());
 
-           $settings = Setting::first();
-           $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
             );
             return View::make('admin.expired_dashboard', $data);
 
-        }else{
+        } else {
             $logs = \LogActivity::logActivityLists();
-            return view('admin.logActivity',compact('logs'));
+            return view('admin.logActivity', compact('logs'));
         }
 
 
     }
 
-    public function UploadlogActivity(){
+    public function UploadlogActivity()
+    {
         try {
 
-            $user =  User::where('id',1)->first();
+            $user = User::where('id', 1)->first();
             $duedate = $user->package_ends;
             $current_date = date('Y-m-d');
 
-            if ($current_date > $duedate)
-            {
+            if ($current_date > $duedate) {
 
                 $client = new Client();
                 $url = "https://flicknexs.com/userapi/allplans";
@@ -3578,23 +3901,23 @@ class HomeController extends Controller
                 $response = $client->request('post', $url, [
                     'json' => $params,
                     'headers' => $headers,
-                    'verify'  => false,
+                    'verify' => false,
                 ]);
 
                 $responseBody = json_decode($response->getBody());
 
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,
-                'responseBody' => $responseBody,
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
                 );
                 return View::make('admin.expired_dashboard', $data);
 
-            }else{
+            } else {
                 $datas = UploadErrorLog::orderBy('id', 'desc')->paginate(10);
                 return view('admin.UploadlogActivity', compact('datas'));
             }
-            
+
 
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -3602,15 +3925,15 @@ class HomeController extends Controller
         }
     }
 
-    public function EpisodeDeleteLog(Request $request){
+    public function EpisodeDeleteLog(Request $request)
+    {
         try {
 
-            $user =  User::where('id',1)->first();
+            $user = User::where('id', 1)->first();
             $duedate = $user->package_ends;
             $current_date = date('Y-m-d');
 
-            if ($current_date > $duedate)
-            {
+            if ($current_date > $duedate) {
 
                 $client = new Client();
                 $url = "https://flicknexs.com/userapi/allplans";
@@ -3624,19 +3947,19 @@ class HomeController extends Controller
                 $response = $client->request('post', $url, [
                     'json' => $params,
                     'headers' => $headers,
-                    'verify'  => false,
+                    'verify' => false,
                 ]);
 
                 $responseBody = json_decode($response->getBody());
 
-            $settings = Setting::first();
-            $data = array(
-                'settings' => $settings,
-                'responseBody' => $responseBody,
+                $settings = Setting::first();
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
                 );
                 return View::make('admin.expired_dashboard', $data);
 
-            }else{
+            } else {
                 $episodeLogs = DeleteLog::where('deleted_item', 'episode')->orderBy('id', 'desc')->paginate(10);
                 $videoLogs = DeleteLog::where('deleted_item', 'video')->orderBy('id', 'desc')->paginate(10);
 
@@ -3663,7 +3986,7 @@ class HomeController extends Controller
 
                 return view('admin.EpisodeDeleteLog', compact('episodeLogs', 'videoLogs'));
             }
-            
+
 
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -3674,33 +3997,34 @@ class HomeController extends Controller
     public function searchResult(Request $request)
     {
         try {
-
-            if($request->search == null  || $request->search == " " ){
-
-                return redirect()->back()->withErrors("Please! Enter the valid search data")->withInput();
+            // Validate and sanitize search input
+            $search_value = trim($request->input('search', ''));
+            if (empty($search_value)) {
+                return redirect()->back()
+                    ->withErrors(['search' => 'Please enter valid search data'])
+                    ->withInput();
             }
 
-            $search_value = $request['search'];
+            // Generate cache key for search results
+            $cacheKey = 'search_' . md5($search_value);
 
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            $userIp = $geoip->getip();
-            $countryName = $geoip->getCountry();
-            $regionName = $geoip->getregion();
-            $cityName = $geoip->getcity();
-
-            $getfeching = Geofencing::first();
-
-            $block_videos = BlockVideo::where('country_id', $countryName)->get();
-            if (!$block_videos->isEmpty())
-            {
-                foreach ($block_videos as $block_video)
-                {
-                    $blockvideos[] = $block_video->video_id;
-                }
+            // Return cached results if available (1 hour cache)
+            if (Cache::has($cacheKey)) {
+                return Cache::get($cacheKey);
             }
-            else
-            {
-                $blockvideos[] = '';
+
+            // Get geofencing settings (cached for 24 hours)
+            $geofencing = Cache::remember('geofencing_settings', 60 * 60 * 24, function () {
+                return Geofencing::first();
+            });
+
+            // Get blocked videos if geofencing is enabled
+            $blockedVideoIds = [];
+            if ($geofencing && $geofencing->geofencing === 'ON') {
+                $countryName = (new \Victorybiz\GeoIPLocation\GeoIPLocation())->getCountry();
+                $blockedVideoIds = BlockVideo::where('country_id', $countryName)
+                    ->pluck('video_id')
+                    ->toArray();
             }
 
 
@@ -3750,414 +4074,706 @@ class HomeController extends Controller
             //     $ppv_category = 0;
             // }
 
-            // Latest videos
+            // Search videos with optimized query and eager loading
+            $latest_videos = Video::with([
+                'categories' => function ($query) {
+                    $query->select('id', 'name');
+                }
+            ])
+                ->select('videos.*')
+                ->where('active', 1)
+                ->where('status', 1)
+                ->where('draft', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('videos.search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('videos.title', 'LIKE', "%{$search_value}%")
+                        ->orWhereHas('categories', function ($q) use ($search_value) {
+                            $q->where('name', 'LIKE', "%{$search_value}%");
+                        });
+                });
 
-            $latest_videos  = Video::Select('videos.*','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
-                               ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
-                               ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                               ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                               ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
-                               ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
-                               ->where('active', '=', '1')
-                               ->where('status', '=', '1')
-                               ->where('draft', '=', '1')
-                               ->orderBy('created_at', 'desc')
-                               ->limit('10');
-
-                               if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                                   $latest_videos = $latest_videos  ->whereNotIn('videos.id',Block_videos());
-                               }
-
-            $latest_videos = $latest_videos->get();
-
-
-            $latest_livestreams = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name')
-                                   ->Join('livecategories','livecategories.live_id','=','live_streams.id')
-                                   ->Join('live_categories','live_categories.id','=','livecategories.category_id')
-                                   ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
-                                   ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
-                                   ->orwhere('live_categories.name', 'LIKE', '%' . $search_value . '%')
-                                   ->where('live_streams.active', '=', '1')
-                                   // ->where('status', '=', '1')
-                                   ->limit('10')
-                                   ->groupBy('live_streams.id')
-                                   ->get();
-
-
-            $latest_audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('audio.title', 'LIKE', '%' .$search_value . '%')
-                                ->where('active', '=', '1')
-                                ->where('status', '=', '1')
-                                ->limit('10')
-                                ->select('id','title','slug','ppv_status','year','rating','access','ppv_price',
-                                'duration','rating','image','featured','player_image','details','description')
-                                ->get();
-
-            $latest_Episode =  Episode::Select('episodes.*','series.id','series_categories.category_id','video_categories.name as Category_name')
-                                ->Join('series','series.id','=','episodes.series_id')
-                                ->Join('series_categories','series_categories.series_id','=','series.id')
-                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                                ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
-                                ->where('episodes.active', '=', '1')
-                                ->where('episodes.status', '=', '1')
-                                ->groupBy('episodes.id')
-                                ->limit('10')
-                                ->get();
-
-            $latest_Series = Series::Select('series.*','series_categories.category_id','video_categories.name as Category_name')
-                                ->Join('series_categories','series_categories.series_id','=','series.id')
-                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                                ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
-                                ->where('series.active', '=', '1')
-                                ->groupBy('series.id')
-                                ->limit('10')
-                                ->get();
-
-        // Most watched videos - TOP VIDEOS
-                    //  Important Note - Most view Not used (If Most view want to Use , then Category Search Want to work )
-
-            $Most_view_videos = RecentView::Join('videos','videos.id','=','recent_views.video_id')
-                                ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
-                                ->where('videos.active', '=', '1')
-                                ->where('videos.status', '=', '1')
-                                ->where('videos.draft', '=', '1')
-                                ->groupBy('video_id')
-                                ->limit('10')
-                                ->latest('videos.created_at');
-                                if ($getfeching != null && $getfeching->geofencing == 'ON')
-                                {
-                                    $Most_view_videos = $Most_view_videos->whereNotIn('videos.id', $blockvideos);
-                                }
-                                $Most_view_videos = $Most_view_videos->get();
-
-
-            $Most_view_audios = RecentView::Join('audio','audio.id','=','recent_views.audio_id')
-                                ->orwhere('audio.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('audio.title', 'LIKE', '%' . $search_value . '%')
-                                ->where('audio.active', '=', '1')
-                                ->where('audio.status', '=', '1')
-                                ->limit('10')
-                                ->latest('audio.created_at')
-                                ->groupBy('audio_id')
-                                ->get();
-
-            $Most_view_live   = RecentView::Join('live_streams','live_streams.id','=','recent_views.live_id')
-                                ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
-                                ->where('live_streams.active', '=', '1')
-                                ->limit('10')
-                                ->latest('live_streams.created_at')
-                                ->groupBy('live_id')
-                                ->get();
-
-            $Most_view_episode  = RecentView::Join('episodes','episodes.id','=','recent_views.episode_id')
-                                ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
-                                ->where('episodes.active', '=', '1')
-                                ->where('episodes.status', '=', '1')
-                                ->limit('10')
-                                ->latest('episodes.created_at')
-                                ->groupBy('episode_id')
-                                ->get();
-
-            $Most_view_Series  = RecentView::select('series.*')
-                                ->Join('episodes','episodes.id','=','recent_views.episode_id')
-                                ->Join('series','series.id','=','episodes.series_id')
-                                ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
-                                ->where('series.active', '=', '1')
-                                ->limit('20')
-                                ->latest('series.created_at')
-                                ->groupBy('series.id')
-                                ->get();
-
-            //  All videos
-
-            $videos_count = Video::Select('videos.*','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
-                            ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
-                            ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                            ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
-                            ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
-                            ->where('active', '=', '1')
-                            ->where('status', '=', '1')
-                            ->where('draft', '=', '1')
-                            ->groupBy('videos.id')
-                            ->latest('videos.created_at')
-                            ->limit('10');
-
-                            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                                $videos_count = $videos_count  ->whereNotIn('videos.id',Block_videos());
-                            }
-
-                            $videos_count = $videos_count->count();
-
-            if ($videos_count > 0)
-            {
-                $videos = Video::Select('videos.*','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
-                                ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
-                                ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                ->orwhere('videos.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('videos.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
-                                ->where('active', '=', '1')
-                                ->where('status', '=', '1')
-                                ->where('draft', '=', '1')
-                                ->orderBy('videos.created_at', 'desc')
-                                ->groupBy('videos.id')
-                                ->limit('10');
-
-                                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                                    $videos = $videos  ->whereNotIn('videos.id',Block_videos());
-                                }
-
-                        $videos = $videos->get();
-            }
-            else
-            {
-                $videos = [];
+            // Apply geofencing if enabled
+            if (!empty($blockedVideoIds)) {
+                $latest_videos->whereNotIn('videos.id', $blockedVideoIds);
             }
 
+            $latest_videos = $latest_videos->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
 
-            $livestreams = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name')
-                                ->Join('livecategories','livecategories.live_id','=','live_streams.id')
-                                ->Join('live_categories','live_categories.id','=','livecategories.category_id')
-                                ->orwhere('live_streams.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('live_streams.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('live_categories.name', 'LIKE', '%' . $search_value . '%')
-                                ->where('live_streams.active', '=', '1')
-                                // ->where('status', '=', '1')
-                                ->limit('10')
-                                ->groupBy('live_streams.id')
-                                ->get();
 
-            $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('audio.title', 'LIKE', '%' .$search_value . '%')
-                                ->where('active', '=', '1')
-                                ->where('status', '=', '1')
-                                ->limit('10')
-                                ->select('id','title','slug','ppv_status','year','rating','access','ppv_price',
-                                'duration','rating','image','featured','player_image','details','description')
-                                ->get();
+            // Search live streams with optimized query and eager loading
+            $latest_livestreams = LiveStream::with([
+                'categories' => function ($query) {
+                    $query->select('id', 'name');
+                }
+            ])
+                ->select('live_streams.*')
+                ->where('live_streams.active', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('live_streams.search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('live_streams.title', 'LIKE', "%{$search_value}%")
+                        ->orWhereHas('categories', function ($q) use ($search_value) {
+                            $q->where('name', 'LIKE', "%{$search_value}%");
+                        });
+                });
 
-            $Episode = Episode::Select('episodes.*','series.id','series_categories.category_id','video_categories.name as Category_name')
-                                ->Join('series','series.id','=','episodes.series_id')
-                                ->Join('series_categories','series_categories.series_id','=','series.id')
-                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                                ->orwhere('episodes.search_tags', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('episodes.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
-                                ->where('episodes.active', '=', '1')
-                                ->where('episodes.status', '=', '1')
-                                ->groupBy('episodes.id')
-                                ->limit('10')
-                                ->get();
+            $latest_livestreams = $latest_livestreams->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get()
+                ->unique('id');
 
-            $Series = Series::Select('series.*','series_categories.category_id','video_categories.name as Category_name')
-                                ->Join('series_categories','series_categories.series_id','=','series.id')
-                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                                ->orwhere('series.search_tag', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('series.title', 'LIKE', '%' . $search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $search_value . '%')
-                                ->where('series.active', '=', '1')
-                                ->groupBy('series.id')
-                                ->limit('10')
-                                ->get();
 
-            $data = array(
+            // Search audio with optimized query
+            $latest_audio = Audio::select([
+                'id',
+                'title',
+                'slug',
+                'ppv_status',
+                'year',
+                'rating',
+                'access',
+                'ppv_price',
+                'duration',
+                'image',
+                'featured',
+                'video_tv_image',
+                'player_image',
+                'details',
+                'description'
+            ])
+                ->where('active', 1)
+                ->where('status', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('title', 'LIKE', "%{$search_value}%");
+                })
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            // Search episodes with optimized query and eager loading
+            $latest_Episode = Episode::with([
+                'series.categories' => function ($query) {
+                    $query->select('id', 'name');
+                }
+            ])
+                ->select('episodes.*')
+                ->join('series', 'series.id', '=', 'episodes.series_id')
+                ->where('episodes.active', 1)
+                ->where('episodes.status', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('episodes.search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('episodes.title', 'LIKE', "%{$search_value}%")
+                        ->orWhereHas('series.categories', function ($q) use ($search_value) {
+                            $q->where('video_categories.name', 'LIKE', "%{$search_value}%");
+                        });
+                })
+                ->orderBy('episodes.created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            // Search series with optimized query and eager loading
+            $latest_Series = Series::with([
+                'categories' => function ($query) {
+                    $query->select('id', 'name');
+                }
+            ])
+                ->select('series.*')
+                ->where('series.active', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('series.search_tag', 'LIKE', "%{$search_value}%")
+                        ->orWhere('series.title', 'LIKE', "%{$search_value}%")
+                        ->orWhereHas('categories', function ($q) use ($search_value) {
+                            $q->where('video_categories.name', 'LIKE', "%{$search_value}%");
+                        });
+                })
+                ->orderBy('series.created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            // Most watched videos - TOP VIDEOS
+            $geofencingSettings = \App\Setting::where('key', 'geofencing')->first();
+
+            $Most_view_videos = Video::with('recentViews')
+                ->select('videos.*')
+                ->where('active', 1)
+                ->where('status', 1)
+                ->where('draft', 1)
+                ->whereHas('recentViews')
+                ->where(function ($query) use ($search_value) {
+                    $query->where('videos.search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('videos.title', 'LIKE', "%{$search_value}%");
+                });
+
+            // Apply geofencing if enabled
+            if ($geofencingSettings && $geofencingSettings->value === 'ON' && isset($blockvideos)) {
+                $Most_view_videos->whereNotIn('videos.id', $blockvideos);
+            }
+
+            $Most_view_videos = $Most_view_videos->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            // Search audios with optimized query
+            $Most_view_audios = Audio::withCount('recentViews')
+                ->select('audio.*')
+                ->where('active', 1)
+                ->where('status', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('title', 'LIKE', "%{$search_value}%");
+                })
+                ->latest('episodes.created_at')
+                ->groupBy('episode_id')
+                ->get();
+
+            // Search series with view count using optimized query
+            $Most_view_Series = Series::withCount('recentViews')
+                ->select('series.*')
+                ->where('series.active', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('series.search_tag', 'LIKE', "%{$search_value}%")
+                        ->orWhere('series.title', 'LIKE', "%{$search_value}%");
+                })
+                ->orderBy('recent_views_count', 'desc')
+                ->orderBy('series.created_at', 'desc')
+                ->take(20)
+                ->get();
+
+            // Count matching videos with optimized query
+            $videos_count = Video::select('videos.*')
+                ->where('videos.active', 1)
+                ->where('videos.status', 1)
+                ->where('videos.draft', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('videos.search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('videos.title', 'LIKE', "%{$search_value}%")
+                        ->orWhereHas('categories', function ($q) use ($search_value) {
+                            $q->where('name', 'LIKE', "%{$search_value}%");
+                        });
+                });
+
+            // Apply geofencing if enabled
+            $geofencing = Geofencing();
+            if ($geofencing && $geofencing->geofencing === 'ON') {
+                if (function_exists('Block_videos')) {
+                    $videos_count = $videos_count->whereNotIn('videos.id', Block_videos());
+                }
+            }
+
+            $videos_count = $videos_count->count();
+
+            // Get matching videos with optimized query
+            $videos = [];
+            if ($videos_count > 0) {
+                $videos = Video::with(['categories'])
+                    ->select('videos.*')
+                    ->where('videos.active', 1)
+                    ->where('videos.status', 1)
+                    ->where('videos.draft', 1)
+                    ->where(function ($query) use ($search_value) {
+                        $query->where('videos.search_tags', 'LIKE', "%{$search_value}%")
+                            ->orWhere('videos.title', 'LIKE', "%{$search_value}%")
+                            ->orWhereHas('categories', function ($q) use ($search_value) {
+                                $q->where('name', 'LIKE', "%{$search_value}%");
+                            });
+                    })
+                    ->orderBy('videos.created_at', 'desc')
+                    ->take(10);
+
+                // Apply geofencing if enabled
+                if ($geofencing && $geofencing->geofencing === 'ON') {
+                    if (function_exists('Block_videos')) {
+                        $videos = $videos->whereNotIn('videos.id', Block_videos());
+                    }
+                }
+
+                $videos = $videos->get();
+            }
+
+
+            // Search live streams with optimized query
+            $livestreams = LiveStream::with(['categories'])
+                ->select('live_streams.*')
+                ->where('live_streams.active', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('live_streams.search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('live_streams.title', 'LIKE', "%{$search_value}%")
+                        ->orWhereHas('categories', function ($q) use ($search_value) {
+                            $q->where('name', 'LIKE', "%{$search_value}%");
+                        });
+                })
+                ->orderBy('live_streams.created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            // Search audios with optimized query
+            $audio = Audio::withCount('recentViews')
+                ->select([
+                    'id',
+                    'title',
+                    'slug',
+                    'ppv_status',
+                    'year',
+                    'rating',
+                    'access',
+                    'ppv_price',
+                    'duration',
+                    'image',
+                    'featured',
+                    'player_image',
+                    'details',
+                    'description',
+                    'created_at'
+                ])
+                ->where('active', 1)
+                ->where('status', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('title', 'LIKE', "%{$search_value}%");
+                })
+                ->orderBy('recent_views_count', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            // Search episodes with optimized query
+            $Episode = Episode::with(['series.categories'])
+                ->select('episodes.*')
+                ->where('episodes.active', 1)
+                ->where('episodes.status', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('episodes.search_tags', 'LIKE', "%{$search_value}%")
+                        ->orWhere('episodes.title', 'LIKE', "%{$search_value}%")
+                        ->orWhereHas('series.categories', function ($q) use ($search_value) {
+                            $q->where('name', 'LIKE', "%{$search_value}%");
+                        });
+                })
+                ->orderBy('episodes.created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            // Search series with optimized query
+            $Series = Series::with(['categories'])
+                ->select('series.*')
+                ->where('series.active', 1)
+                ->where('series.status', 1)
+                ->where(function ($query) use ($search_value) {
+                    $query->where('series.search_tag', 'LIKE', "%{$search_value}%")
+                        ->orWhere('series.title', 'LIKE', "%{$search_value}%")
+                        ->orWhereHas('categories', function ($q) use ($search_value) {
+                            $q->where('name', 'LIKE', "%{$search_value}%");
+                        });
+                })
+                ->orderBy('series.created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            $data = [
                 'all_videos' => $videos,
                 'search_value' => $search_value,
-                'currency' => CurrencySetting::first() ,
+                'currency' => CurrencySetting::first(),
                 'latest_videos' => $latest_videos,
-                'ThumbnailSetting' =>   ThumbnailSetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
                 'Search_audio' => $audio,
                 'Search_livestreams' => $livestreams,
                 'Search_Episode' => $Episode,
                 'Search_Series' => $Series,
-                'latest_videos' => $latest_videos,
                 'latest_livestreams' => $latest_livestreams,
                 'latest_audio' => $latest_audio,
-                'latest_Episode'=> $latest_Episode,
-                'latest_Series'=> $latest_Series,
+                'latest_Episode' => $latest_Episode,
+                'latest_Series' => $latest_Series,
                 'Most_view_videos' => $Most_view_videos,
                 'Most_view_audios' => $Most_view_audios,
-                'Most_view_live' => $Most_view_live,
-                'Most_view_episode' => $Most_view_episode,
-                'Most_view_Series' => $Most_view_Series,
-            );
+                'Most_view_live' => $Most_view_live ?? null,
+                'Most_view_episode' => $Most_view_episode ?? null,
+                'Most_view_Series' => $Most_view_Series ?? null,
+            ];
 
             return Theme::view('search', $data);
-
         } catch (\Exception $e) {
-           return abort (404);
+            \Log::error('Search error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while searching.');
         }
     }
 
+    /**
+     * Search for videos with the given search term
+     *
+     * @param Request $request
+     * @param string $videos_search_value Search term
+     * @return \Illuminate\View\View|\Illuminate\Http\Response
+     */
     public function searchResult_videos(Request $request, $videos_search_value)
     {
         try {
+            // Cache settings that are used across requests
+            $cacheKey = 'video_search_settings';
+            $settings = Cache::remember($cacheKey, now()->addHours(24), function () {
+                return [
+                    'thumbnail' => ThumbnailSetting::first(),
+                    'currency' => CurrencySetting::first()
+                ];
+            });
 
-            $videos = Video::Select('videos.*','categoryvideos.category_id','categoryvideos.video_id','video_categories.name as category_name')
-                                ->Join('categoryvideos','categoryvideos.video_id','=','videos.id')
-                                ->Join('video_categories','video_categories.id','=','categoryvideos.category_id')
-                                ->orwhere('videos.search_tags', 'LIKE', '%' . $videos_search_value . '%')
-                                ->orwhere('videos.title', 'LIKE', '%' . $videos_search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $videos_search_value . '%')
-                                ->where('active', '=', '1')
-                                ->where('status', '=', '1')
-                                ->where('draft', '=', '1')
-                                ->groupBy('videos.id')
-                                ->latest('videos.created_at');
+            // Get the search term and trim any whitespace
+            $searchTerm = trim($videos_search_value);
 
-            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                    $videos = $videos  ->whereNotIn('videos.id',Block_videos());
+            // If search term is empty, return empty results
+            if (empty($searchTerm)) {
+                return Theme::view('search_videos', [
+                    'all_videos' => collect([])->paginate(12),
+                    'ThumbnailSetting' => $settings['thumbnail'],
+                    'currency' => $settings['currency'],
+                    'search_value' => $searchTerm,
+                ]);
             }
 
-            $videos = $videos->get();
+            // Build the base query with eager loading
+            $videos = Video::with(['categories', 'user'])
+                ->select('videos.*')
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('videos.search_tags', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('videos.title', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhereHas('categories', function ($q) use ($searchTerm) {
+                            $q->where('video_categories.name', 'LIKE', '%' . $searchTerm . '%');
+                        });
+                })
+                ->where('videos.active', 1)
+                ->where('videos.status', 1)
+                ->where('videos.draft', 1);
 
-            $data = array(
+            // Apply geofencing if enabled
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                if (function_exists('Block_videos')) {
+                    $videos->whereNotIn('videos.id', Block_videos());
+                }
+            }
+
+            // Execute query with pagination
+            $videos = $videos->orderBy('videos.created_at', 'desc')
+                ->paginate(12)
+                ->appends(['search' => $searchTerm]);
+
+            return Theme::view('search_videos', [
                 'all_videos' => $videos,
-                'ThumbnailSetting' =>   ThumbnailSetting::first(),
-                'currency' => CurrencySetting::first() ,
-                'search_value' => $videos_search_value,
-            );
-
-            return Theme::view('search_videos', $data);
+                'ThumbnailSetting' => $settings['thumbnail'],
+                'currency' => $settings['currency'],
+                'search_value' => $searchTerm,
+            ]);
 
         } catch (\Throwable $th) {
+            \Log::error('Search videos error: ' . $th->getMessage(), [
+                'search_term' => $videos_search_value ?? null,
+                'trace' => $th->getTraceAsString()
+            ]);
 
-            // return $th->getMessage();
-
-            return abort (404);
-
+            // Return empty results on error instead of 404 for better UX
+            return Theme::view('search_videos', [
+                'all_videos' => collect([])->paginate(12),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'currency' => CurrencySetting::first(),
+                'search_value' => $videos_search_value ?? '',
+                'error' => 'An error occurred while searching. Please try again.'
+            ]);
         }
     }
 
+    /**
+     * Search for live streams with the given search term
+     *
+     * @param Request $request
+     * @param string $livestreams_search_value Search term
+     * @return \Illuminate\View\View|\Illuminate\Http\Response
+     */
     public function searchResult_livestream(Request $request, $livestreams_search_value)
     {
         try {
+            // Cache settings that are used across requests
+            $cacheKey = 'livestream_search_settings';
+            $settings = Cache::remember($cacheKey, now()->addHours(24), function () {
+                return [
+                    'thumbnail' => ThumbnailSetting::first(),
+                    'currency' => CurrencySetting::first()
+                ];
+            });
 
-            $livestreams = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name')
-                                ->Join('livecategories','livecategories.live_id','=','live_streams.id')
-                                ->Join('live_categories','live_categories.id','=','livecategories.category_id')
-                                ->orwhere('live_streams.search_tags', 'LIKE', '%' . $livestreams_search_value . '%')
-                                ->orwhere('live_streams.title', 'LIKE', '%' . $livestreams_search_value . '%')
-                                ->orwhere('live_categories.name', 'LIKE', '%' . $livestreams_search_value . '%')
-                                ->where('live_streams.active', '=', '1')
-                                ->groupBy('live_streams.id')
-                                ->latest('live_streams.created_at')
-                                ->get();
+            // Get the search term and trim any whitespace
+            $searchTerm = trim($livestreams_search_value);
 
+            // If search term is empty, return empty results
+            if (empty($searchTerm)) {
+                return Theme::view('search_livestreams', [
+                    'Search_livestreams' => collect([])->paginate(12),
+                    'ThumbnailSetting' => $settings['thumbnail'],
+                    'currency' => $settings['currency'],
+                    'search_value' => $searchTerm,
+                ]);
+            }
 
-            $data = array(
-                'search_value' => $livestreams_search_value,
-                'ThumbnailSetting' =>   ThumbnailSetting::first(),
-                'currency' => CurrencySetting::first() ,
+            // Build the base query with eager loading
+            $livestreams = LiveStream::with(['categories'])
+                ->select('live_streams.*')
+                ->join('livecategories', 'livecategories.live_id', '=', 'live_streams.id')
+                ->join('live_categories', 'live_categories.id', '=', 'livecategories.category_id')
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('live_streams.search_tags', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('live_streams.title', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhereHas('categories', function ($q) use ($searchTerm) {
+                            $q->where('live_categories.name', 'LIKE', '%' . $searchTerm . '%');
+                        });
+                })
+                ->where('live_streams.active', '1')
+                ->groupBy('live_streams.id');
+
+            // Apply geofencing if enabled
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                if (function_exists('Block_live')) {
+                    $livestreams->whereNotIn('live_streams.id', Block_live());
+                }
+            }
+
+            // Execute query with pagination
+            $livestreams = $livestreams->orderBy('live_streams.created_at', 'desc')
+                ->paginate(12)
+                ->appends(['search' => $searchTerm]);
+
+            return Theme::view('search_livestreams', [
                 'Search_livestreams' => $livestreams,
-            );
-
-            return Theme::view('search_livestreams', $data);
+                'ThumbnailSetting' => $settings['thumbnail'],
+                'currency' => $settings['currency'],
+                'search_value' => $searchTerm,
+            ]);
 
         } catch (\Throwable $th) {
+            \Log::error('Search livestreams error: ' . $th->getMessage(), [
+                'search_term' => $livestreams_search_value ?? null,
+                'trace' => $th->getTraceAsString()
+            ]);
 
-            // return $th->getMessage();
-
-            return abort (404);
-
+            // Return empty results on error instead of 404 for better UX
+            return Theme::view('search_livestreams', [
+                'Search_livestreams' => collect([])->paginate(12),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'currency' => CurrencySetting::first(),
+                'search_value' => $livestreams_search_value ?? '',
+                'error' => 'An error occurred while searching. Please try again.'
+            ]);
         }
     }
 
+    /**
+     * Search for series with the given search term
+     *
+     * @param Request $request
+     * @param string $series_search_value Search term
+     * @return \Illuminate\Http\Response
+     */
     public function searchResult_series(Request $request, $series_search_value)
     {
         try {
+            // Cache settings that are used across requests
+            $cacheKey = 'series_search_settings';
+            $settings = Cache::remember($cacheKey, now()->addHours(24), function () {
+                return [
+                    'thumbnail' => ThumbnailSetting::first(),
+                    'currency' => CurrencySetting::first()
+                ];
+            });
 
-            $Series = Series::Select('series.*','series_categories.category_id','video_categories.name as Category_name')
-                                ->Join('series_categories','series_categories.series_id','=','series.id')
-                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                                ->orwhere('series.search_tag', 'LIKE', '%' . $series_search_value . '%')
-                                ->orwhere('series.title', 'LIKE', '%' . $series_search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $series_search_value . '%')
-                                ->where('series.active', '=', '1')
-                                ->groupBy('series.id')
-                                ->latest('series.id')
-                                ->get();
+            // Get the search term and trim any whitespace
+            $searchTerm = trim($series_search_value);
 
-            $data = array(
-                'search_value' => $series_search_value,
-                'ThumbnailSetting' =>   ThumbnailSetting::first(),
-                'currency' => CurrencySetting::first() ,
-                'Search_Series' => $Series,
-            );
+            // If search term is empty, return empty results
+            if (empty($searchTerm)) {
+                return response()->view('search_series', [
+                    'Search_Series' => collect([])->paginate(12),
+                    'ThumbnailSetting' => $settings['thumbnail'],
+                    'currency' => $settings['currency'],
+                    'search_value' => $searchTerm,
+                ]);
+            }
 
-            return Theme::view('search_series', $data);
+            // Build the base query with eager loading
+            $series = Series::with(['categories', 'seasons'])
+                ->select('series.*')
+                ->join('series_categories', 'series_categories.series_id', '=', 'series.id')
+                ->join('video_categories', 'video_categories.id', '=', 'series_categories.category_id')
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('series.search_tag', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('series.title', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhereHas('categories', function ($q) use ($searchTerm) {
+                            $q->where('video_categories.name', 'LIKE', '%' . $searchTerm . '%');
+                        });
+                })
+                ->where('series.active', '1')
+                ->groupBy('series.id');
+
+            // Apply geofencing if enabled
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                if (function_exists('Block_series')) {
+                    $series->whereNotIn('series.id', Block_series());
+                }
+            }
+
+            // Execute query with pagination
+            $series = $series->orderBy('series.created_at', 'desc')
+                ->paginate(12)
+                ->appends(['search' => $searchTerm]);
+
+            return response()->view('search_series', [
+                'Search_Series' => $series,
+                'ThumbnailSetting' => $settings['thumbnail'],
+                'currency' => $settings['currency'],
+                'search_value' => $searchTerm,
+            ]);
 
         } catch (\Throwable $th) {
+            \Log::error('Search series error: ' . $th->getMessage(), [
+                'search_term' => $series_search_value ?? null,
+                'trace' => $th->getTraceAsString()
+            ]);
 
-            // return $th->getMessage();
-
-            return abort (404);
-
+            // Return empty results on error instead of 404 for better UX
+            return response()->view('search_series', [
+                'Search_Series' => collect([])->paginate(12),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'currency' => CurrencySetting::first(),
+                'search_value' => $series_search_value ?? '',
+                'error' => 'An error occurred while searching. Please try again.'
+            ]);
         }
     }
 
+    /**
+     * Search for episodes with the given search term
+     *
+     * @param Request $request
+     * @param string $Episode_search_value Search term
+     * @return \Illuminate\Http\Response
+     */
     public function searchResult_episode(Request $request, $Episode_search_value)
     {
         try {
+            // Cache settings that are used across requests
+            $cacheKey = 'episode_search_settings';
+            $settings = Cache::remember($cacheKey, now()->addHours(24), function () {
+                return [
+                    'thumbnail' => ThumbnailSetting::first(),
+                    'currency' => CurrencySetting::first()
+                ];
+            });
 
-            $Episode = Episode::Select('episodes.*','series.id','series_categories.category_id','video_categories.name as Category_name')
-                                ->Join('series','series.id','=','episodes.series_id')
-                                ->Join('series_categories','series_categories.series_id','=','series.id')
-                                ->Join('video_categories','video_categories.id','=','series_categories.category_id')
-                                ->orwhere('episodes.search_tags', 'LIKE', '%' . $Episode_search_value . '%')
-                                ->orwhere('episodes.title', 'LIKE', '%' . $Episode_search_value . '%')
-                                ->orwhere('video_categories.name', 'LIKE', '%' . $Episode_search_value . '%')
-                                ->where('episodes.active', '=', '1')
-                                ->where('episodes.status', '=', '1')
-                                ->groupBy('episodes.id')
-                                ->latest('episodes.id')
-                                ->get();
+            // Get the search term and trim any whitespace
+            $searchTerm = trim($Episode_search_value);
 
-            $data = array(
-                'search_value' => $Episode_search_value,
-                'ThumbnailSetting' =>   ThumbnailSetting::first(),
-                'currency' => CurrencySetting::first() ,
-                'Search_Episode' => $Episode,
-            );
+            // If search term is empty, return empty results
+            if (empty($searchTerm)) {
+                return response()->view('search_episodes', [
+                    'Search_Episode' => collect([])->paginate(12),
+                    'ThumbnailSetting' => $settings['thumbnail'],
+                    'currency' => $settings['currency'],
+                    'search_value' => $searchTerm,
+                ]);
+            }
 
-            return Theme::view('search_episodes', $data);
+            // Build the base query with eager loading
+            $episodes = Episode::with([
+                'series',
+                'series.categories',
+                'video' => function ($query) {
+                    $query->select('id', 'title', 'slug');
+                }
+            ])
+                ->select('episodes.*')
+                ->join('series', 'series.id', '=', 'episodes.series_id')
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('episodes.search_tags', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhere('episodes.title', 'LIKE', '%' . $searchTerm . '%')
+                        ->orWhereHas('series', function ($q) use ($searchTerm) {
+                            $q->where('title', 'LIKE', '%' . $searchTerm . '%')
+                                ->orWhereHas('categories', function ($q) use ($searchTerm) {
+                                    $q->where('name', 'LIKE', '%' . $searchTerm . '%');
+                                });
+                        });
+                })
+                ->where('episodes.active', '1')
+                ->where('episodes.status', '1')
+                ->where('series.active', '1');
+
+            // Apply geofencing if enabled
+            if (function_exists('Block_series') && Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                $episodes->whereNotIn('series.id', Block_series());
+            }
+
+            // Execute query with pagination
+            $episodes = $episodes->orderBy('episodes.created_at', 'desc')
+                ->groupBy('episodes.id')
+                ->paginate(12)
+                ->appends(['search' => $searchTerm]);
+
+            return response()->view('search_episodes', [
+                'Search_Episode' => $episodes,
+                'ThumbnailSetting' => $settings['thumbnail'],
+                'currency' => $settings['currency'],
+                'search_value' => $searchTerm,
+            ]);
 
         } catch (\Throwable $th) {
+            \Log::error('Search episode error: ' . $th->getMessage(), [
+                'search_term' => $Episode_search_value ?? null,
+                'trace' => $th->getTraceAsString()
+            ]);
 
-            // return $th->getMessage();
-
-            return abort (404);
-
+            // Return empty results on error instead of 404 for better UX
+            return response()->view('search_episodes', [
+                'Search_Episode' => collect([])->paginate(12),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'currency' => CurrencySetting::first(),
+                'search_value' => $Episode_search_value ?? '',
+                'error' => 'An error occurred while searching. Please try again.'
+            ]);
         }
     }
 
-    public function searchResult_audios(Request $request,$Audios_search_value)
+    public function searchResult_audios(Request $request, $Audios_search_value)
     {
         try {
 
-            $audio = Audio::orwhere('search_tags', 'LIKE', '%' . $Audios_search_value . '%')
-                        ->orwhere('audio.title', 'LIKE', '%' .$Audios_search_value . '%')
-                        ->where('active', '=', '1')
-                        ->where('status', '=', '1')
-                        ->latest()
-                        ->select('id','title','slug','ppv_status','year','rating','access','ppv_price',
-                        'duration','rating','image','featured','video_tv_image','player_image','details','description')
-                        ->get();
+            // Search audio with optimized query
+            $audio = Audio::select([
+                'id',
+                'title',
+                'slug',
+                'ppv_status',
+                'year',
+                'rating',
+                'access',
+                'ppv_price',
+                'duration',
+                'image',
+                'featured',
+                'video_tv_image',
+                'player_image',
+                'details',
+                'description'
+            ])
+                ->where('active', 1)
+                ->where('status', 1)
+                ->where(function ($query) use ($Audios_search_value) {
+                    $query->where('search_tags', 'LIKE', "%{$Audios_search_value}%")
+                        ->orWhere('title', 'LIKE', "%{$Audios_search_value}%");
+                })
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
 
             $data = array(
                 'search_value' => $Audios_search_value,
                 'Search_audio' => $audio,
-                'currency' => CurrencySetting::first() ,
-                'ThumbnailSetting' =>  ThumbnailSetting::first(),
+                'currency' => CurrencySetting::first(),
+                'ThumbnailSetting' => ThumbnailSetting::first(),
             );
 
             return Theme::view('search_audios', $data);
@@ -4166,7 +4782,7 @@ class HomeController extends Controller
 
             // return $th->getMessage();
 
-            return abort (404);
+            return abort(404);
         }
     }
 
@@ -4185,29 +4801,24 @@ class HomeController extends Controller
         $getfeching = Geofencing::first();
 
         $block_videos = BlockVideo::where('country_id', $countryName)->get();
-        if (!$block_videos->isEmpty())
-        {
-            foreach ($block_videos as $block_video)
-            {
+        if (!$block_videos->isEmpty()) {
+            foreach ($block_videos as $block_video) {
                 $blockvideos[] = $block_video->video_id;
             }
-        }
-        else
-        {
+        } else {
             $blockvideos[] = '';
         }
 
         $lanid = Language::where('slug', $slug)->pluck('id');
 
         $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
-        ->where('language_id', '=', $lanid)->where('active', '=', '1')->where('status', '=', '1')
-        ->where('draft', '=', '1');
+            ->where('language_id', '=', $lanid)->where('active', '=', '1')->where('status', '=', '1')
+            ->where('draft', '=', '1');
 
-        if ($getfeching != null && $getfeching->geofencing == 'ON')
-        {
+        if ($getfeching != null && $getfeching->geofencing == 'ON') {
             $language_videos = $language_videos->whereNotIn('videos.id', $blockvideos);
         }
-        $language_videos = $language_videos->orderBy('videos.created_at','desc')->get();
+        $language_videos = $language_videos->orderBy('videos.created_at', 'desc')->get();
 
         $currency = CurrencySetting::first();
 
@@ -4234,7 +4845,7 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
 
 
-            return abort (404);
+            return abort(404);
         }
 
 
@@ -4246,15 +4857,14 @@ class HomeController extends Controller
     public function AdminThemeModeSave(Request $request)
     {
 
-        if($request->input('mode') == 'true'){
+        if ($request->input('mode') == 'true') {
             $theme_modes = "light";
-        }
-        elseif($request->input('mode') == 'false'){
+        } elseif ($request->input('mode') == 'false') {
             $theme_modes = "dark";
         }
 
         $theme_mode = SiteTheme::first();
-        $theme_mode->admin_theme_mode =  $theme_modes;
+        $theme_mode->admin_theme_mode = $theme_modes;
         $theme_mode->update();
 
         return $theme_modes;
@@ -4265,15 +4875,14 @@ class HomeController extends Controller
     public function CPPThemeModeSave(Request $request)
     {
 
-        if($request->input('mode') == 'true'){
+        if ($request->input('mode') == 'true') {
             $theme_modes = "light";
-        }
-        elseif($request->input('mode') == 'false'){
+        } elseif ($request->input('mode') == 'false') {
             $theme_modes = "dark";
         }
         // print_r('theme_modes');exit;
         $theme_mode = SiteTheme::first();
-        $theme_mode->CPP_theme_mode =  $theme_modes;
+        $theme_mode->CPP_theme_mode = $theme_modes;
         $theme_mode->update();
 
         return $theme_modes;
@@ -4284,15 +4893,14 @@ class HomeController extends Controller
     public function ChannelThemeModeSave(Request $request)
     {
 
-        if($request->input('mode') == 'true'){
+        if ($request->input('mode') == 'true') {
             $theme_modes = "light";
-        }
-        elseif($request->input('mode') == 'false'){
+        } elseif ($request->input('mode') == 'false') {
             $theme_modes = "dark";
         }
 
         $theme_mode = SiteTheme::first();
-        $theme_mode->Channel_theme_mode =  $theme_modes;
+        $theme_mode->Channel_theme_mode = $theme_modes;
         $theme_mode->update();
 
         return $theme_modes;
@@ -4303,15 +4911,14 @@ class HomeController extends Controller
     public function AdsThemeModeSave(Request $request)
     {
 
-        if($request->input('mode') == 'true'){
+        if ($request->input('mode') == 'true') {
             $theme_modes = "light";
-        }
-        elseif($request->input('mode') == 'false'){
+        } elseif ($request->input('mode') == 'false') {
             $theme_modes = "dark";
         }
 
         $theme_mode = SiteTheme::first();
-        $theme_mode->Ads_theme_mode =  $theme_modes;
+        $theme_mode->Ads_theme_mode = $theme_modes;
         $theme_mode->update();
 
         return $theme_modes;
@@ -4321,18 +4928,17 @@ class HomeController extends Controller
 
     public function LikeAudio(Request $request)
     {
-        if(!Auth::guest()){
-            $user_id = Auth::user()->id ;
-        }else{
-            $user_id = 0 ;
+        if (!Auth::guest()) {
+            $user_id = Auth::user()->id;
+        } else {
+            $user_id = 0;
         }
         $audio_id = $request->audio_id;
         $like = $request->like;
         $user_id = $user_id;
         $audio = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->get();
         $audio_count = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->count();
-        if ($audio_count > 0)
-        {
+        if ($audio_count > 0) {
             $audio_new = LikeDisLike::where("audio_id", "=", $audio_id)->where("user_id", "=", $user_id)->first();
             $audio_new->liked = $like;
             $audio_new->disliked = 0;
@@ -4341,9 +4947,7 @@ class HomeController extends Controller
             $response = array(
                 'status' => true
             );
-        }
-        else
-        {
+        } else {
             $audio_new = new LikeDisLike;
             $audio_new->audio_id = $audio_id;
             $audio_new->user_id = $user_id;
@@ -4359,19 +4963,18 @@ class HomeController extends Controller
 
     public function DisLikeAudio(Request $request)
     {
-        if(!Auth::guest()){
-            $user_id = Auth::user()->id ;
-        }else{
-            $user_id = 0 ;
-        }        $audio_id = $request->audio_id;
+        if (!Auth::guest()) {
+            $user_id = Auth::user()->id;
+        } else {
+            $user_id = 0;
+        }
+        $audio_id = $request->audio_id;
         $dislike = $request->dislike;
         $d_like = Likedislike::where("audio_id", $audio_id)->where("user_id", $user_id)->count();
 
-        if ($d_like > 0)
-        {
+        if ($d_like > 0) {
             $new_audio_dislike = Likedislike::where("audio_id", $audio_id)->where("user_id", $user_id)->first();
-            if ($dislike == 1)
-            {
+            if ($dislike == 1) {
                 $new_audio_dislike->user_id = $user_id;
                 $new_audio_dislike->audio_id = $audio_id;
                 $new_audio_dislike->liked = 0;
@@ -4380,9 +4983,7 @@ class HomeController extends Controller
                 $response = array(
                     'status' => "disliked"
                 );
-            }
-            else
-            {
+            } else {
                 $new_audio_dislike->user_id = $user_id;
                 $new_audio_dislike->audio_id = $audio_id;
                 $new_audio_dislike->liked = 0;
@@ -4392,9 +4993,7 @@ class HomeController extends Controller
                     'status' => "liked"
                 );
             }
-        }
-        else
-        {
+        } else {
             $new_audio_dislike = new Likedislike;
             $new_audio_dislike->user_id = $user_id;
             $new_audio_dislike->audio_id = $audio_id;
@@ -4408,7 +5007,8 @@ class HomeController extends Controller
         return response()->json($response, 200);
     }
 
-    public function convertExcelToJson(){
+    public function convertExcelToJson()
+    {
 
         try {
             $filePath = 'https://localhost/flicknexs/public/uploads/Pages/testaudio.xlsx';
@@ -4418,35 +5018,35 @@ class HomeController extends Controller
             if (file_exists($path)) {
 
 
-                                // Read data from the Excel file and store it in an array
-                    $data = Excel::toArray(null, $path)[0]; // Get the first sheet
+                // Read data from the Excel file and store it in an array
+                $data = Excel::toArray(null, $path)[0]; // Get the first sheet
 
-                    // Extract the header row (A1 and B1) as keys
-                    $keys = [
-                        $data[0][0] => $data[0][0],
-                        $data[0][1] => $data[0][1]
+                // Extract the header row (A1 and B1) as keys
+                $keys = [
+                    $data[0][0] => $data[0][0],
+                    $data[0][1] => $data[0][1]
+                ];
+
+                // Initialize an empty array for the data rows
+                $jsonData = [];
+
+                // Loop through the data rows starting from the second row
+                for ($i = 1; $i < count($data); $i++) {
+                    $rowData = $data[$i];
+                    // print_r($rowData);exit;
+
+                    $jsonData[] = [
+                        $keys[$data[0][0]] => $rowData[0],
+                        $keys[$data[0][1]] => $rowData[1],
                     ];
+                }
 
-                    // Initialize an empty array for the data rows
-                    $jsonData = [];
-
-                    // Loop through the data rows starting from the second row
-                    for ($i = 1; $i < count($data); $i++) {
-                        $rowData = $data[$i];
-                        // print_r($rowData);exit;
-
-                        $jsonData[] = [
-                            $keys[$data[0][0]] => $rowData[0],
-                            $keys[$data[0][1]] => $rowData[1],
-                        ];
-                    }
-
-                    $result = [
-                        'lyrics' => $jsonData
-                    ];
-                    // Convert the data to JSON
-                    $json = json_encode($result);
-                    dd($json);
+                $result = [
+                    'lyrics' => $jsonData
+                ];
+                // Convert the data to JSON
+                $json = json_encode($result);
+                dd($json);
 
 
 
@@ -4468,110 +5068,108 @@ class HomeController extends Controller
         }
     }
 
-public function uploadExcel(Request $request)
-{
-    // Validate the uploaded Excel file
-    // $request->validate([
-    //     'excel_file' => 'required|file|mimes:xlsx',
-    // ]);
+    public function uploadExcel(Request $request)
+    {
+        // Validate the uploaded Excel file
+        // $request->validate([
+        //     'excel_file' => 'required|file|mimes:xlsx',
+        // ]);
 
-    // // Get the uploaded Excel file from the request
-    // $uploadedFile = $request->file('excel_file');
-    $path = public_path() . "/uploads/Pages/testaudio.xlsx";
+        // // Get the uploaded Excel file from the request
+        // $uploadedFile = $request->file('excel_file');
+        $path = public_path() . "/uploads/Pages/testaudio.xlsx";
 
-    // Ensure the file was uploaded successfully
-    if ($path) {
-        // Get the absolute path to the uploaded file on the server
-        $filePath = $path;
+        // Ensure the file was uploaded successfully
+        if ($path) {
+            // Get the absolute path to the uploaded file on the server
+            $filePath = $path;
 
-        // Read data from the Excel file and store it in an array
-        $data = Excel::toArray(null, $filePath)[0]; // Get the first sheet
+            // Read data from the Excel file and store it in an array
+            $data = Excel::toArray(null, $filePath)[0]; // Get the first sheet
 
-        // Extract the header row (A1 and B1) as keys
-        $keys = [
-            $data[0][0] => $data[0][0],
-            $data[0][1] => $data[0][1]
-        ];
+            // Extract the header row (A1 and B1) as keys
+            $keys = [
+                $data[0][0] => $data[0][0],
+                $data[0][1] => $data[0][1]
+            ];
 
-        // Initialize an empty array for the data rows
-        $jsonData = [];
+            // Initialize an empty array for the data rows
+            $jsonData = [];
 
-        // Loop through the data rows starting from the second row
-        for ($i = 1; $i < count($data); $i++) {
-            $rowData = $data[$i];
+            // Loop through the data rows starting from the second row
+            for ($i = 1; $i < count($data); $i++) {
+                $rowData = $data[$i];
 
-            // Validate that both "line" and "time" keys are not empty
-            if (!empty($rowData[0]) && !empty($rowData[1])) {
-                // Validate that "time" is numeric
-                if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
-                    $jsonData[] = [
-                        $keys[$data[0][0]] => $rowData[0],
-                        $keys[$data[0][1]] => intval($rowData[1]),
-                    ];
+                // Validate that both "line" and "time" keys are not empty
+                if (!empty($rowData[0]) && !empty($rowData[1])) {
+                    // Validate that "time" is numeric
+                    if (is_numeric($rowData[1]) && strpos($rowData[1], '.') === false) {
+                        $jsonData[] = [
+                            $keys[$data[0][0]] => $rowData[0],
+                            $keys[$data[0][1]] => intval($rowData[1]),
+                        ];
+                    } else {
+                        // Handle the case where "time" is not numeric
+                        return response()->json(['error' => 'Invalid data in "time" column.']);
+                    }
                 } else {
-                    // Handle the case where "time" is not numeric
-                    return response()->json(['error' => 'Invalid data in "time" column.']);
+                    // Handle the case where "line" or "time" keys are empty
+                    return response()->json(['error' => 'Empty "line" or "time" key found.']);
                 }
-            } else {
-                // Handle the case where "line" or "time" keys are empty
-                return response()->json(['error' => 'Empty "line" or "time" key found.']);
             }
+
+            // Wrap the data in an object with a "lyrics" key
+            $result = [
+                'lyrics' => $jsonData
+            ];
+
+            // Convert the data to JSON
+            $json = json_encode($result);
+
+            // You can return the JSON or do any other processing as needed
+            return response()->json($json);
+        } else {
+            // Handle the case where the file was not uploaded
+            return response()->json(['error' => 'File not uploaded.']);
         }
-
-        // Wrap the data in an object with a "lyrics" key
-        $result = [
-            'lyrics' => $jsonData
-        ];
-
-        // Convert the data to JSON
-        $json = json_encode($result);
-
-        // You can return the JSON or do any other processing as needed
-        return response()->json($json);
-    } else {
-        // Handle the case where the file was not uploaded
-        return response()->json(['error' => 'File not uploaded.']);
     }
-}
 
 
-    public function TvCodeQuickResponse($tvcode,$verifytoken){
+    public function TvCodeQuickResponse($tvcode, $verifytoken)
+    {
 
         $agent = new Agent();
 
         // add verifytoken
 
-        TVLoginCode::where('tv_code',$tvcode)->update([
-            'verifytoken'  =>  $verifytoken,
+        TVLoginCode::where('tv_code', $tvcode)->update([
+            'verifytoken' => $verifytoken,
         ]);
 
-        $AppSetting = AppSetting::where('id','=',1)->first();
-            if ($agent->is('iOS'))
-            {
-                try {
-                    $ios_url = AppSetting::where('id','=',1)->pluck('ios_url')->first();
-                    if(!empty($ios_url)){
-                        return redirect()->away($ios_url);
-                    }else{
-                        return redirect('/login');
-                    }
-                } catch (\Throwable $th) {
-                    throw $th;
+        $AppSetting = AppSetting::where('id', '=', 1)->first();
+        if ($agent->is('iOS')) {
+            try {
+                $ios_url = AppSetting::where('id', '=', 1)->pluck('ios_url')->first();
+                if (!empty($ios_url)) {
+                    return redirect()->away($ios_url);
+                } else {
+                    return redirect('/login');
                 }
+            } catch (\Throwable $th) {
+                throw $th;
             }
-            else
-            {
-                try {
-                    $android_url = AppSetting::where('id','=',1)->pluck('android_url')->first();
-                    if(!empty($android_url)){
-                        return redirect()->away($android_url);
-                    }else{
-                        return redirect('/login');
-                    }
-                } catch (\Throwable $th) {
-                    throw $th;
+        } else {
+            try {
+                $android_url = AppSetting::where('id', '=', 1)->pluck('android_url')->first();
+                if (!empty($android_url)) {
+                    return redirect()->away($android_url);
+                } else {
+                    return redirect('/login');
                 }
+            } catch (\Throwable $th) {
+                throw $th;
             }
+        }
 
     }
 
@@ -4581,56 +5179,53 @@ public function uploadExcel(Request $request)
     {
         $settings = Setting::first();
 
-        if($settings->enable_landing_page == 1 && Auth::guest()){
+        if ($settings->enable_landing_page == 1 && Auth::guest()) {
 
-            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+            $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : "landing-page";
 
-            return redirect()->route('landing_page', $landing_page_slug );
+            return redirect()->route('landing_page', $landing_page_slug);
         }
 
         $system_settings = SystemSetting::first();
         $user = User::where('id', '=', 1)->first();
 
-        if (Auth::guest())
-        {
+        if (Auth::guest()) {
             return view('auth.login', compact('system_settings', 'user'));
 
         }
         $multiuser = Session::get('subuser_id');
 
-        if(!Auth::guest()):
+        if (!Auth::guest()):
 
-            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+            $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
         else:
 
-            $Mode['user_type'] = null ;
+            $Mode['user_type'] = null;
         endif;
 
 
-        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0;
 
 
-        $watchlater_videos_count = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '!=','')->latest()->count();
-        if ($watchlater_videos_count > 0)
-        {
-            $watchlater_videos_array = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '!=','')->pluck('video_id')->toarray();
+        $watchlater_videos_count = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '!=', '')->latest()->count();
+        if ($watchlater_videos_count > 0) {
+            $watchlater_videos_array = Watchlater::where('user_id', '=', Auth::user()->id)->where('video_id', '!=', '')->pluck('video_id')->toarray();
             $Watchlater_videos = Watchlater::where('user_id', '=', Auth::user()->id)->latest();
-            $Watchlater_videos = Video::whereIn('id',$watchlater_videos_array);
+            $Watchlater_videos = Video::whereIn('id', $watchlater_videos_array);
 
-                if (Geofencing() != null && Geofencing()->geofencing == 'ON')
-                {
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                if (function_exists('Block_videos')) {
                     $Watchlater_videos = $Watchlater_videos->whereNotIn('videos.id', Block_videos());
                 }
+            }
 
-                if( $check_Kidmode == 1 )
-                {
-                    $Watchlater_videos = $Watchlater_videos->whereBetween('videos.age_restrict', [ 0, 12 ]);
-                }
+            if ($check_Kidmode == 1) {
+                $Watchlater_videos = $Watchlater_videos->whereBetween('videos.age_restrict', [0, 12]);
+            }
 
-            $Watchlater_videos = $Watchlater_videos->limit(50)->paginate($this->videos_per_page);
-        }
-        else
-        {
+            $perPage = $this->videos_per_page ?? 12; // Fallback to 12 if not set
+            $Watchlater_videos = $Watchlater_videos->limit(50)->paginate($perPage);
+        } else {
             $Watchlater_videos = array();
         }
 
@@ -4639,61 +5234,93 @@ public function uploadExcel(Request $request)
         $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
 
         $data = array(
-            'Watchlater_videos'    => $Watchlater_videos,
-            'ppv_gobal_price'  => $ppv_gobal_price,
-            'currency'         => CurrencySetting::first(),
+            'Watchlater_videos' => $Watchlater_videos,
+            'ppv_gobal_price' => $ppv_gobal_price,
+            'currency' => CurrencySetting::first(),
             'ThumbnailSetting' => ThumbnailSetting::first(),
         );
 
-        return Theme::view('MyList',['MyList'=>$data]);
+        return Theme::view('MyList', ['MyList' => $data]);
     }
 
+    /**
+     * Filter EPG data by date and channel
+     *
+     * @param  Request  $request
+     * @return \Illuminate\View\View
+     */
     public function EPG_date_filter(Request $request)
     {
-        $theme = Theme::uses($this->HomeSetting->theme_choosen);
+        // Validate input
+        $validated = $request->validate([
+            'channel_id' => 'required|integer|exists:admin_e_p_g_channels,id',
+            // Add other expected parameters if needed
+        ]);
 
-        $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')->pluck('video_name')->toArray();
-        $order_settings_list = OrderHomeSetting::get();
+        // Set theme with fallback
+        $theme = Theme::uses($this->HomeSetting->theme_choosen ?? 'default');
 
+        // Get order settings if needed
+        $order_settings = OrderHomeSetting::orderBy('order_id', 'asc')
+            ->pluck('video_name')
+            ->toArray();
+            
+        $order_settings_list = OrderHomeSetting::all();
+
+        // Get default URLs and timezone
         $current_timezone = current_timezone();
-        $default_vertical_image_url = default_vertical_image_url() ;
+        $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
 
-        $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->limit(15)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request , $current_timezone) {
+        // Get and process EPG channel data
+        $epg_channel_data = AdminEPGChannel::query()
+            ->where('status', 1)
+            ->where('id', $validated['channel_id'])
+            ->limit(15)
+            ->get()
+            ->map(function ($item) use ($default_vertical_image_url, $default_horizontal_image_url, $request, $current_timezone) {
+                // Build URLs with null safety
+                $baseUrl = rtrim($this->BaseURL ?? url('/'), '/');
+                $item['image_url'] = !empty($item->image) 
+                    ? $baseUrl . '/EPG-Channel/' . ltrim($item->image, '/')
+                    : $default_vertical_image_url;
+            $item['Player_image_url'] = !empty($item->player_image) 
+                ? $baseUrl . '/EPG-Channel/' . ltrim($item->player_image, '/') 
+                : $default_horizontal_image_url;
+                
+            $item['Logo_url'] = !empty($item->logo) 
+                ? $baseUrl . '/EPG-Channel/' . ltrim($item->logo, '/') 
+                : $default_vertical_image_url;
 
-            $item['image_url'] = $item->image != null ? $this->BaseURL.('/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
-            $item['Player_image_url'] = $item->player_image != null ?  $this->BaseURL.('/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
-            $item['Logo_url'] = $item->logo != null ?  $this->BaseURL.('/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+            $item['ChannelVideoScheduler'] = ChannelVideoScheduler::where('channe_id', $request->channel_id)
 
-            $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::where('channe_id',$request->channel_id)
+                ->when(!is_null($request->date), function ($query) use ($request) {
+                    return $query->Where('choosed_date', $request->date);
+                })
 
-                                                ->when( !is_null($request->date), function ($query) use ($request) {
-                                                    return $query->Where('choosed_date', $request->date);
-                                                })
+                ->orderBy('start_time', 'asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
 
-                                                ->orderBy('start_time','asc')->limit(30)->get()->map(function ($item) use ($current_timezone) {
+                    $item['TimeZone'] = TimeZone::where('id', $item->time_zone)->first();
 
-                                                    $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
+                    $item['converted_start_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone)
+                        ->copy()->tz($current_timezone)->format('h:i A');
 
-                                                    $item['converted_start_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
-                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
+                    $item['converted_end_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone)
+                        ->copy()->tz($current_timezone)->format('h:i A');
 
-                                                    $item['converted_end_time'] = Carbon\Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
-                                                                                                    ->copy()->tz( $current_timezone )->format('h:i A');
-
-                                                    return $item;
-                                                });
+                    return $item;
+                });
             return $item;
         })->first();
 
 
-        $data =[
-            'order_settings' => $order_settings ,
-            'order_settings_list' => $order_settings_list ,
-            'order_settings' => $order_settings ,
-            'epg_channel_data' => $epg_channel_data ,
-            'EPG_date_filter_status' => 1 ,
-            'current_timezone'       => $current_timezone,
+        $data = [
+            'order_settings' => $order_settings,
+            'order_settings_list' => $order_settings_list,
+            'order_settings' => $order_settings,
+            'epg_channel_data' => $epg_channel_data,
+            'EPG_date_filter_status' => 1,
+            'current_timezone' => $current_timezone,
         ];
 
         return Theme::view('partials.home.channel-epg-partial', $data);
@@ -4707,7 +5334,7 @@ public function uploadExcel(Request $request)
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
             $inputs = [
-                $request->where_column  => $request->source_id,
+                $request->where_column => $request->source_id,
                 'type' => $request->type,
                 'user_id' => !Auth::guest() ? Auth::user()->id : null,
                 'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
@@ -4715,32 +5342,32 @@ public function uploadExcel(Request $request)
 
             $watchlater_exist = Watchlater::where($request->where_column, $request->source_id)
 
-                                                ->when($request->where_column == "video_id", function ($query) use($request)  {
-                                                    $query->where('type', $request->type);
-                                                })
+                ->when($request->where_column == "video_id", function ($query) use ($request) {
+                    $query->where('type', $request->type);
+                })
 
-                                                ->where(function ($query) use ($geoip) {
-                                                    if (!Auth::guest()) {
-                                                        $query->where('user_id', Auth::user()->id);
-                                                    } else {
-                                                        $query->where('users_ip_address', $geoip->getIP());
-                                                    }
-                                                })->first();
+                ->where(function ($query) use ($geoip) {
+                    if (!Auth::guest()) {
+                        $query->where('user_id', Auth::user()->id);
+                    } else {
+                        $query->where('users_ip_address', $geoip->getIP());
+                    }
+                })->first();
 
-            !is_null($watchlater_exist) ? $watchlater_exist->delete() : Watchlater::create( $inputs ) ;
+            !is_null($watchlater_exist) ? $watchlater_exist->delete() : Watchlater::create($inputs);
 
             $response = array(
-                'status'=> true,
-                'watchlater_status' => is_null($watchlater_exist) ? "Add" : "Remove "  ,
-                'message'=> is_null($watchlater_exist) ? "This video was successfully added to Watchlater's list" : "This video was successfully remove from Watchlater's list"  ,
+                'status' => true,
+                'watchlater_status' => is_null($watchlater_exist) ? "Add" : "Remove ",
+                'message' => is_null($watchlater_exist) ? "This video was successfully added to Watchlater's list" : "This video was successfully remove from Watchlater's list",
             );
 
         } catch (\Throwable $th) {
 
             $response = array(
-                'status'=> false,
-                'message'=> $th->getMessage(),
-              );
+                'status' => false,
+                'message' => $th->getMessage(),
+            );
         }
 
         return response()->json(['data' => $response]);
@@ -4753,7 +5380,7 @@ public function uploadExcel(Request $request)
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
             $inputs = [
-                $request->where_column  => $request->source_id,
+                $request->where_column => $request->source_id,
                 'type' => $request->type,
                 'user_id' => !Auth::guest() ? Auth::user()->id : null,
                 'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
@@ -4762,33 +5389,33 @@ public function uploadExcel(Request $request)
 
             $wishlist_exist = Wishlist::where($request->where_column, $request->source_id)
 
-                                            ->when($request->where_column == "video_id", function ($query) use($request) {
-                                                $query->where('type', $request->type);
-                                            })
+                ->when($request->where_column == "video_id", function ($query) use ($request) {
+                    $query->where('type', $request->type);
+                })
 
-                                            ->where(function ($query) use ($geoip) {
-                                                if (!Auth::guest()) {
-                                                    $query->where('user_id', Auth::user()->id);
-                                                } else {
-                                                    $query->where('users_ip_address', $geoip->getIP());
-                                                }
-                                            })->first();
+                ->where(function ($query) use ($geoip) {
+                    if (!Auth::guest()) {
+                        $query->where('user_id', Auth::user()->id);
+                    } else {
+                        $query->where('users_ip_address', $geoip->getIP());
+                    }
+                })->first();
 
 
-            !is_null($wishlist_exist) ? $wishlist_exist->delete() : Wishlist::create( $inputs ) ;
+            !is_null($wishlist_exist) ? $wishlist_exist->delete() : Wishlist::create($inputs);
 
             $response = array(
-                'status'=> true,
-                'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
-                'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
+                'status' => true,
+                'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove ",
+                'message' => is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list",
             );
 
         } catch (\Throwable $th) {
 
             $response = array(
-                'status'=> false,
-                'message'=> $th->getMessage(),
-              );
+                'status' => false,
+                'message' => $th->getMessage(),
+            );
         }
 
         return response()->json(['data' => $response]);
@@ -4800,36 +5427,33 @@ public function uploadExcel(Request $request)
     {
         $settings = Setting::first();
 
-        if($settings->enable_landing_page == 1 && Auth::guest()){
+        if ($settings->enable_landing_page == 1 && Auth::guest()) {
 
-            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+            $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : "landing-page";
 
-            return redirect()->route('landing_page', $landing_page_slug );
+            return redirect()->route('landing_page', $landing_page_slug);
         }
 
         $multiuser = Session::get('subuser_id');
 
-        if(!Auth::guest()):
+        if (!Auth::guest()):
 
-            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+            $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
         else:
 
-            $Mode['user_type'] = null ;
+            $Mode['user_type'] = null;
         endif;
 
 
-        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0;
 
 
         $Document_count = Document::latest()->count();
 
-        if ($Document_count > 0)
-        {
+        if ($Document_count > 0) {
             $latest_Documents = Document::limit(50)->paginate($this->videos_per_page);
 
-        }
-        else
-        {
+        } else {
             $latest_Documents = array();
         }
 
@@ -4839,12 +5463,12 @@ public function uploadExcel(Request $request)
 
         $data = array(
             'latest_Documents' => $latest_Documents,
-            'ppv_gobal_price'  => $ppv_gobal_price,
-            'currency'         => CurrencySetting::first(),
+            'ppv_gobal_price' => $ppv_gobal_price,
+            'currency' => CurrencySetting::first(),
             'ThumbnailSetting' => ThumbnailSetting::first(),
         );
 
-        return Theme::view('DocumentList',['DocumentList'=>$data]);
+        return Theme::view('DocumentList', ['DocumentList' => $data]);
     }
 
 
@@ -4852,39 +5476,36 @@ public function uploadExcel(Request $request)
     {
         $settings = Setting::first();
 
-        $category_id = DocumentGenre::where('slug',$slug)->pluck('id')->first();
+        $category_id = DocumentGenre::where('slug', $slug)->pluck('id')->first();
 
-        $Documents =  Document::where('category','!=',null)->WhereJsonContains('category',(string) $category_id)->limit(50)->paginate($this->videos_per_page);
-        if($settings->enable_landing_page == 1 && Auth::guest()){
+        $Documents = Document::where('category', '!=', null)->WhereJsonContains('category', (string) $category_id)->limit(50)->paginate($this->videos_per_page);
+        if ($settings->enable_landing_page == 1 && Auth::guest()) {
 
-            $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+            $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : "landing-page";
 
-            return redirect()->route('landing_page', $landing_page_slug );
+            return redirect()->route('landing_page', $landing_page_slug);
         }
 
         $multiuser = Session::get('subuser_id');
 
-        if(!Auth::guest()):
+        if (!Auth::guest()):
 
-            $Mode = $multiuser != null ?  Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
+            $Mode = $multiuser != null ? Multiprofile::where('id', $multiuser)->first() : User::where('id', Auth::User()->id)->first();
         else:
 
-            $Mode['user_type'] = null ;
+            $Mode['user_type'] = null;
         endif;
 
 
-        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0 ;
+        $check_Kidmode = $Mode['user_type'] != null && $Mode['user_type'] == "Kids" ? 1 : 0;
 
 
         $Document_count = Document::latest()->count();
 
-        if ($Document_count > 0)
-        {
+        if ($Document_count > 0) {
             $latest_Documents = Document::limit(50)->paginate($this->videos_per_page);
 
-        }
-        else
-        {
+        } else {
             $latest_Documents = array();
         }
 
@@ -4894,13 +5515,13 @@ public function uploadExcel(Request $request)
 
         $data = array(
             'latest_Documents' => $Documents,
-            'ppv_gobal_price'  => $ppv_gobal_price,
-            'currency'         => CurrencySetting::first(),
+            'ppv_gobal_price' => $ppv_gobal_price,
+            'currency' => CurrencySetting::first(),
             'ThumbnailSetting' => ThumbnailSetting::first(),
-            'DocumentGenre_Name' => DocumentGenre::where('slug',$slug)->pluck('name')->first(),
+            'DocumentGenre_Name' => DocumentGenre::where('slug', $slug)->pluck('name')->first(),
         );
 
-        return Theme::view('DocumentCategoryListPage',['DocumentCategoryListPage'=>$data]);
+        return Theme::view('DocumentCategoryListPage', ['DocumentCategoryListPage' => $data]);
     }
 
     // only for theme4
@@ -4917,15 +5538,40 @@ public function uploadExcel(Request $request)
 
         $current_timezone = current_timezone();
 
-        $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
-                                        'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
-                                        'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                        'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                ->where('active', 1)
-                                ->where('status', 1)
-                                ->latest()
-                                ->limit(15)
-                                ->get();
+        $livestreams = LiveStream::select(
+            'id',
+            'title',
+            'slug',
+            'year',
+            'rating',
+            'access',
+            'publish_type',
+            'publish_time',
+            'publish_status',
+            'ppv_price',
+            'duration',
+            'rating',
+            'image',
+            'featured',
+            'Tv_live_image',
+            'player_image',
+            'details',
+            'description',
+            'free_duration',
+            'recurring_program',
+            'program_start_time',
+            'program_end_time',
+            'custom_start_program_time',
+            'custom_end_program_time',
+            'recurring_timezone',
+            'recurring_program_week_day',
+            'recurring_program_month_day'
+        )
+            ->where('active', 1)
+            ->where('status', 1)
+            ->latest()
+            ->limit(15)
+            ->get();
 
         $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
             if ($livestream->publish_type === 'recurring_program') {
@@ -4937,13 +5583,13 @@ public function uploadExcel(Request $request)
 
                 switch ($livestream->recurring_program) {
                     case 'custom':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >= Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i');
                         break;
                     case 'daily':
                         $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
                         break;
                     case 'weekly':
-                        $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                        $recurring_program_Status = ($livestream->recurring_program_week_day == $convert_time->format('N')) && $convert_time->greaterThanOrEqualTo($midnight) && ($livestream->program_end_time >= $convert_time->format('H:i'));
                         break;
                     case 'monthly':
                         $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
@@ -4978,7 +5624,7 @@ public function uploadExcel(Request $request)
             return true;
         });
 
-        return Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livestreams , 'livestreams_data' => $livestreams ]) )->render();
+        return Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livestreams, 'livestreams_data' => $livestreams]))->render();
     }
 
 
@@ -4986,18 +5632,17 @@ public function uploadExcel(Request $request)
     {
         try {
 
-            if (Auth::guest())
-            {
+            if (Auth::guest()) {
                 return redirect('/login');
             }
 
             $alldevices_register = LoggedDevice::where('user_id', Auth::User()->id)
-                                        ->get();
+                ->get();
             $data = array(
                 'alldevices_register' => $alldevices_register,
             );
 
-            return Theme::view('MyLoggedDevices',['MyLoggedDevices'=>$data]);
+            return Theme::view('MyLoggedDevices', ['MyLoggedDevices' => $data]);
 
 
         } catch (\Throwable $th) {
@@ -5011,14 +5656,13 @@ public function uploadExcel(Request $request)
     {
         try {
 
-            if (Auth::guest())
-            {
+            if (Auth::guest()) {
                 return redirect('/login');
             }
 
-            LoggedDevice::where('id',$id)->delete();
+            LoggedDevice::where('id', $id)->delete();
 
-            return Redirect::back()->with(array('message' => 'Successfully Deleted Device','note_type' => 'success'));
+            return Redirect::back()->with(array('message' => 'Successfully Deleted Device', 'note_type' => 'success'));
 
 
         } catch (\Throwable $th) {
@@ -5026,109 +5670,110 @@ public function uploadExcel(Request $request)
         }
     }
 
-    public function header_menus() {
-        try{
+    public function header_menus()
+    {
+        try {
 
-            $header_top_position_menus = Menu::orderBy('order', 'asc')->where('in_home',1)->get();
-                                                                              
+            $header_top_position_menus = Menu::orderBy('order', 'asc')->where('in_home', 1)->get();
+
             $Parent_video_category = VideoCategory::whereIn('id', function ($query) {
-                
+
                 $query->select('parent_id')->from('video_categories');
 
-                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
+            })->orwhere('parent_id', 0)->orwhere('parent_id', null)->orderBy('order', 'asc')->where('in_menu', 1)
 
                 ->get()->map(function ($item) {
 
-                $item['sub_video_category'] = VideoCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->where('in_menu',1)->get();
-                
-                return $item;
-            });
+                    $item['sub_video_category'] = VideoCategory::where('parent_id', $item->id)->orderBy('order', 'asc')->where('in_menu', 1)->get();
+
+                    return $item;
+                });
 
             $Parent_live_category = LiveCategory::whereIn('id', function ($query) {
-                
+
                 $query->select('parent_id')->from('live_categories');
 
-                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')
+            })->orwhere('parent_id', 0)->orwhere('parent_id', null)->orderBy('order', 'asc')
 
                 ->get()->map(function ($item) {
 
-                $item['sub_live_category'] = LiveCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->get();
-                
-                return $item;
-            });
+                    $item['sub_live_category'] = LiveCategory::where('parent_id', $item->id)->orderBy('order', 'asc')->get();
+
+                    return $item;
+                });
 
             $Parent_audios_category = AudioCategory::whereIn('id', function ($query) {
-                
+
                 $query->select('parent_id')->from('audio_categories');
 
-                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('active',1)
+            })->orwhere('parent_id', 0)->orwhere('parent_id', null)->orderBy('order', 'asc')->where('active', 1)
 
                 ->get()->map(function ($item) {
 
-                $item['sub_audios_category'] = AudioCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->get();
-                
-                return $item;
-            });
+                    $item['sub_audios_category'] = AudioCategory::where('parent_id', $item->id)->orderBy('order', 'asc')->get();
+
+                    return $item;
+                });
 
             $Parent_series_category = SeriesGenre::whereIn('id', function ($query) {
-                
+
                 $query->select('parent_id')->from('series_genre');
 
-                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
+            })->orwhere('parent_id', 0)->orwhere('parent_id', null)->orderBy('order', 'asc')->where('in_menu', 1)
 
                 ->get()->map(function ($item) {
 
-                $item['sub_series_category'] = SeriesGenre::where('parent_id',$item->id)->where('in_menu',1)->orderBy('order', 'asc')->get();
-                
-                return $item;
-            });
+                    $item['sub_series_category'] = SeriesGenre::where('parent_id', $item->id)->where('in_menu', 1)->orderBy('order', 'asc')->get();
+
+                    return $item;
+                });
 
             $Parent_Series_Networks = SeriesNetwork::whereIn('id', function ($query) {
-                
-                $query->select('parent_id')->from('series_networks');
-            
-                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
-            
-                ->get()->map(function ($item) {
-            
-                $item['Sub_Series_Networks'] = SeriesNetwork::where('parent_id',$item->id)->where('in_menu',1)->orderBy('order', 'asc')->get();
-                
-                return $item;
-            });
 
-            $tv_shows_series = Series::where('active',1)->get();
+                $query->select('parent_id')->from('series_networks');
+
+            })->orwhere('parent_id', 0)->orwhere('parent_id', null)->orderBy('order', 'asc')->where('in_menu', 1)
+
+                ->get()->map(function ($item) {
+
+                    $item['Sub_Series_Networks'] = SeriesNetwork::where('parent_id', $item->id)->where('in_menu', 1)->orderBy('order', 'asc')->get();
+
+                    return $item;
+                });
+
+            $tv_shows_series = Series::where('active', 1)->get();
 
             $languages = Language::all();
 
             $data = [
-                'languages'                   => $languages,
-                'tv_shows_series'             => $tv_shows_series,
-                'Parent_Series_Networks'      => $Parent_Series_Networks,
-                'Parent_series_category'      => $Parent_series_category,
-                'Parent_audios_category'      => $Parent_audios_category,
-                'Parent_live_category'        => $Parent_live_category,
-                'Parent_video_category'       => $Parent_video_category,
-                'header_top_position_menus'   => $header_top_position_menus,
+                'languages' => $languages,
+                'tv_shows_series' => $tv_shows_series,
+                'Parent_Series_Networks' => $Parent_Series_Networks,
+                'Parent_series_category' => $Parent_series_category,
+                'Parent_audios_category' => $Parent_audios_category,
+                'Parent_live_category' => $Parent_live_category,
+                'Parent_video_category' => $Parent_video_category,
+                'header_top_position_menus' => $header_top_position_menus,
 
             ];
             // dd($data);
             return Theme::view('header_menus', $data);
 
-        }catch(\Throwable $th){
+        } catch (\Throwable $th) {
             // return $th->getMessage();
             return abort(404);
         }
-        
+
     }
 
-    
+
     public function fetchMenus()
     {
         if (!Auth::guest() && Auth::user()->role != 'admin' || Auth::guest()) {
             $menus = Menu::orderBy('order', 'asc')
-                        ->where('in_home', '!=', 0)
-                        ->orWhereNull('in_home')
-                        ->get();
+                ->where('in_home', '!=', 0)
+                ->orWhereNull('in_home')
+                ->get();
         } else {
             $menus = Menu::orderBy('order', 'asc')->get();
         }
@@ -5160,7 +5805,7 @@ public function uploadExcel(Request $request)
         $logContent = File::get($logPath);
 
         $entries = preg_split('/\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\].*/', $logContent, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-        
+
         preg_match_all('/\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\].*/', $logContent, $timestamps);
 
         $logs = [];
@@ -5168,7 +5813,7 @@ public function uploadExcel(Request $request)
             $logs[] = $timestamps[0][$i] . (isset($entries[$i + 1]) ? $entries[$i + 1] : '');
         }
 
-        $logs = array_reverse($logs); 
+        $logs = array_reverse($logs);
 
         // dd($logs);
         $perPage = 10;
@@ -5183,7 +5828,7 @@ public function uploadExcel(Request $request)
 
         return view('logs.index', ['logs' => $paginatedLogs, 'paginator' => $paginator]);
     }
-    
+
     public function getFooterLinks()
     {
         $cmspages = Page::where('footer_active', 1)->get();
@@ -5192,7 +5837,7 @@ public function uploadExcel(Request $request)
         foreach ($cmspages as $page) {
             $url = ($page->slug === 'contact-us') ? '/' . $page->slug : 'page/' . $page->slug;
             $html .= '<a href="' . URL::to($url) . '" target="_blank" class="ml-1 footer_link">'
-                   . e(__($page->title)) . '</a>';
+                . e(__($page->title)) . '</a>';
         }
 
         return response()->json(['html' => $html]);

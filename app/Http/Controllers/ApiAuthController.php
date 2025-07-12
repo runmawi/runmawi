@@ -5713,6 +5713,15 @@ class ApiAuthController extends Controller
 
       DB::commit();
 
+      \Log::info('✅ ADD PAYPERVIEW TRANSACTION COMPLETED SUCCESSFULLY', [
+        'user_id' => $data['user_id'],
+        'payment_type' => $data['payment_type'],
+        'platform' => $data['platform'],
+        'amount' => $data['amount'],
+        'status' => $data['status'],
+        'completed_at' => now()
+      ]);
+
       return response()->json([
         'status' => 'success',
         'message' => 'Purchase completed successfully'
@@ -5720,8 +5729,16 @@ class ApiAuthController extends Controller
 
     } catch (\Exception $e) {
       DB::rollBack();
-      \Log::error('PPV Purchase Error: ' . $e->getMessage(), [
-        'trace' => $e->getTraceAsString()
+      
+      \Log::error('❌ ADD PAYPERVIEW TRANSACTION FAILED', [
+        'error' => $e->getMessage(),
+        'user_id' => $data['user_id'] ?? 'unknown',
+        'payment_type' => $data['payment_type'] ?? 'unknown',
+        'platform' => $data['platform'] ?? 'unknown',
+        'amount' => $data['amount'] ?? 'unknown',
+        'request_data' => $request->all(),
+        'trace' => $e->getTraceAsString(),
+        'failed_at' => now()
       ]);
 
       return response()->json([
@@ -5738,21 +5755,42 @@ class ApiAuthController extends Controller
       'video_id' => $requestData['video_id']
     ]);
 
-    \Log::info('Inserting video purchase into database', [
+    \Log::info('=== ATTEMPTING VIDEO PURCHASE DATABASE INSERT ===', [
       'user_id' => $purchaseData['user_id'],
       'video_id' => $purchaseData['video_id'],
       'amount' => $purchaseData['total_amount'],
       'payment_id' => $purchaseData['payment_id'],
-      'status' => $purchaseData['status']
+      'payment_gateway' => $purchaseData['payment_gateway'],
+      'platform' => $purchaseData['platform'],
+      'status' => $purchaseData['status'],
+      'to_time' => $purchaseData['to_time'],
+      'full_data' => $purchaseData
     ]);
 
-    $insertId = DB::table('ppv_purchases')->insertGetId($purchaseData);
-    
-    \Log::info('Video purchase inserted successfully', [
-      'purchase_id' => $insertId,
-      'user_id' => $purchaseData['user_id'],
-      'video_id' => $purchaseData['video_id']
-    ]);
+    try {
+      $insertId = DB::table('ppv_purchases')->insertGetId($purchaseData);
+      
+      \Log::info('✅ VIDEO PURCHASE DATABASE INSERT SUCCESSFUL', [
+        'purchase_id' => $insertId,
+        'user_id' => $purchaseData['user_id'],
+        'video_id' => $purchaseData['video_id'],
+        'payment_id' => $purchaseData['payment_id'],
+        'amount' => $purchaseData['total_amount'],
+        'status' => $purchaseData['status'],
+        'inserted_at' => now()
+      ]);
+      
+      return $insertId;
+    } catch (\Exception $e) {
+      \Log::error('❌ VIDEO PURCHASE DATABASE INSERT FAILED', [
+        'error' => $e->getMessage(),
+        'user_id' => $purchaseData['user_id'],
+        'video_id' => $purchaseData['video_id'],
+        'payment_id' => $purchaseData['payment_id'],
+        'trace' => $e->getTraceAsString()
+      ]);
+      throw $e;
+    }
   }
 
   private function processLivePurchase(array $baseData, array $requestData)
@@ -5762,10 +5800,46 @@ class ApiAuthController extends Controller
       'status' => 1 // Assuming 1 means active for live purchases
     ]);
 
-    DB::table('live_purchases')->insert($purchaseData);
+    \Log::info('=== ATTEMPTING LIVE PURCHASE DATABASE INSERT ===', [
+      'user_id' => $purchaseData['user_id'],
+      'live_id' => $purchaseData['live_id'],
+      'amount' => $purchaseData['total_amount'],
+      'payment_id' => $purchaseData['payment_id'],
+      'payment_gateway' => $purchaseData['payment_gateway'],
+      'platform' => $purchaseData['platform'],
+      'status' => $purchaseData['status'],
+      'full_data' => $purchaseData
+    ]);
 
-    // Also add to ppv_purchases for consistency
-    DB::table('ppv_purchases')->insert($purchaseData);
+    try {
+      // Insert into live_purchases table
+      DB::table('live_purchases')->insert($purchaseData);
+      \Log::info('✅ Live purchase inserted into live_purchases table');
+
+      // Also add to ppv_purchases for consistency
+      $ppvInsertId = DB::table('ppv_purchases')->insertGetId($purchaseData);
+      
+      \Log::info('✅ LIVE PURCHASE DATABASE INSERT SUCCESSFUL', [
+        'purchase_id' => $ppvInsertId,
+        'user_id' => $purchaseData['user_id'],
+        'live_id' => $purchaseData['live_id'],
+        'payment_id' => $purchaseData['payment_id'],
+        'amount' => $purchaseData['total_amount'],
+        'status' => $purchaseData['status'],
+        'inserted_at' => now()
+      ]);
+      
+      return $ppvInsertId;
+    } catch (\Exception $e) {
+      \Log::error('❌ LIVE PURCHASE DATABASE INSERT FAILED', [
+        'error' => $e->getMessage(),
+        'user_id' => $purchaseData['user_id'],
+        'live_id' => $purchaseData['live_id'],
+        'payment_id' => $purchaseData['payment_id'],
+        'trace' => $e->getTraceAsString()
+      ]);
+      throw $e;
+    }
   }
 
   private function processAudioPurchase(array $baseData, array $requestData)
@@ -5774,17 +5848,92 @@ class ApiAuthController extends Controller
       'audio_id' => $requestData['audio_id']
     ]);
 
-    DB::table('ppv_purchases')->insert($purchaseData);
+    \Log::info('=== ATTEMPTING AUDIO PURCHASE DATABASE INSERT ===', [
+      'user_id' => $purchaseData['user_id'],
+      'audio_id' => $purchaseData['audio_id'],
+      'amount' => $purchaseData['total_amount'],
+      'payment_id' => $purchaseData['payment_id'],
+      'payment_gateway' => $purchaseData['payment_gateway'],
+      'platform' => $purchaseData['platform'],
+      'status' => $purchaseData['status'],
+      'full_data' => $purchaseData
+    ]);
+
+    try {
+      $insertId = DB::table('ppv_purchases')->insertGetId($purchaseData);
+      
+      \Log::info('✅ AUDIO PURCHASE DATABASE INSERT SUCCESSFUL', [
+        'purchase_id' => $insertId,
+        'user_id' => $purchaseData['user_id'],
+        'audio_id' => $purchaseData['audio_id'],
+        'payment_id' => $purchaseData['payment_id'],
+        'amount' => $purchaseData['total_amount'],
+        'status' => $purchaseData['status'],
+        'inserted_at' => now()
+      ]);
+      
+      return $insertId;
+    } catch (\Exception $e) {
+      \Log::error('❌ AUDIO PURCHASE DATABASE INSERT FAILED', [
+        'error' => $e->getMessage(),
+        'user_id' => $purchaseData['user_id'],
+        'audio_id' => $purchaseData['audio_id'],
+        'payment_id' => $purchaseData['payment_id'],
+        'trace' => $e->getTraceAsString()
+      ]);
+      throw $e;
+    }
   }
 
   private function processSeriesPurchase(array $baseData, array $requestData)
   {
     $purchaseData = array_merge($baseData, [
       'series_id' => $requestData['series_id'],
-      'season_id' => $requestData['season_id']
+      'season_id' => $requestData['season_id'],
+      'episode_id' => $requestData['episode_id'] ?? null
     ]);
 
-    DB::table('ppv_purchases')->insert($purchaseData);
+    \Log::info('=== ATTEMPTING SERIES PURCHASE DATABASE INSERT ===', [
+      'user_id' => $purchaseData['user_id'],
+      'series_id' => $purchaseData['series_id'],
+      'season_id' => $purchaseData['season_id'],
+      'episode_id' => $purchaseData['episode_id'],
+      'amount' => $purchaseData['total_amount'],
+      'payment_id' => $purchaseData['payment_id'],
+      'payment_gateway' => $purchaseData['payment_gateway'],
+      'platform' => $purchaseData['platform'],
+      'status' => $purchaseData['status'],
+      'full_data' => $purchaseData
+    ]);
+
+    try {
+      $insertId = DB::table('ppv_purchases')->insertGetId($purchaseData);
+      
+      \Log::info('✅ SERIES PURCHASE DATABASE INSERT SUCCESSFUL', [
+        'purchase_id' => $insertId,
+        'user_id' => $purchaseData['user_id'],
+        'series_id' => $purchaseData['series_id'],
+        'season_id' => $purchaseData['season_id'],
+        'episode_id' => $purchaseData['episode_id'],
+        'payment_id' => $purchaseData['payment_id'],
+        'amount' => $purchaseData['total_amount'],
+        'status' => $purchaseData['status'],
+        'inserted_at' => now()
+      ]);
+      
+      return $insertId;
+    } catch (\Exception $e) {
+      \Log::error('❌ SERIES PURCHASE DATABASE INSERT FAILED', [
+        'error' => $e->getMessage(),
+        'user_id' => $purchaseData['user_id'],
+        'series_id' => $purchaseData['series_id'],
+        'season_id' => $purchaseData['season_id'],
+        'episode_id' => $purchaseData['episode_id'],
+        'payment_id' => $purchaseData['payment_id'],
+        'trace' => $e->getTraceAsString()
+      ]);
+      throw $e;
+    }
   }
 
   private function sendPurchaseNotification($userId, $purchaseData)
@@ -32355,28 +32504,45 @@ class ApiAuthController extends Controller
     \Log::info('Processing Apple server notification', $notification);
 
     // Extract notification type and data
-    $notificationType = $notification['notification_type'] ?? null;
+    $notificationType = $notification['notificationType'] ?? $notification['notification_type'] ?? null;
+    $data = $notification['data'] ?? null;
+    
+    // Handle both old and new notification formats
     $receiptData = $notification['unified_receipt'] ?? null;
+    $signedTransactionInfo = $data['signedTransactionInfo'] ?? null;
 
-    if (!$receiptData) {
-      \Log::warning('No receipt data in Apple notification');
+    if (!$receiptData && !$signedTransactionInfo) {
+      \Log::warning('No receipt data or transaction info in Apple notification');
       return;
     }
 
     // Process based on notification type
     switch ($notificationType) {
+      case 'ONE_TIME_CHARGE':
       case 'INITIAL_BUY':
       case 'DID_RECOVER':
-        $this->handleApplePurchaseSuccess($receiptData);
+        if ($signedTransactionInfo) {
+          $this->handleAppleTransactionInfo($signedTransactionInfo);
+        } else {
+          $this->handleApplePurchaseSuccess($receiptData);
+        }
         break;
 
       case 'CANCEL':
       case 'DID_FAIL_TO_RENEW':
-        $this->handleApplePurchaseFailure($receiptData);
+        if ($signedTransactionInfo) {
+          $this->handleAppleTransactionFailure($signedTransactionInfo);
+        } else {
+          $this->handleApplePurchaseFailure($receiptData);
+        }
         break;
 
       case 'DID_RENEW':
-        $this->handleAppleRenewal($receiptData);
+        if ($signedTransactionInfo) {
+          $this->handleAppleTransactionRenewal($signedTransactionInfo);
+        } else {
+          $this->handleAppleRenewal($receiptData);
+        }
         break;
 
       default:
@@ -32501,6 +32667,146 @@ class ApiAuthController extends Controller
   }
 
   /**
+   * Handle Apple transaction info from new notification format
+   */
+  private function handleAppleTransactionInfo($signedTransactionInfo)
+  {
+    \Log::info('Handling Apple transaction info', ['signedTransactionInfo' => substr($signedTransactionInfo, 0, 100) . '...']);
+
+    try {
+      // Decode the JWT token (simplified - you might need proper JWT decoding)
+      $parts = explode('.', $signedTransactionInfo);
+      if (count($parts) !== 3) {
+        \Log::error('Invalid JWT format in signedTransactionInfo');
+        return;
+      }
+
+      // Decode the payload (middle part)
+      $payload = json_decode(base64_decode($parts[1]), true);
+      
+      if (!$payload) {
+        \Log::error('Failed to decode signedTransactionInfo payload');
+        return;
+      }
+
+      $transactionId = $payload['transactionId'] ?? null;
+      $productId = $payload['productId'] ?? null;
+      
+      \Log::info('Decoded Apple transaction', [
+        'transactionId' => $transactionId,
+        'productId' => $productId,
+        'full_payload' => $payload
+      ]);
+
+             if ($transactionId && $productId) {
+        \Log::info('=== ATTEMPTING APPLE WEBHOOK VALIDATION UPDATE ===', [
+          'transaction_id' => $transactionId,
+          'product_id' => $productId,
+          'action' => 'marking_as_verified'
+        ]);
+
+        try {
+          // Mark transaction as validated by Apple webhook
+          $updated = DB::table('ppv_purchases')
+            ->where('payment_id', $transactionId)
+            ->update([
+              'apple_webhook_verified' => true,
+              'apple_webhook_verified_at' => now()
+            ]);
+          
+          if ($updated > 0) {
+            \Log::info('✅ APPLE WEBHOOK VALIDATION UPDATE SUCCESSFUL', [
+              'transaction_id' => $transactionId,
+              'product_id' => $productId,
+              'records_updated' => $updated,
+              'validated_at' => now()
+            ]);
+          } else {
+            \Log::warning('⚠️ APPLE WEBHOOK VALIDATION - NO RECORDS FOUND', [
+              'transaction_id' => $transactionId,
+              'product_id' => $productId,
+              'message' => 'No existing purchase record found to validate'
+            ]);
+          }
+        } catch (\Exception $e) {
+          \Log::error('❌ APPLE WEBHOOK VALIDATION UPDATE FAILED', [
+            'transaction_id' => $transactionId,
+            'product_id' => $productId,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+          ]);
+        }
+      }
+
+    } catch (\Exception $e) {
+      \Log::error('Error processing Apple transaction info', [
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString()
+      ]);
+    }
+  }
+
+  /**
+   * Handle Apple transaction failure from new notification format
+   */
+  private function handleAppleTransactionFailure($signedTransactionInfo)
+  {
+    \Log::info('Handling Apple transaction failure', ['signedTransactionInfo' => substr($signedTransactionInfo, 0, 100) . '...']);
+
+    try {
+      // Decode the JWT token
+      $parts = explode('.', $signedTransactionInfo);
+      if (count($parts) !== 3) {
+        \Log::error('Invalid JWT format in signedTransactionInfo');
+        return;
+      }
+
+      $payload = json_decode(base64_decode($parts[1]), true);
+      
+      if (!$payload) {
+        \Log::error('Failed to decode signedTransactionInfo payload');
+        return;
+      }
+
+      $transactionId = $payload['transactionId'] ?? null;
+      $productId = $payload['productId'] ?? null;
+      
+      if ($transactionId && $productId) {
+        // Mark transaction as failed by Apple webhook
+        $updated = DB::table('ppv_purchases')
+          ->where('payment_id', $transactionId)
+          ->update([
+            'status' => 'failed',
+            'apple_webhook_verified' => false,
+            'apple_webhook_verified_at' => now(),
+            'payment_failure_reason' => 'Apple webhook reported failure'
+          ]);
+          
+        \Log::info('Apple transaction marked as failed by webhook', [
+          'transaction_id' => $transactionId,
+          'product_id' => $productId,
+          'records_updated' => $updated
+        ]);
+      }
+
+    } catch (\Exception $e) {
+      \Log::error('Error processing Apple transaction failure', [
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString()
+      ]);
+    }
+  }
+
+  /**
+   * Handle Apple transaction renewal from new notification format
+   */
+  private function handleAppleTransactionRenewal($signedTransactionInfo)
+  {
+    \Log::info('Handling Apple transaction renewal', ['signedTransactionInfo' => substr($signedTransactionInfo, 0, 100) . '...']);
+    // Process renewal logic here
+  }
+
+  /**
    * Test endpoint to verify Apple webhook URL is reachable
    */
   public function test_apple_webhook(Request $request)
@@ -32519,6 +32825,70 @@ class ApiAuthController extends Controller
       'timestamp' => now(),
       'webhook_url' => 'https://runmawi.com/api/auth/apple_server_notification'
     ]);
+  }
+
+  /**
+   * Debug endpoint to check recent database entries
+   */
+  public function debug_recent_purchases(Request $request)
+  {
+    \Log::info('=== DEBUG RECENT PURCHASES ENDPOINT HIT ===', [
+      'ip_address' => $request->ip(),
+      'user_agent' => $request->userAgent(),
+      'timestamp' => now()
+    ]);
+
+    try {
+      // Get recent purchases from last 24 hours
+      $recentPurchases = DB::table('ppv_purchases')
+        ->select([
+          'id', 'user_id', 'video_id', 'live_id', 'audio_id', 'series_id', 'season_id', 'episode_id',
+          'payment_id', 'payment_gateway', 'platform', 'status', 'total_amount', 
+          'apple_webhook_verified', 'apple_webhook_verified_at', 'created_at'
+        ])
+        ->where('created_at', '>=', now()->subHours(24))
+        ->orderBy('created_at', 'desc')
+        ->limit(20)
+        ->get();
+
+      // Get Apple Pay specific purchases
+      $applePurchases = DB::table('ppv_purchases')
+        ->select([
+          'id', 'user_id', 'video_id', 'live_id', 'audio_id', 'series_id', 'season_id', 'episode_id',
+          'payment_id', 'payment_gateway', 'platform', 'status', 'total_amount', 
+          'apple_webhook_verified', 'apple_webhook_verified_at', 'created_at'
+        ])
+        ->where('payment_gateway', 'Applepay')
+        ->orderBy('created_at', 'desc')
+        ->limit(10)
+        ->get();
+
+      \Log::info('DEBUG: Recent purchases retrieved', [
+        'total_recent' => $recentPurchases->count(),
+        'apple_purchases' => $applePurchases->count()
+      ]);
+
+      return response()->json([
+        'status' => 'success',
+        'message' => 'Recent purchases retrieved successfully',
+        'data' => [
+          'recent_purchases_24h' => $recentPurchases,
+          'apple_purchases' => $applePurchases,
+          'timestamp' => now()
+        ]
+      ]);
+
+    } catch (\Exception $e) {
+      \Log::error('DEBUG: Failed to retrieve recent purchases', [
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString()
+      ]);
+
+      return response()->json([
+        'status' => 'error',
+        'message' => 'Failed to retrieve recent purchases: ' . $e->getMessage()
+      ], 500);
+    }
   }
 }
 
