@@ -2139,8 +2139,12 @@ class ApiAuthController extends Controller
 
           } elseif ($userrole == "registered" && $item['access'] == 'ppv') {
 
+            // SECURITY FIX: Only get captured and non-expired purchases
+            $current_date = date('Y-m-d h:i:s a', time());
             $original_ppv_plan = PpvPurchase::where('video_id', $item['id'])
                 ->where('user_id', $data['user_id'])
+                ->where('status', 'captured')
+                ->where('to_time', '>', $current_date)
                 ->orderBy('created_at', 'desc')
                 ->pluck('ppv_plan')
                 ->first();
@@ -2179,8 +2183,12 @@ class ApiAuthController extends Controller
                 'videos_url' => $item['videos_url']
             ]);
           } elseif ($item['access'] == 'ppv' && $userrole == "subscriber") {
+            // SECURITY FIX: Only get captured and non-expired purchases
+            $current_date = date('Y-m-d h:i:s a', time());
             $original_ppv_plan = PpvPurchase::where('video_id', $item['id'])
                 ->where('user_id', $data['user_id'])
+                ->where('status', 'captured')
+                ->where('to_time', '>', $current_date)
                 ->orderBy('created_at', 'desc')
                 ->pluck('ppv_plan')
                 ->first();
