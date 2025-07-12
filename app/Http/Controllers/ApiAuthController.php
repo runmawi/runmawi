@@ -5718,13 +5718,23 @@ class ApiAuthController extends Controller
       }
 
       if ($samePaymentAttempt) {
-        \Log::info('Same payment ID already exists, updating existing record', [
+        \Log::info('Same payment ID already exists, returning existing record', [
           'payment_id' => $data['py_id'],
           'existing_status' => $samePaymentAttempt->status,
+          'existing_purchase_id' => $samePaymentAttempt->id,
           'new_status' => $data['status']
         ]);
         
-        // Update the existing record instead of creating a new one
+        // For Apple Pay, if record already exists and is captured, just return success
+        if ($samePaymentAttempt->status === 'captured' && $data['payment_type'] === 'Applepay') {
+          DB::commit();
+          return response()->json([
+            'status' => 'true',
+            'message' => 'Purchase already exists and is captured'
+          ]);
+        }
+        
+        // Update the existing record for other cases
         DB::table('ppv_purchases')
           ->where('payment_id', $data['py_id'])
           ->update([
@@ -5735,7 +5745,7 @@ class ApiAuthController extends Controller
 
         DB::commit();
         return response()->json([
-          'status' => 'success',
+          'status' => 'true',
           'message' => 'Purchase updated successfully'
         ]);
       }
@@ -5749,9 +5759,9 @@ class ApiAuthController extends Controller
         ]);
         
         return response()->json([
-          'status' => 'error',
+          'status' => 'false',
           'message' => 'You already have active access to this content'
-        ], 400);
+        ]);
       }
 
       // Process based on content type
@@ -5787,7 +5797,7 @@ class ApiAuthController extends Controller
       ]);
 
       return response()->json([
-        'status' => 'success',
+        'status' => 'true',
         'message' => 'Purchase completed successfully'
       ]);
 
@@ -5806,9 +5816,9 @@ class ApiAuthController extends Controller
       ]);
 
       return response()->json([
-        'status' => 'error',
+        'status' => 'false',
         'message' => 'Failed to process purchase: ' . $e->getMessage()
-      ], 500);
+      ]);
     }
   }
 
@@ -32266,15 +32276,18 @@ class ApiAuthController extends Controller
             'product_id' => $productId
           ]);
 
-          // Note: Database entry creation is handled by add_payperview endpoint
-          // This endpoint only verifies the receipt with Apple
+          // Create the purchase entry in database
+          $purchaseId = $this->createApplePurchaseEntry($request, $transaction);
+          
+          \Log::info('Purchase entry created', ['purchase_id' => $purchaseId]);
           
           DB::commit();
 
           return response()->json([
             'status' => 'true',
-            'message' => 'Receipt verified successfully',
+            'message' => 'Receipt verified and purchase recorded successfully',
             'transaction_id' => $transactionId,
+            'purchase_id' => $purchaseId,
             'verification_timestamp' => now()
           ]);
         } else {
@@ -32415,6 +32428,7 @@ class ApiAuthController extends Controller
       // Prepare base purchase data
       $purchaseData = [
         'user_id' => $request->user_id,
+        'from_time' => now(),
         'to_time' => $expiryDate,
         'ppv_plan' => $request->ppv_plan,
         'created_at' => now(),
