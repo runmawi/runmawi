@@ -14,6 +14,10 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
         
+        // Razorpay webhook - must be excluded from CSRF verification
+        'api/razorpay/webhook',
+        // Apple webhook - must be excluded from CSRF verification
+        'api/auth/apple_server_notification',
         
 'test',
 'video_store',

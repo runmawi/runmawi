@@ -32038,17 +32038,15 @@ class ApiAuthController extends Controller
 
       $razorpayOrder = $api->order->create($orderData);
 
-      // Create initial purchase record with pending status
-      // REMOVED: No longer creating pending purchase record
-      // Only webhook will create purchase record when payment is actually captured
-
-              \Log::info('Razorpay payment order created - user must complete payment for access', [
+      // No purchase record created until payment is actually captured
+      // This ensures users cannot access content without completing payment
+      \Log::info('Razorpay order created - webhook will create purchase record after payment', [
         'order_id' => $razorpayOrder['id'],
         'user_id' => $user_id,
         'video_id' => $video_id,
         'amount' => $amount,
         'platform' => $platform,
-        'note' => 'Order created, but payment not yet completed. User will get access only after successful payment.'
+        'note' => 'Order created successfully. Purchase record will be created by webhook after payment completion.'
       ]);
 
       DB::commit();
@@ -32082,114 +32080,9 @@ class ApiAuthController extends Controller
   // REMOVED: createInitialPurchaseRecord method no longer needed
   // All purchase records are now created only by webhook when payment is actually captured
 
-  /**
-   * Confirm payment success from mobile app - fallback for webhook
-   */
-  public function confirm_payment_success(Request $request)
-  {
-    DB::beginTransaction();
-    try {
-      $orderId = $request->order_id;
-      $paymentId = $request->payment_id;
-      $user_id = $request->user_id;
-      $video_id = $request->video_id;
-      $platform = $request->platform ?: 'Android';
-
-      // Validate required fields
-      if (empty($orderId) || empty($paymentId) || empty($user_id)) {
-        return response()->json([
-          'status' => 'false',
-          'message' => 'Order ID, Payment ID, and User ID are required'
-        ]);
-      }
-
-      // Find existing purchase record
-      $existingPurchase = PpvPurchase::where('payment_id', $orderId)->first();
-
-      if (!$existingPurchase) {
-        \Log::error('Payment confirmation: Purchase record not found', [
-          'order_id' => $orderId,
-          'payment_id' => $paymentId,
-          'user_id' => $user_id
-        ]);
-        return response()->json([
-          'status' => 'false',
-          'message' => 'Purchase record not found'
-        ]);
-      }
-
-      // If already captured, return success
-      if ($existingPurchase->status === 'captured') {
-        \Log::info('Payment confirmation: Purchase already captured', [
-          'purchase_id' => $existingPurchase->id,
-          'order_id' => $orderId
-        ]);
-        return response()->json([
-          'status' => 'true',
-          'message' => 'Payment already confirmed'
-        ]);
-      }
-
-      // Update purchase to captured status
-      $setting = Setting::first();
-      $ppv_hours = $setting->ppv_hours ?? 24;
-      $d = new \DateTime('now');
-      $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
-      $from_time = $d->format('Y-m-d h:i:s a');
-      $to_time = date('Y-m-d h:i:s a', strtotime('+' . $ppv_hours . ' hour', strtotime($from_time)));
-
-      $existingPurchase->update([
-        'status' => 'captured',
-        'razorpay_payment_id' => $paymentId,
-        'from_time' => $from_time,
-        'to_time' => $to_time,
-        'updated_at' => now()
-      ]);
-
-      // Update live_purchases table if applicable
-      if ($existingPurchase->live_id) {
-        DB::table('live_purchases')
-          ->where('payment_id', $orderId)
-          ->update([
-            'status' => 1,
-            'payment_status' => 'captured',
-            'razorpay_payment_id' => $paymentId,
-            'updated_at' => now()
-          ]);
-      }
-
-      \Log::info('Payment confirmation: Successfully updated purchase to captured', [
-        'purchase_id' => $existingPurchase->id,
-        'order_id' => $orderId,
-        'payment_id' => $paymentId,
-        'user_id' => $user_id,
-        'video_id' => $video_id,
-        'platform' => $platform
-      ]);
-
-      DB::commit();
-
-      return response()->json([
-        'status' => 'true',
-        'message' => 'Payment confirmed successfully'
-      ]);
-
-    } catch (\Exception $e) {
-      DB::rollback();
-      \Log::error('Payment confirmation failed', [
-        'error' => $e->getMessage(),
-        'order_id' => $request->order_id ?? 'unknown',
-        'payment_id' => $request->payment_id ?? 'unknown',
-        'user_id' => $request->user_id ?? 'unknown',
-        'trace' => $e->getTraceAsString()
-      ]);
-
-      return response()->json([
-        'status' => 'false',
-        'message' => 'Failed to confirm payment: ' . $e->getMessage()
-      ]);
-    }
-  }
+  // REMOVED: confirm_payment_success method
+  // Android app now relies entirely on webhook for purchase record creation
+  // This ensures users cannot access content without completing payment
 
   /**
    * Debug endpoint to check payment status and test flow
