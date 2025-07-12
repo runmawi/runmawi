@@ -24,7 +24,7 @@ try {
     if (file_exists($envFile)) {
         $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
-            if (strpos($line, '=') !== false && !str_starts_with($line, '#')) {
+            if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
                 list($key, $value) = explode('=', $line, 2);
                 $envVars[trim($key)] = trim($value);
             }
@@ -55,73 +55,89 @@ try {
         echo "No existing purchases found!\n";
     } else {
         foreach ($existingPurchases as $purchase) {
-            echo "ID: {$purchase['id']}, Payment ID: {$purchase['payment_id']}, Status: {$purchase['status']}, Created: {$purchase['created_at']}\n";
+            echo "ID: {$purchase['id']}, Payment ID: {$purchase['payment_id']}, Status: {$purchase['status']}, Created: {$purchase['created_at']}, Expires: {$purchase['to_time']}\n";
         }
     }
     
-    // Now try to insert a test purchase directly
-    echo "\n=== INSERTING TEST PURCHASE ===\n";
+    // Check if any purchases are still active
+    $stmt = $pdo->prepare("SELECT * FROM ppv_purchases WHERE user_id = ? AND video_id = ? AND status = 'captured' AND to_time > NOW() ORDER BY created_at DESC");
+    $stmt->execute(['201673', '39']);
+    $activePurchases = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Get PPV expiry time
-    $ppv_hours = 24;
-    $from_time = date('Y-m-d h:i:s a');
-    $to_time = date('Y-m-d h:i:s a', strtotime('+' . $ppv_hours . ' hour'));
-    
-    $insertData = [
-        'user_id' => $testData['user_id'],
-        'video_id' => $testData['video_id'],
-        'from_time' => $from_time,
-        'to_time' => $to_time,
-        'ppv_plan' => $testData['ppv_plan'],
-        'total_amount' => $testData['amount'],
-        'payment_gateway' => $testData['payment_type'],
-        'payment_id' => $testData['py_id'],
-        'status' => $testData['py_status'],
-        'platform' => $testData['platform'],
-        'created_at' => date('Y-m-d H:i:s'),
-        'updated_at' => date('Y-m-d H:i:s')
-    ];
-    
-    echo "Attempting to insert:\n";
-    print_r($insertData);
-    
-    $insertSql = "INSERT INTO ppv_purchases (user_id, video_id, from_time, to_time, ppv_plan, total_amount, payment_gateway, payment_id, status, platform, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-    $stmt = $pdo->prepare($insertSql);
-    $result = $stmt->execute([
-        $insertData['user_id'],
-        $insertData['video_id'],
-        $insertData['from_time'],
-        $insertData['to_time'],
-        $insertData['ppv_plan'],
-        $insertData['total_amount'],
-        $insertData['payment_gateway'],
-        $insertData['payment_id'],
-        $insertData['status'],
-        $insertData['platform'],
-        $insertData['created_at'],
-        $insertData['updated_at']
-    ]);
-    
-    if ($result) {
-        $insertId = $pdo->lastInsertId();
-        echo "✅ SUCCESS! Purchase inserted with ID: $insertId\n";
+    echo "\nActive purchases for user 201673, video 39:\n";
+    if (empty($activePurchases)) {
+        echo "No active purchases found!\n";
+        
+        // If no active purchases, try to insert a test purchase
+        echo "\n=== INSERTING TEST PURCHASE ===\n";
+        
+        // Get PPV expiry time
+        $ppv_hours = 24;
+        $from_time = date('Y-m-d h:i:s a');
+        $to_time = date('Y-m-d h:i:s a', strtotime('+' . $ppv_hours . ' hour'));
+        
+        $insertData = [
+            'user_id' => $testData['user_id'],
+            'video_id' => $testData['video_id'],
+            'from_time' => $from_time,
+            'to_time' => $to_time,
+            'ppv_plan' => $testData['ppv_plan'],
+            'total_amount' => $testData['amount'],
+            'payment_gateway' => $testData['payment_type'],
+            'payment_id' => $testData['py_id'],
+            'status' => $testData['py_status'],
+            'platform' => $testData['platform'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+        
+        echo "Attempting to insert:\n";
+        print_r($insertData);
+        
+        $insertSql = "INSERT INTO ppv_purchases (user_id, video_id, from_time, to_time, ppv_plan, total_amount, payment_gateway, payment_id, status, platform, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $pdo->prepare($insertSql);
+        $result = $stmt->execute([
+            $insertData['user_id'],
+            $insertData['video_id'],
+            $insertData['from_time'],
+            $insertData['to_time'],
+            $insertData['ppv_plan'],
+            $insertData['total_amount'],
+            $insertData['payment_gateway'],
+            $insertData['payment_id'],
+            $insertData['status'],
+            $insertData['platform'],
+            $insertData['created_at'],
+            $insertData['updated_at']
+        ]);
+        
+        if ($result) {
+            $insertId = $pdo->lastInsertId();
+            echo "✅ SUCCESS! Purchase inserted with ID: $insertId\n";
+        } else {
+            echo "❌ FAILED to insert purchase\n";
+        }
+        
     } else {
-        echo "❌ FAILED to insert purchase\n";
+        echo "Found active purchases - user already has access!\n";
+        foreach ($activePurchases as $purchase) {
+            echo "ID: {$purchase['id']}, Payment ID: {$purchase['payment_id']}, Status: {$purchase['status']}, Expires: {$purchase['to_time']}\n";
+        }
     }
     
     // Check if the purchase was created
-    echo "\n=== VERIFYING INSERT ===\n";
+    echo "\n=== FINAL VERIFICATION ===\n";
     $stmt = $pdo->prepare("SELECT * FROM ppv_purchases WHERE user_id = ? AND video_id = ? ORDER BY created_at DESC LIMIT 3");
     $stmt->execute(['201673', '39']);
     $purchases = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    echo "All purchases for user 201673, video 39 after insert:\n";
+    echo "All purchases for user 201673, video 39:\n";
     if (empty($purchases)) {
         echo "No purchases found!\n";
     } else {
         foreach ($purchases as $purchase) {
-            echo "ID: {$purchase['id']}, Payment ID: {$purchase['payment_id']}, Status: {$purchase['status']}, Created: {$purchase['created_at']}\n";
+            echo "ID: {$purchase['id']}, Payment ID: {$purchase['payment_id']}, Status: {$purchase['status']}, Created: {$purchase['created_at']}, Expires: {$purchase['to_time']}\n";
         }
     }
     

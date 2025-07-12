@@ -5687,20 +5687,27 @@ class ApiAuthController extends Controller
 
       // Check for existing successful purchases that haven't expired
       // Only prevent duplicate if there's an active, successful purchase for the same content
-      $existingActivePurchase = DB::table('ppv_purchases')
+      $existingActivePurchase = null;
+      
+      // Build the query based on what content type we're checking
+      $query = DB::table('ppv_purchases')
         ->where('user_id', $data['user_id'])
         ->where('status', 'captured') // Only check successful purchases
-        ->where('to_time', '>', now()) // Only check non-expired purchases
-        ->where(function ($query) use ($data) {
-          $query->where('video_id', $data['video_id'])
-            ->orWhere('live_id', $data['live_id'])
-            ->orWhere('audio_id', $data['audio_id'])
-            ->orWhere(function ($q) use ($data) {
-              $q->where('series_id', $data['series_id'])
-                ->where('season_id', $data['season_id']);
-            });
-        })
-        ->first();
+        ->where('to_time', '>', now()); // Only check non-expired purchases
+      
+      // Add content-specific conditions only if the content ID is not empty
+      if (!empty($data['video_id'])) {
+        $query->where('video_id', $data['video_id']);
+      } elseif (!empty($data['live_id'])) {
+        $query->where('live_id', $data['live_id']);
+      } elseif (!empty($data['audio_id'])) {
+        $query->where('audio_id', $data['audio_id']);
+      } elseif (!empty($data['series_id']) && !empty($data['season_id'])) {
+        $query->where('series_id', $data['series_id'])
+              ->where('season_id', $data['season_id']);
+      }
+      
+      $existingActivePurchase = $query->first();
 
       // Check if this is the exact same payment attempt (same payment_id)
       $samePaymentAttempt = null;

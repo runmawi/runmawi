@@ -54,7 +54,7 @@ try {
     if (file_exists($envFile)) {
         $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
-            if (strpos($line, '=') !== false && !str_starts_with($line, '#')) {
+            if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
                 list($key, $value) = explode('=', $line, 2);
                 $envVars[trim($key)] = trim($value);
             }
@@ -81,7 +81,21 @@ try {
         echo "No purchases found!\n";
     } else {
         foreach ($purchases as $purchase) {
-            echo "ID: {$purchase['id']}, Payment ID: {$purchase['payment_id']}, Status: {$purchase['status']}, Created: {$purchase['created_at']}\n";
+            echo "ID: {$purchase['id']}, Payment ID: {$purchase['payment_id']}, Status: {$purchase['status']}, Created: {$purchase['created_at']}, Expires: {$purchase['to_time']}\n";
+        }
+    }
+    
+    // Check if any purchases are still active
+    $stmt = $pdo->prepare("SELECT * FROM ppv_purchases WHERE user_id = ? AND video_id = ? AND status = 'captured' AND to_time > NOW() ORDER BY created_at DESC");
+    $stmt->execute(['201673', '39']);
+    $activePurchases = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    echo "\nActive purchases for user 201673, video 39:\n";
+    if (empty($activePurchases)) {
+        echo "No active purchases found!\n";
+    } else {
+        foreach ($activePurchases as $purchase) {
+            echo "ID: {$purchase['id']}, Payment ID: {$purchase['payment_id']}, Status: {$purchase['status']}, Expires: {$purchase['to_time']}\n";
         }
     }
     
