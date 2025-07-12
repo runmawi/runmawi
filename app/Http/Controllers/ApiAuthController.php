@@ -31864,6 +31864,7 @@ class ApiAuthController extends Controller
    */
   public function create_razorpay_order(Request $request)
   {
+    DB::beginTransaction();
     try {
       $video_id = $request->video_id;
       $live_id = $request->live_id;
@@ -31875,6 +31876,36 @@ class ApiAuthController extends Controller
       $amount = $request->amount;
       $ppv_plan = $request->ppv_plan;
       $platform = $request->platform ?: 'Android';
+
+      // Validate required fields
+      if (empty($user_id) || empty($amount)) {
+        return response()->json([
+          'status' => 'false',
+          'message' => 'User ID and amount are required'
+        ]);
+      }
+
+      // Check if user already has active purchase for this content
+      $existingPurchase = DB::table('ppv_purchases')
+        ->where('user_id', $user_id)
+        ->where('status', 'captured')
+        ->where('to_time', '>', now())
+        ->where(function ($query) use ($video_id, $live_id, $audio_id, $series_id, $season_id) {
+          if (!empty($video_id)) $query->where('video_id', $video_id);
+          if (!empty($live_id)) $query->where('live_id', $live_id);
+          if (!empty($audio_id)) $query->where('audio_id', $audio_id);
+          if (!empty($series_id) && !empty($season_id)) {
+            $query->where('series_id', $series_id)->where('season_id', $season_id);
+          }
+        })
+        ->first();
+
+      if ($existingPurchase) {
+        return response()->json([
+          'status' => 'false',
+          'message' => 'You already have access to this content'
+        ]);
+      }
 
       // Get Razorpay configuration
       $PaymentSetting = PaymentSetting::where('payment_type', 'Razorpay')->first();
@@ -31906,32 +31937,31 @@ class ApiAuthController extends Controller
       } elseif (!empty($series_id) && !empty($season_id)) {
         $purchase_type = 'series_season';
       } elseif (!empty($audio_id)) {
-        $purchase_type = 'audio_ppv'; // Or a more specific type if applicable for your system
+        $purchase_type = 'audio_ppv';
       }
-      // Note: episode_id might be part of a series/season, so it doesn't define a top-level purchase_type alone here.
 
       // Prepare order notes with all necessary metadata
       $orderNotes = [
-        'user_id' => $user_id,
+        'user_id' => (string)$user_id,
         'platform' => $platform,
-        'ppv_plan' => $ppv_plan, // This field name might be specific to video PPV. Consider if it needs to be more generic based on purchase_type.
+        'ppv_plan' => $ppv_plan,
         'purchase_type' => $purchase_type,
-        'original_amount' => $amount // Adding original amount for easier reference in webhooks or logs
+        'original_amount' => (string)$amount
       ];
 
       // Add content-specific IDs to notes for detailed reference
       if (!empty($video_id))
-        $orderNotes['video_id'] = $video_id;
+        $orderNotes['video_id'] = (string)$video_id;
       if (!empty($live_id))
-        $orderNotes['live_id'] = $live_id;
+        $orderNotes['live_id'] = (string)$live_id;
       if (!empty($audio_id))
-        $orderNotes['audio_id'] = $audio_id;
+        $orderNotes['audio_id'] = (string)$audio_id;
       if (!empty($series_id))
-        $orderNotes['series_id'] = $series_id;
+        $orderNotes['series_id'] = (string)$series_id;
       if (!empty($season_id))
-        $orderNotes['season_id'] = $season_id;
+        $orderNotes['season_id'] = (string)$season_id;
       if (!empty($episode_id))
-        $orderNotes['episode_id'] = $episode_id;
+        $orderNotes['episode_id'] = (string)$episode_id;
 
       // Create Razorpay order
       $orderData = [
@@ -31944,6 +31974,18 @@ class ApiAuthController extends Controller
 
       $razorpayOrder = $api->order->create($orderData);
 
+      // Create initial purchase record with pending status
+      $this->createInitialPurchaseRecord($request, $razorpayOrder['id'], 'pending');
+
+      \Log::info('Razorpay order created with initial purchase record', [
+        'order_id' => $razorpayOrder['id'],
+        'user_id' => $user_id,
+        'video_id' => $video_id,
+        'amount' => $amount,
+        'platform' => $platform
+      ]);
+
+      DB::commit();
 
       return response()->json([
         'status' => 'true',
@@ -31955,6 +31997,15 @@ class ApiAuthController extends Controller
       ]);
 
     } catch (\Exception $e) {
+      DB::rollback();
+      \Log::error('Failed to create Razorpay order', [
+        'error' => $e->getMessage(),
+        'user_id' => $request->user_id ?? 'unknown',
+        'video_id' => $request->video_id ?? 'unknown',
+        'amount' => $request->amount ?? 'unknown',
+        'trace' => $e->getTraceAsString()
+      ]);
+
       return response()->json([
         'status' => 'false',
         'message' => 'Failed to create payment order: ' . $e->getMessage()
@@ -31965,7 +32016,7 @@ class ApiAuthController extends Controller
   /**
    * Create initial purchase record for webhook processing
    */
-  private function createInitialPurchaseRecord($request, $orderId, $status = 'hold')
+  private function createInitialPurchaseRecord($request, $orderId, $status = 'pending')
   {
     $user_id = $request->user_id;
     $video_id = $request->video_id;
@@ -32017,6 +32068,7 @@ class ApiAuthController extends Controller
       'updated_at' => now()
     ];
 
+    // Add content-specific IDs
     if (!empty($video_id))
       $purchaseData['video_id'] = $video_id;
     if (!empty($live_id))
@@ -32028,21 +32080,157 @@ class ApiAuthController extends Controller
     if (!empty($season_id))
       $purchaseData['season_id'] = $season_id;
 
-    DB::table('ppv_purchases')->insert($purchaseData);
+    // Check if purchase record already exists
+    $existingPurchase = DB::table('ppv_purchases')
+      ->where('payment_id', $orderId)
+      ->first();
+
+    if (!$existingPurchase) {
+      $purchaseId = DB::table('ppv_purchases')->insertGetId($purchaseData);
+      
+      \Log::info('Initial purchase record created', [
+        'purchase_id' => $purchaseId,
+        'order_id' => $orderId,
+        'user_id' => $user_id,
+        'video_id' => $video_id,
+        'amount' => $amount,
+        'status' => $status
+      ]);
+    } else {
+      \Log::info('Purchase record already exists', [
+        'order_id' => $orderId,
+        'existing_status' => $existingPurchase->status
+      ]);
+    }
 
     // Create live_purchase record if needed
     if (!empty($live_id)) {
-      DB::table('live_purchases')->insert([
-        'user_id' => $user_id,
-        'video_id' => $live_id,
-        'platform' => $platform,
-        'amount' => $amount,
-        'payment_gateway' => 'razorpay',
-        'status' => 0, // Set to 1 by webhook
-        'payment_id' => $orderId,
-        'payment_status' => $status,
-        'created_at' => now(),
+      $existingLivePurchase = DB::table('live_purchases')
+        ->where('payment_id', $orderId)
+        ->first();
+
+      if (!$existingLivePurchase) {
+        DB::table('live_purchases')->insert([
+          'user_id' => $user_id,
+          'video_id' => $live_id,
+          'platform' => $platform,
+          'amount' => $amount,
+          'payment_gateway' => 'razorpay',
+          'status' => 0, // Set to 1 by webhook
+          'payment_id' => $orderId,
+          'payment_status' => $status,
+          'created_at' => now(),
+          'updated_at' => now()
+        ]);
+      }
+    }
+  }
+
+  /**
+   * Confirm payment success from mobile app - fallback for webhook
+   */
+  public function confirm_payment_success(Request $request)
+  {
+    DB::beginTransaction();
+    try {
+      $orderId = $request->order_id;
+      $paymentId = $request->payment_id;
+      $user_id = $request->user_id;
+      $video_id = $request->video_id;
+      $platform = $request->platform ?: 'Android';
+
+      // Validate required fields
+      if (empty($orderId) || empty($paymentId) || empty($user_id)) {
+        return response()->json([
+          'status' => 'false',
+          'message' => 'Order ID, Payment ID, and User ID are required'
+        ]);
+      }
+
+      // Find existing purchase record
+      $existingPurchase = PpvPurchase::where('payment_id', $orderId)->first();
+
+      if (!$existingPurchase) {
+        \Log::error('Payment confirmation: Purchase record not found', [
+          'order_id' => $orderId,
+          'payment_id' => $paymentId,
+          'user_id' => $user_id
+        ]);
+        return response()->json([
+          'status' => 'false',
+          'message' => 'Purchase record not found'
+        ]);
+      }
+
+      // If already captured, return success
+      if ($existingPurchase->status === 'captured') {
+        \Log::info('Payment confirmation: Purchase already captured', [
+          'purchase_id' => $existingPurchase->id,
+          'order_id' => $orderId
+        ]);
+        return response()->json([
+          'status' => 'true',
+          'message' => 'Payment already confirmed'
+        ]);
+      }
+
+      // Update purchase to captured status
+      $setting = Setting::first();
+      $ppv_hours = $setting->ppv_hours ?? 24;
+      $d = new \DateTime('now');
+      $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+      $from_time = $d->format('Y-m-d h:i:s a');
+      $to_time = date('Y-m-d h:i:s a', strtotime('+' . $ppv_hours . ' hour', strtotime($from_time)));
+
+      $existingPurchase->update([
+        'status' => 'captured',
+        'razorpay_payment_id' => $paymentId,
+        'from_time' => $from_time,
+        'to_time' => $to_time,
         'updated_at' => now()
+      ]);
+
+      // Update live_purchases table if applicable
+      if ($existingPurchase->live_id) {
+        DB::table('live_purchases')
+          ->where('payment_id', $orderId)
+          ->update([
+            'status' => 1,
+            'payment_status' => 'captured',
+            'razorpay_payment_id' => $paymentId,
+            'updated_at' => now()
+          ]);
+      }
+
+      \Log::info('Payment confirmation: Successfully updated purchase to captured', [
+        'purchase_id' => $existingPurchase->id,
+        'order_id' => $orderId,
+        'payment_id' => $paymentId,
+        'user_id' => $user_id,
+        'video_id' => $video_id,
+        'platform' => $platform
+      ]);
+
+      DB::commit();
+
+      return response()->json([
+        'status' => 'true',
+        'message' => 'Payment confirmed successfully'
+      ]);
+
+    } catch (\Exception $e) {
+      DB::rollback();
+      \Log::error('Payment confirmation failed', [
+        'error' => $e->getMessage(),
+        'order_id' => $request->order_id ?? 'unknown',
+        'payment_id' => $request->payment_id ?? 'unknown',
+        'user_id' => $request->user_id ?? 'unknown',
+        'trace' => $e->getTraceAsString()
+      ]);
+
+      return response()->json([
+        'status' => 'false',
+        'message' => 'Failed to confirm payment: ' . $e->getMessage()
       ]);
     }
   }

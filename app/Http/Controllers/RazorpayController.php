@@ -2161,17 +2161,58 @@ class RazorpayController extends Controller
             }
 
             // Check if purchase already exists
-            $existingPurchase = PpvPurchase::where('payment_id', $order_id_from_payment)
-                ->where('status', 'captured')
-                ->first();
+            $existingPurchase = PpvPurchase::where('payment_id', $order_id_from_payment)->first();
 
             if ($existingPurchase) {
-                \Log::info('Razorpay Webhook: Purchase already exists with captured status', [
-                    'purchase_id' => $existingPurchase->id,
-                    'order_id' => $order_id_from_payment
-                ]);
-                DB::commit();
-                return response()->json(['success' => true, 'message' => 'Purchase already captured']);
+                if ($existingPurchase->status === 'captured') {
+                    \Log::info('Razorpay Webhook: Purchase already exists with captured status', [
+                        'purchase_id' => $existingPurchase->id,
+                        'order_id' => $order_id_from_payment
+                    ]);
+                    DB::commit();
+                    return response()->json(['success' => true, 'message' => 'Purchase already captured']);
+                } elseif ($existingPurchase->status === 'pending') {
+                    // Update existing pending purchase to captured
+                    \Log::info('Razorpay Webhook: Updating pending purchase to captured', [
+                        'purchase_id' => $existingPurchase->id,
+                        'order_id' => $order_id_from_payment
+                    ]);
+
+                    $existingPurchase->update([
+                        'status' => 'captured',
+                        'razorpay_payment_id' => $razorpay_payment_id,
+                        'from_time' => $from_time,
+                        'to_time' => $to_time,
+                        'updated_at' => now()
+                    ]);
+
+                    // Update live_purchases table if applicable
+                    if ($purchase_type === 'live_event' && isset($notes['live_id'])) {
+                        DB::table('live_purchases')
+                            ->where('payment_id', $order_id_from_payment)
+                            ->update([
+                                'status' => 1,
+                                'payment_status' => 'captured',
+                                'razorpay_payment_id' => $razorpay_payment_id,
+                                'updated_at' => now()
+                            ]);
+                    }
+
+                    \Log::info('Razorpay Webhook: Successfully updated pending purchase to captured', [
+                        'purchase_id' => $existingPurchase->id,
+                        'order_id' => $order_id_from_payment,
+                        'razorpay_payment_id' => $razorpay_payment_id
+                    ]);
+
+                    DB::commit();
+                    return response()->json(['success' => true, 'message' => 'Purchase updated to captured']);
+                } else {
+                    \Log::warning('Razorpay Webhook: Purchase exists with unexpected status', [
+                        'purchase_id' => $existingPurchase->id,
+                        'order_id' => $order_id_from_payment,
+                        'existing_status' => $existingPurchase->status
+                    ]);
+                }
             }
 
             // Comprehensive commission calculation for all content types
