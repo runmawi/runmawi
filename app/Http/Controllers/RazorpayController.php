@@ -1952,41 +1952,80 @@ class RazorpayController extends Controller
      */
     public function handleWebhook(Request $request)
     {
-        \Log::info('=== RAZORPAY WEBHOOK ENTRY POINT ===', [
+        // Enhanced logging - Log ALL webhook requests
+        \Log::info('🚀 === RAZORPAY WEBHOOK ENTRY POINT === 🚀', [
             'method' => $request->method(),
             'url' => $request->fullUrl(),
             'headers' => $request->headers->all(),
             'raw_payload_size' => strlen($request->getContent()),
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
-            'timestamp' => now()
+            'timestamp' => now(),
+            'request_id' => uniqid('webhook_', true)
         ]);
 
         // Log the full raw payload for debugging
         $rawPayload = $request->getContent();
-        \Log::info('Razorpay Webhook Raw Payload', [
+        \Log::info('📦 Razorpay Webhook Raw Payload', [
             'raw_content' => $rawPayload,
-            'content_length' => strlen($rawPayload)
+            'content_length' => strlen($rawPayload),
+            'is_empty' => empty($rawPayload),
+            'is_json' => json_decode($rawPayload) !== null
         ]);
 
-        // Verify the webhook signature
+        // Enhanced signature verification logging
         $webhookSignature = $request->header('X-Razorpay-Signature');
         $webhookBody = $request->getContent();
+        
+        \Log::info('🔐 Webhook Signature Verification', [
+            'signature_provided' => !empty($webhookSignature),
+            'signature_length' => strlen($webhookSignature ?? ''),
+            'body_length' => strlen($webhookBody),
+            'body_hash' => hash('sha256', $webhookBody)
+        ]);
 
         if (!$this->verifyWebhookSignature($webhookBody, $webhookSignature)) {
-            \Log::error('Razorpay Webhook: Invalid signature');
+            \Log::error('❌ Razorpay Webhook: Invalid signature - REJECTING REQUEST', [
+                'provided_signature' => $webhookSignature,
+                'body_sample' => substr($webhookBody, 0, 200) . '...'
+            ]);
             return response()->json(['error' => 'Invalid signature'], 400);
         }
 
+        \Log::info('✅ Signature verification passed');
+
+        // Enhanced payload parsing
         $payload = json_decode($webhookBody, true);
+        $jsonError = json_last_error();
+        
+        if ($jsonError !== JSON_ERROR_NONE) {
+            \Log::error('❌ JSON decode error', [
+                'error' => json_last_error_msg(),
+                'error_code' => $jsonError,
+                'raw_payload' => $rawPayload
+            ]);
+            return response()->json(['error' => 'Invalid JSON payload'], 400);
+        }
+
         $event = $payload['event'] ?? null;
+        
+        \Log::info('📋 Parsed Webhook Payload', [
+            'event' => $event,
+            'payload_keys' => array_keys($payload),
+            'has_payment_data' => isset($payload['payload']['payment']['entity']),
+            'full_payload' => $payload
+        ]);
 
         if (!$event) {
-            \Log::error('Razorpay Webhook: No event specified');
+            \Log::error('❌ Razorpay Webhook: No event specified in payload');
             return response()->json(['error' => 'No event specified'], 400);
         }
 
-        \Log::info('Razorpay Webhook: Processing event', ['event' => $event]);
+        \Log::info('🎯 Processing Webhook Event', [
+            'event' => $event,
+            'event_type' => gettype($event),
+            'supported_events' => ['payment.captured', 'payment.failed', 'subscription.authenticated', 'subscription.activated', 'subscription.charged', 'subscription.cancelled']
+        ]);
 
         try {
             // Handle different event types
@@ -1995,34 +2034,51 @@ class RazorpayController extends Controller
                 //     $this->handlePaymentAuthorized($payload);
                 //     break;
                 case 'payment.captured':
+                    \Log::info('💳 Processing payment.captured event');
                     $this->handlePaymentCaptured($payload);
                     break;
                 case 'payment.failed':
+                    \Log::info('❌ Processing payment.failed event');
                     $this->handlePaymentFailed($payload);
                     break;
                 case 'subscription.authenticated':
+                    \Log::info('🔐 Processing subscription.authenticated event');
                     $this->handleSubscriptionAuthenticated($payload);
                     break;
                 case 'subscription.activated':
+                    \Log::info('✅ Processing subscription.activated event');
                     $this->handleSubscriptionActivated($payload);
                     break;
                 case 'subscription.charged':
+                    \Log::info('💰 Processing subscription.charged event');
                     $this->handleSubscriptionCharged($payload);
                     break;
                 case 'subscription.cancelled':
+                    \Log::info('🚫 Processing subscription.cancelled event');
                     $this->handleSubscriptionCancelled($payload);
                     break;
                 default:
-                    \Log::info('Razorpay Webhook: Unhandled event', ['event' => $event]);
+                    \Log::info('❓ Unhandled webhook event', [
+                        'event' => $event,
+                        'available_handlers' => ['payment.captured', 'payment.failed', 'subscription.authenticated', 'subscription.activated', 'subscription.charged', 'subscription.cancelled']
+                    ]);
                     break;
             }
 
+            \Log::info('✅ Webhook processing completed successfully', [
+                'event' => $event,
+                'response' => 'success'
+            ]);
+
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
-            \Log::error('Razorpay Webhook: Error processing event', [
+            \Log::error('💥 Fatal error processing webhook', [
                 'event' => $event,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'error_message' => $e->getMessage(),
+                'error_file' => $e->getFile(),
+                'error_line' => $e->getLine(),
+                'stack_trace' => $e->getTraceAsString(),
+                'payload_sample' => json_encode($payload, JSON_PRETTY_PRINT)
             ]);
             return response()->json(['error' => 'Error processing webhook'], 500);
         }
@@ -2037,20 +2093,43 @@ class RazorpayController extends Controller
      */
     private function verifyWebhookSignature($webhookBody, $webhookSignature)
     {
+        \Log::info('🔍 Starting signature verification', [
+            'signature_empty' => empty($webhookSignature),
+            'body_length' => strlen($webhookBody)
+        ]);
+
         if (empty($webhookSignature)) {
+            \Log::error('❌ Signature verification failed: No signature provided');
             return false;
         }
 
         $PaymentSetting = PaymentSetting::where('payment_type', 'Razorpay')->first();
         $webhookSecret = $PaymentSetting->webhook_secret ?? env('RAZORPAY_WEBHOOK_SECRET');
 
+        \Log::info('🔑 Webhook secret configuration', [
+            'payment_setting_found' => $PaymentSetting !== null,
+            'webhook_secret_configured' => !empty($webhookSecret),
+            'webhook_secret_length' => strlen($webhookSecret ?? ''),
+            'using_env_fallback' => empty($PaymentSetting->webhook_secret ?? null)
+        ]);
+
         if (empty($webhookSecret)) {
-            \Log::error('Razorpay Webhook: Webhook secret not configured');
+            \Log::error('❌ Signature verification failed: Webhook secret not configured');
             return false;
         }
 
         $expectedSignature = hash_hmac('sha256', $webhookBody, $webhookSecret);
-        return hash_equals($expectedSignature, $webhookSignature);
+        $signatureMatch = hash_equals($expectedSignature, $webhookSignature);
+        
+        \Log::info('🔐 Signature comparison', [
+            'expected_signature' => $expectedSignature,
+            'provided_signature' => $webhookSignature,
+            'signatures_match' => $signatureMatch,
+            'body_hash' => hash('sha256', $webhookBody),
+            'secret_hash' => hash('sha256', $webhookSecret)
+        ]);
+
+        return $signatureMatch;
     }
 
     private function handlePaymentAuthorized($payload)
@@ -2083,23 +2162,37 @@ class RazorpayController extends Controller
 
     private function handlePaymentCaptured($payload)
     {
+        \Log::info('💳 === PAYMENT CAPTURED HANDLER START ===');
+        
         $payment = $payload['payload']['payment']['entity'] ?? null;
         if (!$payment) {
-            \Log::error('Razorpay Webhook: Invalid payment data in payload');
+            \Log::error('❌ Invalid payment data in payload', [
+                'payload_keys' => array_keys($payload),
+                'has_payload' => isset($payload['payload']),
+                'has_payment' => isset($payload['payload']['payment']) 
+            ]);
             return;
         }
 
-        // Log the entire payment payload for debugging
-        \Log::info('Razorpay Webhook: Payment captured payload debug', [
+        // Enhanced payment data logging
+        \Log::info('💰 Payment captured data extraction', [
             'payment_id' => $payment['id'] ?? null,
             'order_id' => $payment['order_id'] ?? null,
             'amount' => $payment['amount'] ?? null,
+            'amount_formatted' => ($payment['amount'] ?? 0) / 100,
+            'currency' => $payment['currency'] ?? null,
+            'status' => $payment['status'] ?? null,
+            'method' => $payment['method'] ?? null,
             'notes' => $payment['notes'] ?? [],
-            'full_payment_data' => $payment
+            'created_at' => $payment['created_at'] ?? null,
+            'captured_at' => $payment['captured_at'] ?? null,
+            'payment_keys' => array_keys($payment)
         ]);
 
         DB::beginTransaction();
         try {
+            \Log::info('🔍 Checking for duplicate webhook events');
+            
             // Check for duplicate webhook event
             $existingWebhookRecord = DB::table('payment_webhook')
                 ->where('payment_id', $payment['id'])
@@ -2109,14 +2202,18 @@ class RazorpayController extends Controller
 
             if ($existingWebhookRecord) {
                 DB::commit();
-                \Log::info('Razorpay Webhook: Duplicate payment.captured event, skipping', [
-                    'payment_id' => $payment['id']
+                \Log::info('⚠️ Duplicate payment.captured event detected, skipping processing', [
+                    'payment_id' => $payment['id'],
+                    'existing_record_id' => $existingWebhookRecord->id ?? null,
+                    'existing_created_at' => $existingWebhookRecord->created_at ?? null
                 ]);
                 return response()->json(['success' => true, 'message' => 'Duplicate event']);
             }
 
+            \Log::info('📝 Inserting webhook event record');
+            
             // Log the webhook event
-            DB::table('payment_webhook')->insert([
+            $webhookInsertData = [
                 'order_id' => $payment['order_id'] ?? null,
                 'payment_id' => $payment['id'] ?? null,
                 'amount' => ($payment['amount'] ?? 0) / 100,
@@ -2125,24 +2222,46 @@ class RazorpayController extends Controller
                 'payload' => json_encode($payload),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]);
+            ];
+            
+            \Log::info('💾 Webhook record data', $webhookInsertData);
+            
+            DB::table('payment_webhook')->insert($webhookInsertData);
 
             $notes = $payment['notes'] ?? [];
-            \Log::info('Razorpay Webhook: Extracted notes for processing', [
+            \Log::info('📋 Extracted notes for processing', [
                 'notes' => $notes,
-                'payment_id' => $payment['id']
+                'notes_keys' => array_keys($notes),
+                'payment_id' => $payment['id'],
+                'has_user_id' => isset($notes['user_id']),
+                'has_video_id' => isset($notes['video_id']),
+                'has_order_id' => isset($notes['order_id'])
             ]);
 
-            // Special logging for video 39 debugging
+            // Special logging for video 39 and user 201673 debugging
             if (isset($notes['video_id']) && $notes['video_id'] == '39') {
-                \Log::info('🎯 VIDEO 39 WEBHOOK DETECTED', [
+                \Log::info('🎯🎯🎯 VIDEO 39 WEBHOOK DETECTED - SPECIAL LOGGING 🎯🎯🎯', [
                     'payment_id' => $payment['id'],
                     'order_id' => $payment['order_id'],
                     'user_id' => $notes['user_id'] ?? 'not_set',
                     'amount' => $payment['amount'] ?? 'not_set',
                     'notes' => $notes,
                     'full_payment_entity' => $payment,
-                    'timestamp' => now()
+                    'timestamp' => now(),
+                    'special_flag' => 'VIDEO_39_WEBHOOK_RECEIVED'
+                ]);
+            }
+            
+            if (isset($notes['user_id']) && $notes['user_id'] == '201673') {
+                \Log::info('👤👤👤 USER 201673 WEBHOOK DETECTED - SPECIAL LOGGING 👤👤👤', [
+                    'payment_id' => $payment['id'],
+                    'order_id' => $payment['order_id'],
+                    'user_id' => $notes['user_id'],
+                    'video_id' => $notes['video_id'] ?? 'not_set',
+                    'amount' => $payment['amount'] ?? 'not_set',
+                    'notes' => $notes,
+                    'timestamp' => now(),
+                    'special_flag' => 'USER_201673_WEBHOOK_RECEIVED'
                 ]);
             }
 
