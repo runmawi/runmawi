@@ -16,17 +16,20 @@ $testData = [
 echo "Test Data:\n";
 print_r($testData);
 
-// Make a POST request to the endpoint
-$url = 'http://localhost/api/auth/add_payperview';
+// Make a POST request to the endpoint - use the correct domain
+$url = 'https://runmawi.com/api/auth/add_payperview';  // Use the actual domain
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($testData));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Content-Type: application/x-www-form-urlencoded',
-    'Accept: application/json'
+    'Accept: application/json',
+    'User-Agent: Mozilla/5.0 (compatible; Debug Script)'
 ]);
 
 $response = curl_exec($ch);
@@ -45,15 +48,27 @@ if ($error) {
 // Also check the database directly
 echo "\n=== CHECKING DATABASE ===\n";
 try {
-    // Get database config from Laravel
-    $config = include 'config/database.php';
-    $dbConfig = $config['connections']['mysql'];
+    // Read .env file manually
+    $envFile = '.env';
+    $envVars = [];
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos($line, '=') !== false && !str_starts_with($line, '#')) {
+                list($key, $value) = explode('=', $line, 2);
+                $envVars[trim($key)] = trim($value);
+            }
+        }
+    }
     
-    $pdo = new PDO(
-        "mysql:host={$dbConfig['host']};dbname={$dbConfig['database']}", 
-        $dbConfig['username'], 
-        $dbConfig['password']
-    );
+    $dbHost = $envVars['DB_HOST'] ?? 'localhost';
+    $dbName = $envVars['DB_DATABASE'] ?? 'runmawi';
+    $dbUser = $envVars['DB_USERNAME'] ?? 'root';
+    $dbPass = $envVars['DB_PASSWORD'] ?? '';
+    
+    echo "Connecting to database: $dbHost/$dbName as $dbUser\n";
+    
+    $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Check if the purchase was created
