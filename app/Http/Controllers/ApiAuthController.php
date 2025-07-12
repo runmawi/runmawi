@@ -31975,9 +31975,10 @@ class ApiAuthController extends Controller
       $razorpayOrder = $api->order->create($orderData);
 
       // Create initial purchase record with pending status
-      $this->createInitialPurchaseRecord($request, $razorpayOrder['id'], 'pending');
+      // REMOVED: No longer creating pending purchase record
+      // Only webhook will create purchase record when payment is actually captured
 
-      \Log::info('Razorpay order created with initial purchase record', [
+              \Log::info('Razorpay order created successfully', [
         'order_id' => $razorpayOrder['id'],
         'user_id' => $user_id,
         'video_id' => $video_id,
@@ -32013,118 +32014,8 @@ class ApiAuthController extends Controller
     }
   }
 
-  /**
-   * Create initial purchase record for webhook processing
-   */
-  private function createInitialPurchaseRecord($request, $orderId, $status = 'pending')
-  {
-    $user_id = $request->user_id;
-    $video_id = $request->video_id;
-    $live_id = $request->live_id;
-    $audio_id = $request->audio_id;
-    $series_id = $request->series_id;
-    $season_id = $request->season_id;
-    $amount = $request->amount;
-    $ppv_plan = $request->ppv_plan;
-    $platform = $request->platform ?: 'Android';
-
-    // Calculate commission
-    $moderator_commssion = 0;
-    $admin_commssion = 0;
-    $moderator_id = null;
-
-    if (!empty($video_id)) {
-      $video_moderators_id = Video::where('id', $video_id)->pluck('user_id')->first();
-      $commission_percentage_value = Video::where('id', $video_id)->pluck('CPP_commission_percentage')->first();
-      $CppUser_details = ModeratorsUser::where('id', $video_moderators_id)->first();
-      $video_commission_percentage = VideoCommission::where('type', 'Cpp')->pluck('percentage')->first();
-      $commission_btn = Setting::pluck('CPP_Commission_Status')->first();
-
-      if ($commission_btn === 0) {
-        $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
-      }
-
-      if (!empty($video_moderators_id)) {
-        $moderator_commssion = ($amount * $commission_percentage_value) / 100;
-        $admin_commssion = $amount - $moderator_commssion;
-        $moderator_id = $video_moderators_id;
-      }
-    }
-
-    // Create purchase record
-    $purchaseData = [
-      'user_id' => $user_id,
-      'payment_id' => $orderId,
-      'total_amount' => $amount,
-      'status' => $status,
-      'payment_gateway' => 'razorpay',
-      'platform' => $platform,
-      'ppv_plan' => $ppv_plan,
-      'moderator_commssion' => $moderator_commssion,
-      'admin_commssion' => $admin_commssion,
-      'moderator_id' => $moderator_id,
-      'to_time' => null, // Set by webhook on success
-      'created_at' => now(),
-      'updated_at' => now()
-    ];
-
-    // Add content-specific IDs
-    if (!empty($video_id))
-      $purchaseData['video_id'] = $video_id;
-    if (!empty($live_id))
-      $purchaseData['live_id'] = $live_id;
-    if (!empty($audio_id))
-      $purchaseData['audio_id'] = $audio_id;
-    if (!empty($series_id))
-      $purchaseData['series_id'] = $series_id;
-    if (!empty($season_id))
-      $purchaseData['season_id'] = $season_id;
-
-    // Check if purchase record already exists
-    $existingPurchase = DB::table('ppv_purchases')
-      ->where('payment_id', $orderId)
-      ->first();
-
-    if (!$existingPurchase) {
-      $purchaseId = DB::table('ppv_purchases')->insertGetId($purchaseData);
-      
-      \Log::info('Initial purchase record created', [
-        'purchase_id' => $purchaseId,
-        'order_id' => $orderId,
-        'user_id' => $user_id,
-        'video_id' => $video_id,
-        'amount' => $amount,
-        'status' => $status
-      ]);
-    } else {
-      \Log::info('Purchase record already exists', [
-        'order_id' => $orderId,
-        'existing_status' => $existingPurchase->status
-      ]);
-    }
-
-    // Create live_purchase record if needed
-    if (!empty($live_id)) {
-      $existingLivePurchase = DB::table('live_purchases')
-        ->where('payment_id', $orderId)
-        ->first();
-
-      if (!$existingLivePurchase) {
-        DB::table('live_purchases')->insert([
-          'user_id' => $user_id,
-          'video_id' => $live_id,
-          'platform' => $platform,
-          'amount' => $amount,
-          'payment_gateway' => 'razorpay',
-          'status' => 0, // Set to 1 by webhook
-          'payment_id' => $orderId,
-          'payment_status' => $status,
-          'created_at' => now(),
-          'updated_at' => now()
-        ]);
-      }
-    }
-  }
+  // REMOVED: createInitialPurchaseRecord method no longer needed
+  // All purchase records are now created only by webhook when payment is actually captured
 
   /**
    * Confirm payment success from mobile app - fallback for webhook
