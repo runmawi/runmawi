@@ -32391,8 +32391,6 @@ class ApiAuthController extends Controller
   {
     \Log::info('Handling Apple purchase success', ['receipt' => $receiptData]);
 
-    DB::beginTransaction();
-    
     try {
       // Extract latest receipt info (most recent transactions)
       $latestReceiptInfo = $receiptData['latest_receipt_info'] ?? [];
@@ -32403,167 +32401,42 @@ class ApiAuthController extends Controller
       
       if (empty($allTransactions)) {
         \Log::warning('No transactions found in Apple receipt data');
-        DB::rollBack();
         return;
       }
 
-      // Process each transaction
+      // Validate transactions (but don't create database entries)
+      // Database entries are created by add_payperview endpoint which has full context
       foreach ($allTransactions as $transaction) {
-        $this->processAppleTransaction($transaction, 'captured');
+        $transactionId = $transaction['transaction_id'] ?? null;
+        $productId = $transaction['product_id'] ?? null;
+        
+        if ($transactionId && $productId) {
+          // Mark transaction as validated by Apple webhook
+          DB::table('ppv_purchases')
+            ->where('payment_id', $transactionId)
+            ->update([
+              'apple_webhook_verified' => true,
+              'apple_webhook_verified_at' => now()
+            ]);
+            
+          \Log::info('Apple transaction validated by webhook', [
+            'transaction_id' => $transactionId,
+            'product_id' => $productId
+          ]);
+        }
       }
 
-      DB::commit();
-      \Log::info('Apple purchase success processing completed');
+      \Log::info('Apple purchase success validation completed');
 
     } catch (\Exception $e) {
-      DB::rollBack();
-      \Log::error('Error processing Apple purchase success', [
+      \Log::error('Error validating Apple purchase success', [
         'error' => $e->getMessage(),
         'trace' => $e->getTraceAsString()
       ]);
     }
   }
 
-  /**
-   * Process individual Apple transaction
-   */
-  private function processAppleTransaction($transaction, $status = 'captured')
-  {
-    $transactionId = $transaction['transaction_id'] ?? null;
-    $productId = $transaction['product_id'] ?? null;
-    $purchaseDate = $transaction['purchase_date_ms'] ?? null;
-    
-    if (!$transactionId || !$productId) {
-      \Log::warning('Missing transaction ID or product ID in Apple transaction', $transaction);
-      return;
-    }
 
-    // Check for duplicate transactions
-    $existingPurchase = DB::table('ppv_purchases')
-      ->where('payment_id', $transactionId)
-      ->first();
-
-    if ($existingPurchase) {
-      \Log::info('Apple transaction already processed', [
-        'transaction_id' => $transactionId,
-        'existing_purchase_id' => $existingPurchase->id
-      ]);
-      return;
-    }
-
-    // Extract user and content info from product ID
-    // This assumes product IDs follow a pattern like: "video_123_user_456" or similar
-    // You may need to adjust this based on your product ID structure
-    $productInfo = $this->parseAppleProductId($productId);
-    
-    if (!$productInfo) {
-      \Log::warning('Could not parse Apple product ID', ['product_id' => $productId]);
-      return;
-    }
-
-    // Get PPV expiry time
-    $ppv_hours = Setting::value('ppv_hours') ?? 3;
-    $expiryDate = now()->addHours($ppv_hours);
-
-    // Prepare purchase data
-    $purchaseData = [
-      'user_id' => $productInfo['user_id'],
-      'payment_id' => $transactionId,
-      'total_amount' => $productInfo['amount'] ?? 0,
-      'status' => $status,
-      'payment_gateway' => 'Applepay',
-      'platform' => 'iOS',
-      'to_time' => $expiryDate,
-      'ppv_plan' => $productInfo['ppv_plan'] ?? null,
-      'created_at' => now(),
-      'updated_at' => now(),
-    ];
-
-    // Add content-specific fields
-    if (!empty($productInfo['video_id'])) {
-      $purchaseData['video_id'] = $productInfo['video_id'];
-    }
-    if (!empty($productInfo['live_id'])) {
-      $purchaseData['live_id'] = $productInfo['live_id'];
-    }
-    if (!empty($productInfo['audio_id'])) {
-      $purchaseData['audio_id'] = $productInfo['audio_id'];
-    }
-    if (!empty($productInfo['series_id'])) {
-      $purchaseData['series_id'] = $productInfo['series_id'];
-    }
-    if (!empty($productInfo['season_id'])) {
-      $purchaseData['season_id'] = $productInfo['season_id'];
-    }
-
-    // Insert purchase record
-    $purchaseId = DB::table('ppv_purchases')->insertGetId($purchaseData);
-
-    \Log::info('Apple purchase created via webhook', [
-      'purchase_id' => $purchaseId,
-      'transaction_id' => $transactionId,
-      'user_id' => $productInfo['user_id'],
-      'product_id' => $productId
-    ]);
-
-    // Send notification
-    $this->sendApplePurchaseNotification($productInfo['user_id'], $purchaseData);
-  }
-
-  /**
-   * Parse Apple product ID to extract user and content information
-   * This method needs to be customized based on your product ID structure
-   */
-  private function parseAppleProductId($productId)
-  {
-    // Example product ID patterns:
-    // "video_123_user_456_plan_720p"
-    // "live_789_user_456"
-    // "series_101_season_5_user_456"
-    
-    \Log::info('Parsing Apple product ID', ['product_id' => $productId]);
-    
-    // This is a basic implementation - you'll need to adjust based on your actual product ID structure
-    $parts = explode('_', $productId);
-    $result = [];
-    
-    for ($i = 0; $i < count($parts); $i++) {
-      switch ($parts[$i]) {
-        case 'video':
-          $result['video_id'] = $parts[$i + 1] ?? null;
-          break;
-        case 'live':
-          $result['live_id'] = $parts[$i + 1] ?? null;
-          break;
-        case 'audio':
-          $result['audio_id'] = $parts[$i + 1] ?? null;
-          break;
-        case 'series':
-          $result['series_id'] = $parts[$i + 1] ?? null;
-          break;
-        case 'season':
-          $result['season_id'] = $parts[$i + 1] ?? null;
-          break;
-        case 'user':
-          $result['user_id'] = $parts[$i + 1] ?? null;
-          break;
-        case 'plan':
-          $result['ppv_plan'] = $parts[$i + 1] ?? null;
-          break;
-        case 'amount':
-          $result['amount'] = $parts[$i + 1] ?? null;
-          break;
-      }
-    }
-    
-    // Validate required fields
-    if (empty($result['user_id'])) {
-      \Log::error('No user_id found in Apple product ID', ['product_id' => $productId, 'parsed' => $result]);
-      return null;
-    }
-    
-    return $result;
-  }
 
   /**
    * Handle failed Apple purchase
@@ -32572,8 +32445,6 @@ class ApiAuthController extends Controller
   {
     \Log::info('Handling Apple purchase failure', ['receipt' => $receiptData]);
 
-    DB::beginTransaction();
-    
     try {
       // Extract latest receipt info (most recent transactions)
       $latestReceiptInfo = $receiptData['latest_receipt_info'] ?? [];
@@ -32584,20 +32455,35 @@ class ApiAuthController extends Controller
       
       if (empty($allTransactions)) {
         \Log::warning('No transactions found in Apple failure receipt data');
-        DB::rollBack();
         return;
       }
 
-      // Process each failed transaction
+      // Mark failed transactions
       foreach ($allTransactions as $transaction) {
-        $this->processAppleTransaction($transaction, 'failed');
+        $transactionId = $transaction['transaction_id'] ?? null;
+        $productId = $transaction['product_id'] ?? null;
+        
+        if ($transactionId && $productId) {
+          // Mark transaction as failed by Apple webhook
+          DB::table('ppv_purchases')
+            ->where('payment_id', $transactionId)
+            ->update([
+              'status' => 'failed',
+              'apple_webhook_verified' => false,
+              'apple_webhook_verified_at' => now(),
+              'payment_failure_reason' => 'Apple webhook reported failure'
+            ]);
+            
+          \Log::info('Apple transaction marked as failed by webhook', [
+            'transaction_id' => $transactionId,
+            'product_id' => $productId
+          ]);
+        }
       }
 
-      DB::commit();
       \Log::info('Apple purchase failure processing completed');
 
     } catch (\Exception $e) {
-      DB::rollBack();
       \Log::error('Error processing Apple purchase failure', [
         'error' => $e->getMessage(),
         'trace' => $e->getTraceAsString()
