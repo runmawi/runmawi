@@ -17,7 +17,7 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Default log file path (adjust as needed)
-LOG_FILE="/var/log/your-app/laravel.log"
+LOG_FILE="/home/runmawi/storage/logs/laravel.log"
 
 # Check if log file exists
 if [ ! -f "$LOG_FILE" ]; then

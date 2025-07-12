@@ -108,22 +108,22 @@ chmod +x monitor-webhooks.sh
 
 ### Step 1: Check if Webhooks Are Being Received
 ```bash
-grep "🚀 === RAZORPAY WEBHOOK ENTRY POINT ===" /path/to/laravel.log
+grep "🚀 === RAZORPAY WEBHOOK ENTRY POINT ===" /home/runmawi/storage/logs/laravel.log
 ```
 
 ### Step 2: Look for Specific Order/Payment
 ```bash
-grep -i "order_QsAIdG0m65YZpX" /path/to/laravel.log
+grep -i "order_QsAIdG0m65YZpX" /home/runmawi/storage/logs/laravel.log
 ```
 
 ### Step 3: Check for Video 39 Events
 ```bash
-grep "🎯🎯🎯 VIDEO 39 WEBHOOK DETECTED" /path/to/laravel.log
+grep "🎯🎯🎯 VIDEO 39 WEBHOOK DETECTED" /home/runmawi/storage/logs/laravel.log
 ```
 
 ### Step 4: Check for User 201673 Events
 ```bash
-grep "👤👤👤 USER 201673 WEBHOOK DETECTED" /path/to/laravel.log
+grep "👤👤👤 USER 201673 WEBHOOK DETECTED" /home/runmawi/storage/logs/laravel.log
 ```
 
 ## 🎯 Expected Outcomes
