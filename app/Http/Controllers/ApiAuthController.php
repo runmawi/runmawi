@@ -5663,13 +5663,17 @@ class ApiAuthController extends Controller
       ]);
 
       // Get PPV expiry time
-      $ppv_hours = Setting::value('ppv_hours') ?? 3;
-      $expiryDate = now()->addHours($ppv_hours);
+      $ppv_hours = Setting::value('ppv_hours') ?? 24;
+      $d = new \DateTime('now');
+      $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+      $from_time = $d->format('Y-m-d h:i:s a');
+      $to_time = date('Y-m-d h:i:s a', strtotime('+' . $ppv_hours . ' hour', strtotime($from_time)));
 
       // Prepare base purchase data
       $purchaseData = [
         'user_id' => $data['user_id'],
-        'to_time' => $expiryDate,
+        'from_time' => $from_time,
+        'to_time' => $to_time,
         'ppv_plan' => $data['ppv_plan'],
         'created_at' => now(),
         'updated_at' => now(),
@@ -5681,9 +5685,12 @@ class ApiAuthController extends Controller
         'platform' => $data['platform']
       ];
 
-      // Check for existing purchases in a single query
-      $existingPurchase = DB::table('ppv_purchases')
+      // Check for existing successful purchases that haven't expired
+      // Only prevent duplicate if there's an active, successful purchase for the same content
+      $existingActivePurchase = DB::table('ppv_purchases')
         ->where('user_id', $data['user_id'])
+        ->where('status', 'captured') // Only check successful purchases
+        ->where('to_time', '>', now()) // Only check non-expired purchases
         ->where(function ($query) use ($data) {
           $query->where('video_id', $data['video_id'])
             ->orWhere('live_id', $data['live_id'])
@@ -5695,10 +5702,48 @@ class ApiAuthController extends Controller
         })
         ->first();
 
-      if ($existingPurchase) {
+      // Check if this is the exact same payment attempt (same payment_id)
+      $samePaymentAttempt = null;
+      if (!empty($data['py_id'])) {
+        $samePaymentAttempt = DB::table('ppv_purchases')
+          ->where('payment_id', $data['py_id'])
+          ->first();
+      }
+
+      if ($samePaymentAttempt) {
+        \Log::info('Same payment ID already exists, updating existing record', [
+          'payment_id' => $data['py_id'],
+          'existing_status' => $samePaymentAttempt->status,
+          'new_status' => $data['status']
+        ]);
+        
+        // Update the existing record instead of creating a new one
+        DB::table('ppv_purchases')
+          ->where('payment_id', $data['py_id'])
+          ->update([
+            'status' => $data['status'],
+            'updated_at' => now(),
+            'payment_failure_reason' => $data['py_failure_reason']
+          ]);
+
+        DB::commit();
+        return response()->json([
+          'status' => 'success',
+          'message' => 'Purchase updated successfully'
+        ]);
+      }
+
+      if ($existingActivePurchase) {
+        \Log::warning('User already has active purchase for this content', [
+          'user_id' => $data['user_id'],
+          'existing_purchase_id' => $existingActivePurchase->id,
+          'existing_expires' => $existingActivePurchase->to_time,
+          'attempted_payment_id' => $data['py_id']
+        ]);
+        
         return response()->json([
           'status' => 'error',
-          'message' => 'You have already purchased this content'
+          'message' => 'You already have active access to this content'
         ], 400);
       }
 
@@ -31990,12 +32035,13 @@ class ApiAuthController extends Controller
       // REMOVED: No longer creating pending purchase record
       // Only webhook will create purchase record when payment is actually captured
 
-              \Log::info('Razorpay order created successfully', [
+              \Log::info('Razorpay payment order created - user must complete payment for access', [
         'order_id' => $razorpayOrder['id'],
         'user_id' => $user_id,
         'video_id' => $video_id,
         'amount' => $amount,
-        'platform' => $platform
+        'platform' => $platform,
+        'note' => 'Order created, but payment not yet completed. User will get access only after successful payment.'
       ]);
 
       DB::commit();
