@@ -2127,15 +2127,40 @@ function videocipher_Key(){
 
 
 function payment_status($item) {
-    switch ($item ? $item->payment_gateway : null) {
+    if (!$item) {
+        return null;
+    }
+
+    // Return the actual status from the database record
+    $actualStatus = $item->status ?? null;
+    
+    \Log::info('Payment Status Check', [
+        'purchase_id' => $item->id ?? 'unknown',
+        'user_id' => $item->user_id ?? 'unknown',
+        'video_id' => $item->video_id ?? 'unknown',
+        'payment_gateway' => $item->payment_gateway ?? 'unknown',
+        'actual_status' => $actualStatus,
+        'to_time' => $item->to_time ?? 'unknown'
+    ]);
+
+    // Map status values to expected gateway-specific statuses
+    switch ($item->payment_gateway) {
         case 'razorpay':
-            return 'captured';  
+            // For Razorpay, only return 'captured' if status is actually 'captured'
+            return $actualStatus === 'captured' ? 'captured' : null;
         case 'Stripe':
-            return 'succeeded';  
         case 'stripe':
-            return 'succeeded';  
+            // For Stripe, map 'captured' to 'succeeded'
+            return $actualStatus === 'captured' ? 'succeeded' : null;
+        case 'Applepay':
+            // For Apple Pay, return actual status
+            return $actualStatus === 'captured' ? 'captured' : null;
+        case 'paypal':
+            // For PayPal, return actual status
+            return $actualStatus === 'captured' ? 'captured' : null;
         default:
-            return null;  
+            // For other gateways, return actual status if captured
+            return $actualStatus === 'captured' ? $actualStatus : null;
     }
 }
 

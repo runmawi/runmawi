@@ -32236,6 +32236,86 @@ class ApiAuthController extends Controller
   }
 
   /**
+   * Debug endpoint to check payment status and test flow
+   */
+  public function debug_payment_status(Request $request)
+  {
+    try {
+      $user_id = $request->user_id ?? 201673;
+      $video_id = $request->video_id ?? 39;
+
+      \Log::info('Debug Payment Status Request', [
+        'user_id' => $user_id,
+        'video_id' => $video_id,
+        'request_params' => $request->all()
+      ]);
+
+      // Check current purchases
+      $purchases = PpvPurchase::where('user_id', $user_id)
+        ->where('video_id', $video_id)
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get();
+
+      $purchaseData = [];
+      foreach ($purchases as $purchase) {
+        $payment_status_result = payment_status($purchase);
+        
+        $purchaseData[] = [
+          'id' => $purchase->id,
+          'payment_id' => $purchase->payment_id,
+          'razorpay_payment_id' => $purchase->razorpay_payment_id,
+          'status' => $purchase->status,
+          'payment_status_helper_result' => $payment_status_result,
+          'payment_gateway' => $purchase->payment_gateway,
+          'platform' => $purchase->platform,
+          'total_amount' => $purchase->total_amount,
+          'ppv_plan' => $purchase->ppv_plan,
+          'from_time' => $purchase->from_time,
+          'to_time' => $purchase->to_time,
+          'created_at' => $purchase->created_at,
+          'updated_at' => $purchase->updated_at
+        ];
+      }
+
+      // Check recent webhook logs
+      $recentWebhooks = DB::table('payment_webhook')
+        ->orderBy('created_at', 'desc')
+        ->limit(10)
+        ->get();
+
+      \Log::info('Debug Payment Status Results', [
+        'user_id' => $user_id,
+        'video_id' => $video_id,
+        'total_purchases' => count($purchaseData),
+        'purchase_data' => $purchaseData,
+        'recent_webhooks_count' => count($recentWebhooks)
+      ]);
+
+      return response()->json([
+        'status' => 'success',
+        'user_id' => $user_id,
+        'video_id' => $video_id,
+        'total_purchases' => count($purchaseData),
+        'purchases' => $purchaseData,
+        'recent_webhooks' => $recentWebhooks->toArray(),
+        'debug_timestamp' => now()
+      ]);
+
+    } catch (\Exception $e) {
+      \Log::error('Debug Payment Status Error', [
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString()
+      ]);
+
+      return response()->json([
+        'status' => 'error',
+        'message' => $e->getMessage()
+      ], 500);
+    }
+  }
+
+  /**
    * Verify Apple App Store receipt for robust payment verification
    */
   public function verify_apple_receipt(Request $request)

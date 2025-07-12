@@ -1952,14 +1952,22 @@ class RazorpayController extends Controller
      */
     public function handleWebhook(Request $request)
     {
-        \Log::info('Razorpay Webhook: Entry point hit', [
+        \Log::info('=== RAZORPAY WEBHOOK ENTRY POINT ===', [
             'method' => $request->method(),
             'url' => $request->fullUrl(),
             'headers' => $request->headers->all(),
-            'raw_payload_size' => strlen($request->getContent())
+            'raw_payload_size' => strlen($request->getContent()),
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'timestamp' => now()
         ]);
 
-        \Log::info('Razorpay Webhook Received', ['payload' => $request->all()]);
+        // Log the full raw payload for debugging
+        $rawPayload = $request->getContent();
+        \Log::info('Razorpay Webhook Raw Payload', [
+            'raw_content' => $rawPayload,
+            'content_length' => strlen($rawPayload)
+        ]);
 
         // Verify the webhook signature
         $webhookSignature = $request->header('X-Razorpay-Signature');
@@ -2125,6 +2133,19 @@ class RazorpayController extends Controller
                 'payment_id' => $payment['id']
             ]);
 
+            // Special logging for video 39 debugging
+            if (isset($notes['video_id']) && $notes['video_id'] == '39') {
+                \Log::info('🎯 VIDEO 39 WEBHOOK DETECTED', [
+                    'payment_id' => $payment['id'],
+                    'order_id' => $payment['order_id'],
+                    'user_id' => $notes['user_id'] ?? 'not_set',
+                    'amount' => $payment['amount'] ?? 'not_set',
+                    'notes' => $notes,
+                    'full_payment_entity' => $payment,
+                    'timestamp' => now()
+                ]);
+            }
+
             // Calculate to_time for successful payments
             $setting = Setting::first();
             $ppv_hours = $setting->ppv_hours;
@@ -2175,8 +2196,24 @@ class RazorpayController extends Controller
                     // Update existing pending purchase to captured
                     \Log::info('Razorpay Webhook: Updating pending purchase to captured', [
                         'purchase_id' => $existingPurchase->id,
-                        'order_id' => $order_id_from_payment
+                        'order_id' => $order_id_from_payment,
+                        'user_id' => $existingPurchase->user_id,
+                        'video_id' => $existingPurchase->video_id
                     ]);
+
+                    // Special logging for video 39
+                    if ($existingPurchase->video_id == 39) {
+                        \Log::info('🎯 VIDEO 39 PENDING PURCHASE UPDATE', [
+                            'purchase_id' => $existingPurchase->id,
+                            'order_id' => $order_id_from_payment,
+                            'user_id' => $existingPurchase->user_id,
+                            'video_id' => $existingPurchase->video_id,
+                            'current_status' => $existingPurchase->status,
+                            'about_to_update_to' => 'captured',
+                            'razorpay_payment_id' => $razorpay_payment_id,
+                            'timestamp' => now()
+                        ]);
+                    }
 
                     $existingPurchase->update([
                         'status' => 'captured',
