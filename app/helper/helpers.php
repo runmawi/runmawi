@@ -98,7 +98,7 @@ $ch = curl_init();
 $client= "Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2";
 $secret= "ENsYUiqBVMhmR0Lbxgt13QpmV5Hud4PXwsCLUZqCgBm_8mJK14nDZUKdbiTxbLmwNxttkv6M3exT5I3A"; 
 curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/oauth2/token");
-    /*curl_setopt($ch, CURLOPT_URL, “https://api.paypal.com/v1/oauth2/token”);*/
+    /*curl_setopt($ch, CURLOPT_URL, "https://api.paypal.com/v1/oauth2/token");*/
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -2143,24 +2143,35 @@ function payment_status($item) {
         'to_time' => $item->to_time ?? 'unknown'
     ]);
 
+    // SECURITY FIX: Only return valid status for captured payments
+    // Pending, failed, or any other status should return null to deny access
+    if ($actualStatus !== 'captured') {
+        \Log::warning('Payment Status Check - Access Denied', [
+            'purchase_id' => $item->id ?? 'unknown',
+            'actual_status' => $actualStatus,
+            'reason' => 'Payment not captured - access denied'
+        ]);
+        return null;
+    }
+
     // Map status values to expected gateway-specific statuses
     switch ($item->payment_gateway) {
         case 'razorpay':
             // For Razorpay, only return 'captured' if status is actually 'captured'
-            return $actualStatus === 'captured' ? 'captured' : null;
+            return 'captured';
         case 'Stripe':
         case 'stripe':
             // For Stripe, map 'captured' to 'succeeded'
-            return $actualStatus === 'captured' ? 'succeeded' : null;
+            return 'succeeded';
         case 'Applepay':
-            // For Apple Pay, return actual status
-            return $actualStatus === 'captured' ? 'captured' : null;
+            // For Apple Pay, return captured status
+            return 'captured';
         case 'paypal':
-            // For PayPal, return actual status
-            return $actualStatus === 'captured' ? 'captured' : null;
+            // For PayPal, return captured status
+            return 'captured';
         default:
-            // For other gateways, return actual status if captured
-            return $actualStatus === 'captured' ? $actualStatus : null;
+            // For other gateways, return captured status
+            return 'captured';
     }
 }
 
