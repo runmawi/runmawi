@@ -4500,7 +4500,7 @@ class ApiAuthController extends Controller
           return $item;
         }
       })->filter(); // Remove null values if any
-// Remove null values if any
+    // Remove null values if any
 
       $status = $channel_videos->isNotEmpty() ? "true" : "false";
     } else {
@@ -5598,8 +5598,17 @@ class ApiAuthController extends Controller
         'platform',
         'py_id',
         'py_status',
+        'status',
         'py_failure_reason'
       ]);
+
+      // Handle field name inconsistencies - iOS sends py_status, web sends status
+      if (isset($data['py_status']) && !isset($data['status'])) {
+        $data['status'] = $data['py_status'];
+      }
+      if (!isset($data['status'])) {
+        $data['status'] = 'pending';
+      }
 
       // Set default values
       $data = array_merge([
@@ -5615,14 +5624,31 @@ class ApiAuthController extends Controller
         'amount' => 0,
         'platform' => 'web',
         'py_id' => null,
-        'py_status' => 'pending',
+        'status' => 'pending',
         'py_failure_reason' => null,
       ], $data);
 
       // Validate required fields
       if (empty($data['user_id'])) {
+        \Log::error('PPV Purchase validation failed: User ID is required', $data);
         throw new \Exception('User ID is required');
       }
+
+      // Log the processed data for debugging
+      \Log::info('PPV Purchase processed data', [
+        'user_id' => $data['user_id'],
+        'video_id' => $data['video_id'],
+        'series_id' => $data['series_id'],
+        'season_id' => $data['season_id'],
+        'episode_id' => $data['episode_id'],
+        'live_id' => $data['live_id'],
+        'audio_id' => $data['audio_id'],
+        'amount' => $data['amount'],
+        'platform' => $data['platform'],
+        'payment_type' => $data['payment_type'],
+        'status' => $data['status'],
+        'py_id' => $data['py_id']
+      ]);
 
       // Get PPV expiry time
       $ppv_hours = Setting::value('ppv_hours') ?? 3;
@@ -5638,7 +5664,7 @@ class ApiAuthController extends Controller
         'total_amount' => $data['amount'],
         'payment_gateway' => $data['payment_type'],
         'payment_id' => $data['py_id'],
-        'status' => $data['py_status'],
+        'status' => $data['status'],
         'payment_failure_reason' => $data['py_failure_reason'],
         'platform' => $data['platform']
       ];
@@ -5666,14 +5692,19 @@ class ApiAuthController extends Controller
 
       // Process based on content type
       if (!empty($data['video_id'])) {
+        \Log::info('Processing video purchase', ['video_id' => $data['video_id']]);
         $this->processVideoPurchase($purchaseData, $data);
       } elseif (!empty($data['live_id'])) {
+        \Log::info('Processing live purchase', ['live_id' => $data['live_id']]);
         $this->processLivePurchase($purchaseData, $data);
       } elseif (!empty($data['audio_id'])) {
+        \Log::info('Processing audio purchase', ['audio_id' => $data['audio_id']]);
         $this->processAudioPurchase($purchaseData, $data);
       } elseif (!empty($data['series_id']) && !empty($data['season_id'])) {
+        \Log::info('Processing series purchase', ['series_id' => $data['series_id'], 'season_id' => $data['season_id']]);
         $this->processSeriesPurchase($purchaseData, $data);
       } else {
+        \Log::error('No valid content type specified', $data);
         throw new \Exception('No valid content type specified');
       }
 
@@ -5707,7 +5738,21 @@ class ApiAuthController extends Controller
       'video_id' => $requestData['video_id']
     ]);
 
-    DB::table('ppv_purchases')->insert($purchaseData);
+    \Log::info('Inserting video purchase into database', [
+      'user_id' => $purchaseData['user_id'],
+      'video_id' => $purchaseData['video_id'],
+      'amount' => $purchaseData['total_amount'],
+      'payment_id' => $purchaseData['payment_id'],
+      'status' => $purchaseData['status']
+    ]);
+
+    $insertId = DB::table('ppv_purchases')->insertGetId($purchaseData);
+    
+    \Log::info('Video purchase inserted successfully', [
+      'purchase_id' => $insertId,
+      'user_id' => $purchaseData['user_id'],
+      'video_id' => $purchaseData['video_id']
+    ]);
   }
 
   private function processLivePurchase(array $baseData, array $requestData)
@@ -31867,6 +31912,8 @@ class ApiAuthController extends Controller
       'timestamp' => now()
     ]);
 
+    DB::beginTransaction();
+
     try {
       $receiptData = $request->receipt_data;
       $transactionId = $request->transaction_id;
@@ -31875,20 +31922,65 @@ class ApiAuthController extends Controller
       $videoId = $request->video_id;
       $platform = $request->platform ?: 'iOS';
 
+      // Get additional parameters that might be sent by iOS app
+      $episodeId = $request->episode_id;
+      $seasonId = $request->season_id;
+      $seriesId = $request->series_id;
+      $liveId = $request->live_id;
+      $audioId = $request->audio_id;
+      $ppvPlan = $request->ppv_plan;
+      $amount = $request->amount;
+
       \Log::info('Apple receipt verification request details', [
         'user_id' => $userId,
         'video_id' => $videoId,
+        'episode_id' => $episodeId,
+        'season_id' => $seasonId,
+        'series_id' => $seriesId,
+        'live_id' => $liveId,
+        'audio_id' => $audioId,
         'transaction_id' => $transactionId,
         'product_id' => $productId,
         'platform' => $platform,
+        'ppv_plan' => $ppvPlan,
+        'amount' => $amount,
         'receipt_data_length' => strlen($receiptData ?? '')
       ]);
 
       if (empty($receiptData)) {
         \Log::warning('Receipt verification failed: empty receipt data');
+        DB::rollBack();
         return response()->json([
           'status' => 'false',
           'message' => 'Receipt data is required'
+        ]);
+      }
+
+      if (empty($userId)) {
+        \Log::warning('Receipt verification failed: missing user_id');
+        DB::rollBack();
+        return response()->json([
+          'status' => 'false',
+          'message' => 'User ID is required'
+        ]);
+      }
+
+      // Check for duplicate transactions
+      $existingPurchase = DB::table('ppv_purchases')
+        ->where('payment_id', $transactionId)
+        ->orWhere('payment_id', $productId)
+        ->first();
+
+      if ($existingPurchase) {
+        \Log::info('Duplicate transaction found', [
+          'transaction_id' => $transactionId,
+          'existing_purchase_id' => $existingPurchase->id
+        ]);
+        DB::rollBack();
+        return response()->json([
+          'status' => 'true',
+          'message' => 'Transaction already processed',
+          'transaction_id' => $transactionId
         ]);
       }
 
@@ -31908,6 +32000,11 @@ class ApiAuthController extends Controller
             'product_id' => $productId
           ]);
 
+          // Note: Database entry creation is handled by add_payperview endpoint
+          // This endpoint only verifies the receipt with Apple
+          
+          DB::commit();
+
           return response()->json([
             'status' => 'true',
             'message' => 'Receipt verified successfully',
@@ -31920,6 +32017,7 @@ class ApiAuthController extends Controller
             'product_id' => $productId
           ]);
 
+          DB::rollBack();
           return response()->json([
             'status' => 'false',
             'message' => 'Transaction not found in receipt'
@@ -31932,6 +32030,7 @@ class ApiAuthController extends Controller
           'video_id' => $videoId
         ]);
 
+        DB::rollBack();
         return response()->json([
           'status' => 'false',
           'message' => 'Invalid receipt: ' . $this->getAppleErrorMessage($appleResponse['status'])
@@ -31939,10 +32038,12 @@ class ApiAuthController extends Controller
       }
 
     } catch (\Exception $e) {
+      DB::rollBack();
       \Log::error('Apple receipt verification exception', [
         'error' => $e->getMessage(),
         'user_id' => $request->user_id,
-        'video_id' => $request->video_id
+        'video_id' => $request->video_id,
+        'trace' => $e->getTraceAsString()
       ]);
 
       return response()->json([
@@ -32029,6 +32130,127 @@ class ApiAuthController extends Controller
     }
 
     return null;
+  }
+
+  /**
+   * Create Apple purchase entry in database
+   */
+  private function createApplePurchaseEntry(Request $request, $transaction)
+  {
+    try {
+      // Get PPV expiry time
+      $ppv_hours = Setting::value('ppv_hours') ?? 3;
+      $expiryDate = now()->addHours($ppv_hours);
+
+      // Extract amount from Apple transaction (in cents, convert to dollars)
+      $transactionAmount = isset($transaction['transaction_id']) ? 
+        ($transaction['transaction_id'] ? floatval($request->amount ?? 0) : 0) : 0;
+
+      // Prepare base purchase data
+      $purchaseData = [
+        'user_id' => $request->user_id,
+        'to_time' => $expiryDate,
+        'ppv_plan' => $request->ppv_plan,
+        'created_at' => now(),
+        'updated_at' => now(),
+        'total_amount' => $transactionAmount,
+        'payment_gateway' => 'Applepay',
+        'payment_id' => $request->transaction_id,
+        'status' => 'captured',
+        'platform' => $request->platform ?: 'iOS'
+      ];
+
+      // Add content-specific fields
+      if (!empty($request->video_id)) {
+        $purchaseData['video_id'] = $request->video_id;
+      }
+      if (!empty($request->live_id)) {
+        $purchaseData['live_id'] = $request->live_id;
+      }
+      if (!empty($request->audio_id)) {
+        $purchaseData['audio_id'] = $request->audio_id;
+      }
+      if (!empty($request->series_id)) {
+        $purchaseData['series_id'] = $request->series_id;
+      }
+      if (!empty($request->season_id)) {
+        $purchaseData['season_id'] = $request->season_id;
+      }
+      if (!empty($request->episode_id)) {
+        $purchaseData['episode_id'] = $request->episode_id;
+      }
+
+      // Insert into database
+      $purchaseId = DB::table('ppv_purchases')->insertGetId($purchaseData);
+
+      \Log::info('Apple purchase entry created successfully', [
+        'purchase_id' => $purchaseId,
+        'user_id' => $request->user_id,
+        'transaction_id' => $request->transaction_id,
+        'amount' => $transactionAmount,
+        'expiry_date' => $expiryDate
+      ]);
+
+      // Send notification
+      $this->sendApplePurchaseNotification($request->user_id, $purchaseData);
+
+      return $purchaseId;
+
+    } catch (\Exception $e) {
+      \Log::error('Failed to create Apple purchase entry', [
+        'error' => $e->getMessage(),
+        'user_id' => $request->user_id,
+        'transaction_id' => $request->transaction_id,
+        'trace' => $e->getTraceAsString()
+      ]);
+      throw $e;
+    }
+  }
+
+  /**
+   * Send purchase notification for Apple purchases
+   */
+  private function sendApplePurchaseNotification($userId, $purchaseData)
+  {
+    try {
+      $contentType = $this->getAppleContentType($purchaseData);
+      $message = "You have successfully rented a {$contentType} via Apple Pay";
+
+      send_password_notification(
+        'Notification From ' . GetWebsiteName(),
+        $message,
+        $message,
+        '',
+        $userId
+      );
+
+      \Log::info('Apple purchase notification sent', [
+        'user_id' => $userId,
+        'content_type' => $contentType
+      ]);
+
+    } catch (\Exception $e) {
+      \Log::error('Failed to send Apple purchase notification', [
+        'error' => $e->getMessage(),
+        'user_id' => $userId
+      ]);
+    }
+  }
+
+  /**
+   * Get content type for Apple purchases
+   */
+  private function getAppleContentType(array $data)
+  {
+    if (!empty($data['video_id']))
+      return 'video';
+    if (!empty($data['live_id']))
+      return 'live stream';
+    if (!empty($data['audio_id']))
+      return 'audio';
+    if (!empty($data['series_id']))
+      return 'series';
+    return 'content';
   }
 
   /**
@@ -32167,11 +32389,180 @@ class ApiAuthController extends Controller
    */
   private function handleApplePurchaseSuccess($receiptData)
   {
-    // Process successful purchase
     \Log::info('Handling Apple purchase success', ['receipt' => $receiptData]);
 
-    // Extract purchase details and update database
-    // This would mirror the logic in add_payperview but triggered by Apple's notification
+    DB::beginTransaction();
+    
+    try {
+      // Extract latest receipt info (most recent transactions)
+      $latestReceiptInfo = $receiptData['latest_receipt_info'] ?? [];
+      $inAppPurchases = $receiptData['receipt']['in_app'] ?? [];
+      
+      // Combine and get the most recent transactions
+      $allTransactions = array_merge($latestReceiptInfo, $inAppPurchases);
+      
+      if (empty($allTransactions)) {
+        \Log::warning('No transactions found in Apple receipt data');
+        DB::rollBack();
+        return;
+      }
+
+      // Process each transaction
+      foreach ($allTransactions as $transaction) {
+        $this->processAppleTransaction($transaction, 'captured');
+      }
+
+      DB::commit();
+      \Log::info('Apple purchase success processing completed');
+
+    } catch (\Exception $e) {
+      DB::rollBack();
+      \Log::error('Error processing Apple purchase success', [
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString()
+      ]);
+    }
+  }
+
+  /**
+   * Process individual Apple transaction
+   */
+  private function processAppleTransaction($transaction, $status = 'captured')
+  {
+    $transactionId = $transaction['transaction_id'] ?? null;
+    $productId = $transaction['product_id'] ?? null;
+    $purchaseDate = $transaction['purchase_date_ms'] ?? null;
+    
+    if (!$transactionId || !$productId) {
+      \Log::warning('Missing transaction ID or product ID in Apple transaction', $transaction);
+      return;
+    }
+
+    // Check for duplicate transactions
+    $existingPurchase = DB::table('ppv_purchases')
+      ->where('payment_id', $transactionId)
+      ->first();
+
+    if ($existingPurchase) {
+      \Log::info('Apple transaction already processed', [
+        'transaction_id' => $transactionId,
+        'existing_purchase_id' => $existingPurchase->id
+      ]);
+      return;
+    }
+
+    // Extract user and content info from product ID
+    // This assumes product IDs follow a pattern like: "video_123_user_456" or similar
+    // You may need to adjust this based on your product ID structure
+    $productInfo = $this->parseAppleProductId($productId);
+    
+    if (!$productInfo) {
+      \Log::warning('Could not parse Apple product ID', ['product_id' => $productId]);
+      return;
+    }
+
+    // Get PPV expiry time
+    $ppv_hours = Setting::value('ppv_hours') ?? 3;
+    $expiryDate = now()->addHours($ppv_hours);
+
+    // Prepare purchase data
+    $purchaseData = [
+      'user_id' => $productInfo['user_id'],
+      'payment_id' => $transactionId,
+      'total_amount' => $productInfo['amount'] ?? 0,
+      'status' => $status,
+      'payment_gateway' => 'Applepay',
+      'platform' => 'iOS',
+      'to_time' => $expiryDate,
+      'ppv_plan' => $productInfo['ppv_plan'] ?? null,
+      'created_at' => now(),
+      'updated_at' => now(),
+    ];
+
+    // Add content-specific fields
+    if (!empty($productInfo['video_id'])) {
+      $purchaseData['video_id'] = $productInfo['video_id'];
+    }
+    if (!empty($productInfo['live_id'])) {
+      $purchaseData['live_id'] = $productInfo['live_id'];
+    }
+    if (!empty($productInfo['audio_id'])) {
+      $purchaseData['audio_id'] = $productInfo['audio_id'];
+    }
+    if (!empty($productInfo['series_id'])) {
+      $purchaseData['series_id'] = $productInfo['series_id'];
+    }
+    if (!empty($productInfo['season_id'])) {
+      $purchaseData['season_id'] = $productInfo['season_id'];
+    }
+
+    // Insert purchase record
+    $purchaseId = DB::table('ppv_purchases')->insertGetId($purchaseData);
+
+    \Log::info('Apple purchase created via webhook', [
+      'purchase_id' => $purchaseId,
+      'transaction_id' => $transactionId,
+      'user_id' => $productInfo['user_id'],
+      'product_id' => $productId
+    ]);
+
+    // Send notification
+    $this->sendApplePurchaseNotification($productInfo['user_id'], $purchaseData);
+  }
+
+  /**
+   * Parse Apple product ID to extract user and content information
+   * This method needs to be customized based on your product ID structure
+   */
+  private function parseAppleProductId($productId)
+  {
+    // Example product ID patterns:
+    // "video_123_user_456_plan_720p"
+    // "live_789_user_456"
+    // "series_101_season_5_user_456"
+    
+    \Log::info('Parsing Apple product ID', ['product_id' => $productId]);
+    
+    // This is a basic implementation - you'll need to adjust based on your actual product ID structure
+    $parts = explode('_', $productId);
+    $result = [];
+    
+    for ($i = 0; $i < count($parts); $i++) {
+      switch ($parts[$i]) {
+        case 'video':
+          $result['video_id'] = $parts[$i + 1] ?? null;
+          break;
+        case 'live':
+          $result['live_id'] = $parts[$i + 1] ?? null;
+          break;
+        case 'audio':
+          $result['audio_id'] = $parts[$i + 1] ?? null;
+          break;
+        case 'series':
+          $result['series_id'] = $parts[$i + 1] ?? null;
+          break;
+        case 'season':
+          $result['season_id'] = $parts[$i + 1] ?? null;
+          break;
+        case 'user':
+          $result['user_id'] = $parts[$i + 1] ?? null;
+          break;
+        case 'plan':
+          $result['ppv_plan'] = $parts[$i + 1] ?? null;
+          break;
+        case 'amount':
+          $result['amount'] = $parts[$i + 1] ?? null;
+          break;
+      }
+    }
+    
+    // Validate required fields
+    if (empty($result['user_id'])) {
+      \Log::error('No user_id found in Apple product ID', ['product_id' => $productId, 'parsed' => $result]);
+      return null;
+    }
+    
+    return $result;
   }
 
   /**
@@ -32179,8 +32570,39 @@ class ApiAuthController extends Controller
    */
   private function handleApplePurchaseFailure($receiptData)
   {
-    // Process failed purchase
     \Log::info('Handling Apple purchase failure', ['receipt' => $receiptData]);
+
+    DB::beginTransaction();
+    
+    try {
+      // Extract latest receipt info (most recent transactions)
+      $latestReceiptInfo = $receiptData['latest_receipt_info'] ?? [];
+      $inAppPurchases = $receiptData['receipt']['in_app'] ?? [];
+      
+      // Combine and get the most recent transactions
+      $allTransactions = array_merge($latestReceiptInfo, $inAppPurchases);
+      
+      if (empty($allTransactions)) {
+        \Log::warning('No transactions found in Apple failure receipt data');
+        DB::rollBack();
+        return;
+      }
+
+      // Process each failed transaction
+      foreach ($allTransactions as $transaction) {
+        $this->processAppleTransaction($transaction, 'failed');
+      }
+
+      DB::commit();
+      \Log::info('Apple purchase failure processing completed');
+
+    } catch (\Exception $e) {
+      DB::rollBack();
+      \Log::error('Error processing Apple purchase failure', [
+        'error' => $e->getMessage(),
+        'trace' => $e->getTraceAsString()
+      ]);
+    }
   }
 
   /**
