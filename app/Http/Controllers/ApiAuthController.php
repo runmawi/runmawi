@@ -2896,9 +2896,11 @@ class ApiAuthController extends Controller
             'all_purchases' => $all_purchases->toArray()
           ]);
 
+          // SECURITY FIX: Add expiration check for quality-specific purchases
           $ppv_purchase = PpvPurchase::where('video_id', $videoid)
             ->where('user_id', $user_id)
             ->where('status', 'captured')
+            ->where('to_time', '>', $current_date)
             ->where(function ($query) use ($request) {
               $query->where('ppv_plan', 'LIKE', '%' . $request->play_videoid . '%')
                 ->orWhere('ppv_plan', 'LIKE', '%' . str_replace('p', '', $request->play_videoid) . '%');
@@ -2940,9 +2942,11 @@ class ApiAuthController extends Controller
             'video_id' => $videoid
           ]);
 
+          // SECURITY FIX: Add expiration check for general PPV purchases
           $ppv_purchase = PpvPurchase::where('video_id', $videoid)
             ->where('user_id', $user_id)
             ->where('status', 'captured')
+            ->where('to_time', '>', $current_date)
             ->first();
 
           $ppv_exist = $ppv_purchase ? 1 : 0;
