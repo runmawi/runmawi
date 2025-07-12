@@ -2088,6 +2088,22 @@ class ApiAuthController extends Controller
         $ppv_exists_check_query = 0;
       }
 
+      // Calculate PPV video status
+      $current_date = date('Y-m-d h:i:s a', time());
+      $videodetailaccess = Video::where('id', $data['videoid'])->pluck('access')->first();
+      
+      if ($ppv_exists_check_query > 0) {
+        if ($ppv_purchase && $ppv_purchase->to_time && $ppv_purchase->to_time > $current_date) {
+          $ppv_video_status = "can_view";
+        } else {
+          $ppv_video_status = "expired";
+        }
+      } else if ($videodetailaccess == "ppv" && $ppv_exists_check_query == 0) {
+        $ppv_video_status = "pay_now";
+      } else {
+        $ppv_video_status = "can_view";
+      }
+
       // if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
       //     $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
       //     $currentdate = date("M d , y H:i:s");
@@ -2479,7 +2495,7 @@ class ApiAuthController extends Controller
         'IOS_like' => $IOS_like,
         'IOS_dislike' => $IOS_dislike,
         'ppv_exist' => $ppv_exists_check_query,
-        'ppv_video_status' => $ppv_exists_check_query,
+        'ppv_video_status' => $ppv_video_status,
 
       );
 
