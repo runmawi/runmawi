@@ -12930,63 +12930,63 @@ class ApiAuthController extends Controller
 
 
   public function add_livepayperview(Request $request)
-  {
-    $payment_type = $request->payment_type;
-    $video_id = $request->video_id;
-    $user_id = $request->user_id;
-    $daten = date('Y-m-d h:i:s a', time());
-    $setting = Setting::first();
-    $ppv_hours = $setting->ppv_hours;
-    $date = Carbon::parse($daten)->addHour($ppv_hours);
-    $user = User::find($user_id);
-    if ($payment_type == 'stripe') {
+{
+    Log::info('🎬 add_livepayperview: Received request', $request->all());
 
-      $paymentMethod = $request->get('py_id');
-      $payment_settings = PaymentSetting::first();
+    try {
+        $data = $request->validate([
+            'user_id' => 'required|integer',
+            'video_id' => 'required|integer', // This is the live_event_id
+            'py_id' => 'required|string', // This is the razorpay_order_id
+            'py_status' => 'required|string',
+            'payment_type' => 'required|string',
+            'amount' => 'required|numeric',
+            'ppv_plan' => 'required|string',
+            'platform' => 'required|string',
+            'py_failure_reason' => 'nullable|string',
+        ]);
 
-      $pay_amount = PvvPrice();
-      $pay_amount = $pay_amount * 100;
-      $charge = $user->charge($pay_amount, $paymentMethod);
-      if ($charge->id != '') {
-        $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
-        if ($ppv_count == 0) {
-          DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date]
-          );
-          send_password_notification('Notification From ' . GetWebsiteName(), 'You have rented a video', 'You have rented a video', '', $user_id);
-        } else {
-          DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-        }
+        // Get PPV expiry time
+        $ppv_hours = Setting::value('ppv_hours') ?? 24;
+        $d = new \DateTime('now');
+        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+        $from_time = $d->format('Y-m-d H:i:s');
+        $to_time = date('Y-m-d H:i:s', strtotime('+' . $ppv_hours . ' hour', strtotime($from_time)));
 
-        $response = array(
-          'status' => 'true',
-          'message' => "video has been added"
+        // Use updateOrCreate to handle existing records gracefully
+        // This is crucial for webhook processing to find the record later.
+        $purchase = \App\LiveEventPurchase::updateOrCreate(
+            [
+                'payment_id' => $data['py_id'], // Razorpay Order ID
+                'user_id' => $data['user_id'],
+                'live_event_id' => $data['video_id'],
+            ],
+            [
+                'from_time' => $from_time,
+                'to_time' => $to_time,
+                'ppv_plan' => $data['ppv_plan'],
+                'total_amount' => $data['amount'],
+                'payment_gateway' => $data['payment_type'],
+                'status' => $data['py_status'], // 'captured' or 'failed'
+                'platform' => $data['platform'],
+                'razorpay_payment_id' => null, // To be filled by webhook
+                'payment_failure_reason' => $data['py_failure_reason'] ?? null,
+            ]
         );
-      } else {
-        $response = array(
-          'status' => 'false',
-          'message' => "Payment Failed"
-        );
-      }
-    } elseif ($payment_type == 'razorpay' || $payment_type == 'paypal' || $payment_type == 'Applepay' || $payment_type == 'recurring') {
-      $ppv_count = DB::table('live_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
-      if ($ppv_count == 0) {
-        DB::table('live_purchases')->insert(
-          ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date, 'expired_date' => $date]
-        );
-      } else {
-        DB::table('live_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date, 'expired_date' => $date]);
-      }
 
-      $response = array(
-        'status' => 'true',
-        'message' => "video has been added"
-      );
+        Log::info('✅ Live event purchase record created/updated successfully.', ['purchase_id' => $purchase->id, 'order_id' => $data['py_id']]);
+
+        $response = ['status' => 'true', 'message' => 'Live event purchase recorded successfully.'];
+        return response()->json($response, 200);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        Log::error('❌ Validation failed for add_livepayperview', ['errors' => $e->errors(), 'request' => $request->all()]);
+        return response()->json(['status' => 'false', 'message' => 'Invalid data provided.', 'errors' => $e->errors()], 422);
+    } catch (\Exception $e) {
+        Log::error('❌ Exception in add_livepayperview', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+        return response()->json(['status' => 'false', 'message' => 'An unexpected error occurred.'], 500);
     }
-
-    return response()->json($response, 200);
-
-  }
+}  
 
   public function ContinueWatchingExits(Request $request)
   {

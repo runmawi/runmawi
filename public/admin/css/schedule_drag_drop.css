@@ -1,0 +1,67 @@
+.draggable {
+    /* background: #e0ffee;
+    border: 1px solid #57a57a; */
+    width: 250px;
+    padding: 5px;
+    margin: 3px;
+}
+
+.drop-zone {
+    /*width: 300px;
+    padding: 10px;*/
+    margin: 10px;
+    padding-left: 20px;
+    background: #eee;
+    border: 2px solid #fafafa;
+    min-height: 150px;
+    border-radius: 10px;
+}
+
+/* Dragged source element style */
+.dragged {
+    opacity: .6;
+    border-style: dashed;
+}
+
+/* Drag feedback image style */
+.drag-feedback {
+    background: lightskyblue;
+    border: 1px solid dodgerblue;
+}
+
+/* drop zone highlights */
+.active-zone {
+    background: #fffad6;
+    border: 2px solid #aaa479;
+}
+
+.over-zone {
+    background: #ffc6c6;
+    border: 2px solid #931414;
+}
+
+/* Style for text drag test area */
+.drag-text-test {
+    width: 300px;
+    margin: 10px;
+}
+
+.drag-text-test textarea {
+    width: 100%;
+    padding: 10px;
+    height: 36px;
+}
+
+.ScrollStyle
+{
+    max-height: 150px;
+    overflow-y: scroll;
+}
+.drag-container {
+    text-align: center;
+    border: 1px solid #cecece;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px #747474;
+}
+.drag-container img {object-fit: contain;height: auto !important;}
+.drag-container .form-control:disabled, .drag-container .form-control[readonly] {background-color: transparent !important;padding: 10px 0;font-size: 14px;}

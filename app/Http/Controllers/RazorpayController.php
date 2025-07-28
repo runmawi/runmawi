@@ -12,6 +12,7 @@ use App\Channel;
 use App\Setting;
 use App\SiteLogs;
 use Carbon\Carbon;
+use Log;
 use App\LiveStream;
 use App\HomeSetting;
 use App\PpvPurchase;
@@ -420,6 +421,78 @@ class RazorpayController extends Controller
         );
 
         return Theme::view('Razorpay.video_rent_checkout', compact('response'), $response);
+    }
+
+    public function RazorpayLiveRent(Request $request, $live_id)
+    {
+        $live_stream = LiveStream::findOrFail($live_id);
+        $amount = (float) $live_stream->ppv_price;
+
+        Log::info('Attempting to create Razorpay order for live_event_id: ' . $live_id . ' with amount: ' . $amount);
+        Log::info('Razorpay Key ID: ' . $this->razorpaykeyId);
+        Log::info('Razorpay Key Secret: ' . substr($this->razorpaykeysecret, 0, 10) . '...');
+
+        // Check if keys are valid
+        if (empty($this->razorpaykeyId) || empty($this->razorpaykeysecret)) {
+            Log::error('Razorpay keys are empty or invalid');
+            abort(500, 'Payment gateway configuration error. Please contact support.');
+        }
+
+        if ($amount < 1) {
+            Log::error('Live event purchase failed: Amount ' . $amount . ' is less than the minimum required amount of 1.');
+            abort(400, 'The price for this item is invalid. It must be at least ₹1.00.');
+        }
+
+        $setting = Setting::first();
+        $moderator_id = $live_stream->user_id;
+
+        // Commission calculation logic adapted for live events
+        if (!empty($moderator_id)) {
+            $moderator = ModeratorsUser::find($moderator_id);
+            $commission_percentage = $moderator->commission_percentage ?? 0;
+            $moderator_commssion = ($amount * $commission_percentage) / 100;
+            $admin_commssion = $amount - $moderator_commssion;
+        } else {
+            $moderator_commssion = null;
+            $admin_commssion = null;
+        }
+
+        $recept_id = Str::random(10);
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+        $orderData = [
+            'receipt' => $recept_id,
+            'amount' => $amount * 100,
+            'currency' => 'INR',
+            'payment_capture' => 1,
+            'notes' => [
+                'live_event_id' => $live_id,
+                'purchase_type' => 'live_event',
+                'ppv_plan' => $request->ppv_plan, // Assuming this might be passed
+                'user_id' => Auth::user()->id,
+                'platform' => 'website'
+            ],
+        ];
+
+        $razorpayOrder = $api->order->create($orderData);
+        $plainAmount = $amount * 100;
+
+        $response = array(
+            'razorpaykeyId' => $this->razorpaykeyId,
+            'name' => Auth::user()->name ?? null,
+            'user_id' => Auth::user()->id ?? null,
+            'currency' => 'INR',
+            'amount' => $plainAmount,
+            'orderId' => $razorpayOrder['id'],
+            'live_event_id' => $live_id,
+            'description' => $live_stream->title,
+            'address' => null,
+            'Video_slug' => $live_stream->slug, // Assuming LiveStream has a slug
+            'ppv_plan' => $request->ppv_plan
+        );
+
+        // Use the dedicated checkout view for live events
+        return Theme::view('Razorpay.live_event_rent_checkout', compact('response'), $response);
     }
 
     /**
@@ -2480,64 +2553,102 @@ class RazorpayController extends Controller
                 ]);
             }
 
-            // Create new purchase record directly with 'captured' status
-            $purchaseData = [
-                'user_id' => $user_id_from_notes,
-                'payment_id' => $order_id_from_payment,
-                'razorpay_payment_id' => $razorpay_payment_id,
-                'total_amount' => $amount,
-                'status' => 'captured',
-                'payment_gateway' => 'razorpay',
-                'platform' => $notes['platform'] ?? 'Android',
-                'from_time' => $from_time,
-                'to_time' => $to_time,
-                'ppv_plan' => $notes['ppv_plan'] ?? null,
-                'moderator_commssion' => $moderator_commssion,
-                'admin_commssion' => $admin_commssion,
-                'moderator_id' => $moderator_id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+            // ====================================================================
+            //  Purchase Type-Specific Logic
+            // ====================================================================
+            switch ($purchase_type) {
 
-            // Add content-specific IDs
-            if (isset($notes['video_id'])) $purchaseData['video_id'] = $notes['video_id'];
-            if (isset($notes['audio_id'])) $purchaseData['audio_id'] = $notes['audio_id'];
-            if (isset($notes['series_id'])) $purchaseData['series_id'] = $notes['series_id'];
-            if (isset($notes['season_id'])) $purchaseData['season_id'] = $notes['season_id'];
-            if (isset($notes['live_id'])) $purchaseData['live_id'] = $notes['live_id'];
+                case 'live_event':
+                    Log::info('🎬 Processing live_event purchase.', ['order_id' => $order_id_from_payment]);
+                    $live_event_id = $notes['live_event_id'] ?? $notes['video_id'] ?? $notes['live_id'] ?? null;
 
-            \Log::info('Razorpay Webhook: Final purchase data before creation', [
-                'purchase_data' => $purchaseData
-            ]);
+                    if (!$live_event_id) {
+                        Log::error('❌ Critical: live_event_id not found in notes for live_event purchase.', ['notes' => $notes]);
+                        DB::rollBack();
+                        return response()->json(['success' => false, 'error' => 'Missing live_event_id'], 400);
+                    }
 
-            $purchase = PpvPurchase::create($purchaseData);
+                    $purchase = \App\LiveEventPurchase::where('payment_id', $order_id_from_payment)->first();
 
-            \Log::info('Razorpay Webhook: Created new captured purchase record with commission', [
-                'purchase_id' => $purchase->id,
-                'order_id' => $order_id_from_payment,
-                'razorpay_payment_id' => $razorpay_payment_id,
-                'moderator_commssion' => $moderator_commssion,
-                'admin_commssion' => $admin_commssion,
-                'moderator_id' => $moderator_id
-            ]);
+                    if ($purchase) {
+                        Log::info('Found existing LiveEventPurchase record.', ['id' => $purchase->id]);
+                        if ($this->isValidStatusTransition($purchase->status, 'captured')) {
+                            $purchase->status = 'captured';
+                            $purchase->razorpay_payment_id = $razorpay_payment_id;
+                            $purchase->from_time = $from_time;
+                            $purchase->to_time = $to_time;
+                            $purchase->save();
+                            Log::info('✅ LiveEventPurchase record updated to captured.', ['id' => $purchase->id]);
+                        } else {
+                            Log::warning('⚠️ Invalid status transition for LiveEventPurchase.', ['id' => $purchase->id, 'from' => $purchase->status, 'to' => 'captured']);
+                        }
+                    } else {
+                        Log::warning('❓ LiveEventPurchase record not found by order_id. Creating a new one from webhook data.', ['order_id' => $order_id_from_payment]);
+                        if (!$user_id_from_notes) {
+                                Log::error('❌ Critical: user_id not found in notes for new live_event purchase.', ['notes' => $notes]);
+                                DB::rollBack();
+                                return response()->json(['success' => false, 'error' => 'Missing user_id'], 400);
+                        }
+                        
+                        \App\LiveEventPurchase::create([
+                            'user_id' => $user_id_from_notes,
+                            'live_event_id' => $live_event_id,
+                            'payment_id' => $order_id_from_payment,
+                            'razorpay_payment_id' => $razorpay_payment_id,
+                            'from_time' => $from_time,
+                            'to_time' => $to_time,
+                            'ppv_plan' => $notes['ppv_plan'] ?? 'default',
+                            'total_amount' => $amount,
+                            'payment_gateway' => 'razorpay',
+                            'status' => 'captured',
+                            'platform' => $notes['platform'] ?? 'unknown',
+                            'moderator_id' => $moderator_id,
+                            'moderator_commission' => $moderator_commssion,
+                            'admin_commission' => $admin_commssion,
+                        ]);
+                        Log::info('✅ New LiveEventPurchase record created from webhook.', ['order_id' => $order_id_from_payment]);
+                    }
+                    break;
 
-            // Handle live_purchases auxiliary table for live events
-            if ($purchase_type === 'live_event' && isset($notes['live_id'])) {
-                DB::table('live_purchases')->updateOrInsert(
-                    ['payment_id' => $order_id_from_payment],
-                    [
-                        'user_id' => $user_id_from_notes,
-                        'video_id' => $notes['live_id'],
-                        'platform' => $notes['platform'] ?? 'Android',
-                        'amount' => $amount,
-                        'payment_gateway' => 'razorpay',
-                        'status' => 1,
-                        'payment_status' => 'captured',
-                        'razorpay_payment_id' => $razorpay_payment_id,
-                        'updated_at' => now(),
-                        'created_at' => now()
-                    ]
-                );
+                case 'ppv':
+                case 'series_season':
+                default:
+                    // This block handles standard PPV and can be expanded for other types.
+                    Log::info('🎥 Processing standard PPV or other purchase type.', ['type' => $purchase_type, 'order_id' => $order_id_from_payment]);
+                    $purchase = PpvPurchase::where('payment_id', $order_id_from_payment)->first();
+
+                    if ($purchase) {
+                        if ($this->isValidStatusTransition($purchase->status, 'captured')) {
+                            $purchase->status = 'captured';
+                            $purchase->razorpay_payment_id = $razorpay_payment_id;
+                            $purchase->save();
+                            Log::info('✅ PPV record updated to captured.', ['id' => $purchase->id]);
+                        } else {
+                            Log::warning('⚠️ Invalid status transition for PPV.', ['id' => $purchase->id, 'from' => $purchase->status, 'to' => 'captured']);
+                        }
+                    } else {
+                        Log::warning('❓ PPV record not found by order_id. Creating a new one from webhook data.', ['order_id' => $order_id_from_payment]);
+                        $purchaseData = [
+                            'user_id' => $user_id_from_notes,
+                            'payment_id' => $order_id_from_payment,
+                            'razorpay_payment_id' => $razorpay_payment_id,
+                            'total_amount' => $amount,
+                            'status' => 'captured',
+                            'payment_gateway' => 'razorpay',
+                            'platform' => $notes['platform'] ?? 'Android',
+                            'from_time' => $from_time,
+                            'to_time' => $to_time,
+                            'ppv_plan' => $notes['ppv_plan'] ?? null,
+                            'moderator_commssion' => $moderator_commssion,
+                            'admin_commssion' => $admin_commssion,
+                            'moderator_id' => $moderator_id,
+                        ];
+                        if (isset($notes['video_id'])) $purchaseData['video_id'] = $notes['video_id'];
+                        if (isset($notes['season_id'])) $purchaseData['season_id'] = $notes['season_id'];
+                        PpvPurchase::create($purchaseData);
+                        Log::info('✅ New PPV record created from webhook.', ['order_id' => $order_id_from_payment]);
+                    }
+                    break;
             }
 
             DB::commit();

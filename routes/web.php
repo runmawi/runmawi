@@ -17,7 +17,7 @@ use App\Series;
 Route::group(['prefix' => '/admin/filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
-    
+
 Route::get('/video-chat', function () {
     // fetch all users apart from the authenticated user
     $users = App\User::where('id', '<>', Auth::id())->get();
@@ -47,24 +47,24 @@ Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage')
 Route::get('/my-logged-devices', 'HomeController@MyLoggedDevices');
 Route::get('/my-logged-devices-delete/{id}', 'HomeController@MyLoggedDevicesDelete');
 
-$router->get('tv_code/devices' , 'HomeController@tv_code_devices');
+$router->get('tv_code/devices', 'HomeController@tv_code_devices');
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
     Route::get('video_chat', 'VideoChatController@index');
     Route::post('auth/video_chat', 'VideoChatController@auth');
-  });
+});
 
-  Route::get('admin/episode/csv-episodeslug', 'AdminSeriesController@csvepisodeslug');
-  Route::post('admin/episode/upload-csv-episodeslug', 'AdminSeriesController@uploadcsvepisodeslug');
+Route::get('admin/episode/csv-episodeslug', 'AdminSeriesController@csvepisodeslug');
+Route::post('admin/episode/upload-csv-episodeslug', 'AdminSeriesController@uploadcsvepisodeslug');
 
-  Route::get('/Document-List', 'HomeController@DocumentList');    
-  Route::get('/document/category/{slug}', 'HomeController@DocumentCategoryList');    
+Route::get('/Document-List', 'HomeController@DocumentList');
+Route::get('/document/category/{slug}', 'HomeController@DocumentCategoryList');
 
 //   Route::get('/MusicAudioPlayer', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
-    Route::get('admin/video/combine-video', 'AdminVideosController@combinevideo');
+Route::get('admin/video/combine-video', 'AdminVideosController@combinevideo');
 
-  Route::get('MusicAudioPlayer/{slug}', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
-  Route::get('/convertExcelToJson', 'HomeController@uploadExcel');
+Route::get('MusicAudioPlayer/{slug}', 'ThemeAudioController@MusicAudioPlayer')->name('MusicAudioPlayer');
+Route::get('/convertExcelToJson', 'HomeController@uploadExcel');
 
 // Endpoints to call or receive calls.
 Route::post('/video/call-user', 'VideoChatController@callUser');
@@ -360,7 +360,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     // Route::get('continue-watching-list', 'PageListController@ContinueWatching_list')->name('pagelist.continue-watching');
     //Top most Watched Videos need to add
 
-    
+
     // TV-shows
     Route::get('tv-shows', 'TvshowsController@index')->name('series.tv-shows');
 
@@ -500,32 +500,32 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     // Stripe Checkout Page - Multicurrency
     Route::post('Stripe_authorization_url', 'StripePaymentController@Stripe_authorization_url')->name('Stripe_authorization_url');
     Route::get('Stripe_payment_success', 'StripePaymentController@Stripe_payment_success')->name('Stripe_payment_success');
-    
+
     // Stripe Live PPV Purchase
     Route::get('Stripe_payment_live_PPV_Purchase/{live_id}/{amount}', 'StripePaymentController@Stripe_payment_live_PPV_Purchase')->name('Stripe_payment_live_PPV_Purchase');
     Route::get('Stripe_payment_live_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{live_id}', 'StripePaymentController@Stripe_payment_live_PPV_Purchase_verify')->name('Stripe_payment_live_PPV_Purchase_verify');
 
-        // Stripe Video PPV Purchase
+    // Stripe Video PPV Purchase
     Route::get('Stripe_payment_video_PPV_Purchase/{video_id}/{amount}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase')->name('Stripe_payment_video_PPV_Purchase');
     Route::get('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{video_id}', 'StripePaymentController@Stripe_payment_video_PPV_Purchase_verify')->name('Stripe_payment_video_PPV_Purchase_verify');
-    
-    
+
+
     Route::get('Stripe_payment_video_PPV_Plan_Purchase/{ppv_plan}/{video_id}/{amount}', 'StripePaymentController@Stripe_payment_video_PPV_Plan_Purchase')->name('Stripe_payment_video_PPV_Plan_Purchase');
     Route::get('Stripe_payment_video_PPV_Plan_Purchase_verify/{CHECKOUT_SESSION_ID}/{video_id}/{ppv_plan}', 'StripePaymentController@Stripe_payment_video_PPV_Plan_Purchase_verify')->name('Stripe_payment_video_PPV_Plan_Purchase_verify');
 
-        // Stripe Series Season PPV Purchase
+    // Stripe Series Season PPV Purchase
     Route::get('Stripe_payment_series_season_PPV_Purchase/{SeriesSeason_id}/{amount}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase')->name('Stripe_payment_series_season_PPV_Purchase');
     Route::get('Stripe_payment_series_season_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{SeriesSeason_id}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
-    
+
     // Stripe Series  PPV Purchase
     Route::get('Stripe_payment_series_PPV_Purchase/{Series_id}/{amount}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase')->name('Stripe_payment_series_PPV_Purchase');
     Route::get('Stripe_payment_series_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{Series_id}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
-    
 
-                // Stripe Series Season PPV Purchase
+
+    // Stripe Series Season PPV Purchase
     Route::get('Stripe_payment_series_season_PPV_Plan_Purchase/{ppv_plan}/{SeriesSeason_id}/{amount}', 'StripePaymentController@Stripe_payment_series_season_PPV_Plan_Purchase')->name('Stripe_payment_series_season_PPV_Plan_Purchase');
     Route::get('Stripe_payment_series_season_PPV_Plan_Purchase_verify/{CHECKOUT_SESSION_ID}/{SeriesSeason_id}/{ppv_plan}', 'StripePaymentController@Stripe_payment_series_season_PPV_Plan_Purchase_verify')->name('StripeStripe_payment_series_season_PPV_Plan_Purchase_verifyPaymentController');
-    
+
 
     Route::get('serieslist', ['uses' => 'ChannelController@series', 'as' => 'series']);
     // Route::get('series/category/{id}', 'ChannelController@series_genre' );
@@ -538,7 +538,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/language/{slug}', 'HomeController@Language_Video');
     Route::get('/My-list', 'HomeController@My_list');
     Route::post('watchlater', 'WatchLaterController@watchlater');
-    
+
     Route::get('featured-videos', 'HomeController@Featured_videos');
     Route::get('Recommended-videos', 'HomeController@Featured_videos');  // Only For Nemisha 
 
@@ -629,8 +629,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/mobileapp', 'AdminUsersController@mobileapp')->name('admin.mobileapp');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
-    Route::post('/episodes/deleteSelected','AdminSeriesController@deleteSelected')->name('admin.episodes.deleteSelected');
-    Route::post('/episodes/deleteSelecte','CPPSeriesController@deleteSelected')->name('cpp.episodes.deleteSelecte');
+    Route::post('/episodes/deleteSelected', 'AdminSeriesController@deleteSelected')->name('admin.episodes.deleteSelected');
+    Route::post('/episodes/deleteSelecte', 'CPPSeriesController@deleteSelected')->name('cpp.episodes.deleteSelecte');
 
     // Channel Schedule
     Route::get('/channel/index', 'AdminEPGChannelController@index')->name('admin.Channel.index');
@@ -648,8 +648,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/epg/delete/{id}', 'AdminEPGController@delete')->name('admin.epg.delete');
     Route::get('/epg/download-json/{id}', 'AdminEPGController@downloadJson')->name('admin.download.json');
 
-    
-    
+
+
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
     Route::get('/mobile_app/Splash_destroy/{source}/{id}', 'AdminUsersController@Splash_destroy')->name('Splash_destroy');
@@ -658,10 +658,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
 
     // TV Splash Screen
-       Route::post('/tv_splash_screen/store', 'AdminUsersController@TVSplashScreen');
-       Route::get('/tv_splash_screen/destroy/{id}', 'AdminUsersController@TV_Splash_destroy')->name('TV_Splash_destroy');
-       Route::get('/tv_splash_screen/edit/{id}', 'AdminUsersController@TV_Splash_edit')->name('TV_Splash_edit');
-       Route::post('/tv_splash_screen/update/{id}', 'AdminUsersController@TV_Splash_update')->name('TV_Splash_update');
+    Route::post('/tv_splash_screen/store', 'AdminUsersController@TVSplashScreen');
+    Route::get('/tv_splash_screen/destroy/{id}', 'AdminUsersController@TV_Splash_destroy')->name('TV_Splash_destroy');
+    Route::get('/tv_splash_screen/edit/{id}', 'AdminUsersController@TV_Splash_edit')->name('TV_Splash_edit');
+    Route::post('/tv_splash_screen/update/{id}', 'AdminUsersController@TV_Splash_update')->name('TV_Splash_update');
 
     // Device version
     Route::get('/mobile_app/device_version', 'AdminUsersController@device_version')->name('mobile_app.device_version');
@@ -670,13 +670,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/OTP-Credentials', 'AdminOTPCredentialsController@index')->name('admin.OTP-Credentials-index');
     Route::post('/OTP-Credentials-update', 'AdminOTPCredentialsController@update')->name('admin.OTP-Credentials-update');
 
-        // Users Package 
+    // Users Package 
     Route::get('/users-package', 'SuperAdminPackageController@users_package')->name('admin.users-package');
     Route::post('/users-package-update', 'SuperAdminPackageController@users_package_update')->name('admin.users-package-update');
 
     Route::get('/users', 'AdminUsersController@index')->name('users');
     Route::get('/users/fetch/pagination', 'AdminUsersController@users_pagination')->name('admin.users-pagination');
-    Route::post('/users/deleteSelected','AdminUsersController@deleteSelected')->name('admin.users.deleteSelected');
+    Route::post('/users/deleteSelected', 'AdminUsersController@deleteSelected')->name('admin.users.deleteSelected');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
     Route::get('/user/edit/{id}', 'AdminUsersController@edit')->name('admin.users.edit');
@@ -820,19 +820,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
 
     // Cache clear
-    
+
     Route::get('/clear-cache', 'ClearCacheController@index')->name('clear_cache');
     Route::post('/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
     Route::post('/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
     Route::post('/view-buffer-cache', 'ClearCacheController@view_buffer_cache')->name('view_buffer_cache');
     Route::post('/clear-buffer-cache', 'ClearCacheController@clear_buffer_cache')->name('clear_buffer_cache');
     Route::get('/testing_command', 'ClearCacheController@testing_command')->name('testing_command');
-    
+
     // ENV APP DEBUG
     Route::get('/debug', 'ClearCacheController@Env_index')->name('env_index');
     Route::Post('/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug');
 
-    
+
     // Htaccess access forbidden 
     Route::get('/access-forbidden', 'HtaccessController@index')->name('access_forbidden');
     Route::Post('/access-forbidden-update', 'HtaccessController@updateHtaccess')->name('updateAccessForbidden');
@@ -850,7 +850,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/livestream/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store'])->name('admin.livestream.store');
 
     // Admin Radio Station
-    
+
     Route::get('/radio-station-index', 'AdminLiveStreamController@index')->name('admin.radio-station.index');
     Route::get('/radio-station/create', 'AdminLiveStreamController@create')->name('admin.radio-station.create');
     Route::post('/radio-station/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store'])->name('admin.radio-station.store');
@@ -915,7 +915,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/channel-subscription-plans/edit/{id}', 'AdminChannelPlansController@subscriptionedit');
     Route::get('/channel-subscription-plans/delete/{id}', 'AdminChannelPlansController@subscriptiondelete');
     Route::post('/channel-subscription-plans/update', 'AdminChannelPlansController@subscriptionupdate');
-    
+
     // Multiple Moderator Subscription Plans
     Route::post('Update-Multiple-Channel-Subscription-Plans', 'AdminChannelPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
 
@@ -924,11 +924,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/moderator-subscription-plans/edit/{id}', 'AdminCPPPlansController@subscriptionedit');
     Route::get('/moderator-subscription-plans/delete/{id}', 'AdminCPPPlansController@subscriptiondelete');
     Route::post('/moderator-subscription-plans/update', 'AdminCPPPlansController@subscriptionupdate');
-    
+
     // Multiple Subscription Plans
     Route::post('Update-Multiple-Moderator-Subscription-Plans', 'AdminChannelPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
 
-    
+
     // Life-Time Subscription Plans
     Route::get('/Life-time-subscription', 'AdminLifeTimeSubscriptionController@index')->name('Life-time-subscription-index');
     Route::post('/Life-time-subscription-store', 'AdminLifeTimeSubscriptionController@update')->name('Life-time-subscription-update');
@@ -1034,14 +1034,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/settings/store_inapp', 'AdminSettingsController@Store_InApp');
 
     // Active  - Categories
-    
-        Route::post('/audio_category_active', 'AdminAudioCategoriesController@audio_category_active');
-        Route::post('/livestream_category_active', 'AdminLiveCategoriesController@livestream_category_active');
-        Route::post('/video_category_active', 'AdminVideoCategoriesController@video_category_active');
-        Route::post('/series_category_active', 'AdminSeriesGenreController@series_category_active');
-        Route::post('/menus_active', 'AdminMenuController@menus_active');
 
-        
+    Route::post('/audio_category_active', 'AdminAudioCategoriesController@audio_category_active');
+    Route::post('/livestream_category_active', 'AdminLiveCategoriesController@livestream_category_active');
+    Route::post('/video_category_active', 'AdminVideoCategoriesController@video_category_active');
+    Route::post('/series_category_active', 'AdminSeriesGenreController@series_category_active');
+    Route::post('/menus_active', 'AdminMenuController@menus_active');
+
+
     // Admin Landing page
 
     Route::get('/landing-page/index', 'AdminLandingpageController@index')->name('landing_page_index');
@@ -1110,15 +1110,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/live-event-destroy/{id}', 'AdminLiveEventArtist@destroy')->name('live_event_destroy');
 
     // Admin Channel Package
- 
-        // Note - Don't remove this 
-        
-        // Route::get('/channel-package-index', 'AdminChannelPackageController@index')->name('channel_package_index');
-        // Route::get('/channel-package-create', 'AdminChannelPackageController@create')->name('channel_package_create');
-        // Route::post('/channel-package-store', 'AdminChannelPackageController@store')->name('channel_package_store');
-        // Route::get('/channel-package-edit/{id}', 'AdminChannelPackageController@edit')->name('channel_package_edit');
-        // Route::post('/channel-package-update/{id}', 'AdminChannelPackageController@update')->name('channel_package_update');
-        // Route::get('/channel-package-delete/{id}', 'AdminChannelPackageController@delete')->name('channel_package_delete');
+
+    // Note - Don't remove this 
+
+    // Route::get('/channel-package-index', 'AdminChannelPackageController@index')->name('channel_package_index');
+    // Route::get('/channel-package-create', 'AdminChannelPackageController@create')->name('channel_package_create');
+    // Route::post('/channel-package-store', 'AdminChannelPackageController@store')->name('channel_package_store');
+    // Route::get('/channel-package-edit/{id}', 'AdminChannelPackageController@edit')->name('channel_package_edit');
+    // Route::post('/channel-package-update/{id}', 'AdminChannelPackageController@update')->name('channel_package_update');
+    // Route::get('/channel-package-delete/{id}', 'AdminChannelPackageController@delete')->name('channel_package_delete');
 
     Route::get('/languages', 'LanguageTranslationController@index')->name('languages');
     Route::post('/translations/update', 'LanguageTranslationController@transUpdate')->name('translation.update.json');
@@ -1128,7 +1128,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('check-translation', function () {
         \App::setLocale('it');
 
-        echo(__('About US')); exit;
+        echo (__('About US'));
+        exit;
     });
 
     Route::get('/translate-languages-index', 'AdminTranslationLanguageController@index');
@@ -1136,7 +1137,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/translate-languages-update', 'AdminTranslationLanguageController@update');
     Route::get('/translate-languages-edit/{id}', 'AdminTranslationLanguageController@edit');
     Route::get('/translate-languages-delete/{id}', 'AdminTranslationLanguageController@destroy');
-   
+
 
     // Site Meta Settings
     Route::get('/site-meta-setting', 'AdminSiteMetaController@meta_setting')->name('meta_setting');
@@ -1184,12 +1185,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/audios/audioupdate', ['before' => 'demo', 'uses' => 'AdminAudioController@audioupdate']);
 
     //Writer Routes
-        Route::get('Writer', 'AdminWriterController@index');
-        Route::get('Writer/create', 'AdminWriterController@create');
-        Route::post('Writer/store', 'AdminWriterController@store');
-        Route::get('Writer/edit/{id}', 'AdminWriterController@edit');
-        Route::post('Writer/update', 'AdminWriterController@update');
-        Route::get('Writer/delete/{id}', 'AdminWriterController@destroy');
+    Route::get('Writer', 'AdminWriterController@index');
+    Route::get('Writer/create', 'AdminWriterController@create');
+    Route::post('Writer/store', 'AdminWriterController@store');
+    Route::get('Writer/edit/{id}', 'AdminWriterController@edit');
+    Route::post('Writer/update', 'AdminWriterController@update');
+    Route::get('Writer/delete/{id}', 'AdminWriterController@destroy');
 
     //Admin Audio Albums
     Route::get('/audios/albums', 'AdminAudioCategoriesController@albumIndex');
@@ -1216,7 +1217,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/Series_genre/delete/{id}', 'AdminSeriesGenreController@Series_genre_delete');
     Route::Post('/Series_genre_order', 'AdminSeriesGenreController@Series_genre_order');
 
-    
+
     // Admin Network 
     Route::get('/Series/Network', 'AdminNetworkController@Network_index')->name('admin.Network_index');
     Route::Post('/Serie/Network-store', 'AdminNetworkController@Network_store')->name('admin.Network_store');
@@ -1238,7 +1239,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::Post('/Series_Season_order', 'AdminSeriesController@Series_Season_order');
     Route::post('/Flussonicepisodelibrary', 'AdminSeriesController@Flussonicepisodelibrary');
     Route::post('/stream_Flussonic_episode', 'AdminSeriesController@StreamFlussonicEpisode');
-    
+
     Route::post('/episode/create', 'AdminSeriesController@create_episode');
     Route::get('/episode/delete/{id}', 'AdminSeriesController@destroy_episode');
     Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
@@ -1279,20 +1280,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/schedule/delete/{id}', 'AdminVideosController@ScheduledVideoDelete');
 
-        /*  Default Scheduler Videos Setting  */
+    /*  Default Scheduler Videos Setting  */
 
-        Route::get('/default-video-scheduler', 'AdminSiteVideoSchedulerController@SiteVideoScheduler')->name('VideoScheduler');
-        Route::get('/default-filter-scheduler', 'AdminSiteVideoSchedulerController@FilterVideoScheduler')->name('FilterScheduler');
-        Route::post('/default-drag-drop-Scheduler-videos', 'AdminSiteVideoSchedulerController@DragDropSchedulerVideos');
-        Route::get('/default-Scheduled-videos', 'AdminSiteVideoSchedulerController@ScheduledVideos');
-        Route::get('/default-get-channel-details/{videoId}', 'AdminSiteVideoSchedulerController@GetChannelDetail');
-        Route::post('/default-Scheduler-UpdateTime', 'AdminSiteVideoSchedulerController@SchedulerUpdateTime');
-        Route::post('/default-Scheduler-ReSchedule', 'AdminSiteVideoSchedulerController@SchedulerReSchedule');
-        Route::post('/default-get-all-channel-details', 'AdminSiteVideoSchedulerController@GetAllChannelDetails');
-        Route::post('/default-remove-scheduler', 'AdminSiteVideoSchedulerController@RemoveSchedulers');
-        Route::get('/generate-scheduler-xml', 'AdminSiteVideoSchedulerController@generateSchedulerXml');
-        Route::post('/default-generate-scheduler-xml', 'AdminSiteVideoSchedulerController@DefaultgenerateSchedulerXml');
-        Route::post('/epg-generate-scheduler-xml', 'AdminSiteVideoSchedulerController@EPGgenerateSchedulerXml');
+    Route::get('/default-video-scheduler', 'AdminSiteVideoSchedulerController@SiteVideoScheduler')->name('VideoScheduler');
+    Route::get('/default-filter-scheduler', 'AdminSiteVideoSchedulerController@FilterVideoScheduler')->name('FilterScheduler');
+    Route::post('/default-drag-drop-Scheduler-videos', 'AdminSiteVideoSchedulerController@DragDropSchedulerVideos');
+    Route::get('/default-Scheduled-videos', 'AdminSiteVideoSchedulerController@ScheduledVideos');
+    Route::get('/default-get-channel-details/{videoId}', 'AdminSiteVideoSchedulerController@GetChannelDetail');
+    Route::post('/default-Scheduler-UpdateTime', 'AdminSiteVideoSchedulerController@SchedulerUpdateTime');
+    Route::post('/default-Scheduler-ReSchedule', 'AdminSiteVideoSchedulerController@SchedulerReSchedule');
+    Route::post('/default-get-all-channel-details', 'AdminSiteVideoSchedulerController@GetAllChannelDetails');
+    Route::post('/default-remove-scheduler', 'AdminSiteVideoSchedulerController@RemoveSchedulers');
+    Route::get('/generate-scheduler-xml', 'AdminSiteVideoSchedulerController@generateSchedulerXml');
+    Route::post('/default-generate-scheduler-xml', 'AdminSiteVideoSchedulerController@DefaultgenerateSchedulerXml');
+    Route::post('/epg-generate-scheduler-xml', 'AdminSiteVideoSchedulerController@EPGgenerateSchedulerXml');
 
     /*  Channel Videos Setting  */
 
@@ -1387,32 +1388,32 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('ads/variable-delete/{id}', 'AdminAdvertiserController@ads_variables_delete')->name('admin.ads_variables_delete');
 
     // Admin Series Genre
-        Route::get('/document/genre', 'AdminDocumentGenreController@index');
-        Route::Post('/document/genre/store', 'AdminDocumentGenreController@Document_Store');
-        Route::get('/document/genre/edit/{id}', 'AdminDocumentGenreController@Document_Edit');
-        Route::post('/document/genre/update', 'AdminDocumentGenreController@Document_Update');
-        Route::get('/document/genre/delete/{id}', 'AdminDocumentGenreController@Document_Delete');
-        Route::Post('/document/genre/order', 'AdminDocumentGenreController@Document_Order');
-        Route::post('/document/genre/active', 'AdminDocumentGenreController@Document_Active');
-    
-        
+    Route::get('/document/genre', 'AdminDocumentGenreController@index');
+    Route::Post('/document/genre/store', 'AdminDocumentGenreController@Document_Store');
+    Route::get('/document/genre/edit/{id}', 'AdminDocumentGenreController@Document_Edit');
+    Route::post('/document/genre/update', 'AdminDocumentGenreController@Document_Update');
+    Route::get('/document/genre/delete/{id}', 'AdminDocumentGenreController@Document_Delete');
+    Route::Post('/document/genre/order', 'AdminDocumentGenreController@Document_Order');
+    Route::post('/document/genre/active', 'AdminDocumentGenreController@Document_Active');
+
+
     // Admin Series Genre
-        Route::get('/document/list', 'AdminDocumentController@List');
-        Route::get('/document/upload', 'AdminDocumentController@index');
-        Route::Post('/document/store', 'AdminDocumentController@store');
-        Route::get('/document/edit/{id}', 'AdminDocumentController@Edit');
-        Route::post('/document/update', 'AdminDocumentController@Update');
-        Route::get('/document/delete/{id}', 'AdminDocumentController@Delete');    
-            
+    Route::get('/document/list', 'AdminDocumentController@List');
+    Route::get('/document/upload', 'AdminDocumentController@index');
+    Route::Post('/document/store', 'AdminDocumentController@store');
+    Route::get('/document/edit/{id}', 'AdminDocumentController@Edit');
+    Route::post('/document/update', 'AdminDocumentController@Update');
+    Route::get('/document/delete/{id}', 'AdminDocumentController@Delete');
+
 
     // Admin Series Genre
 
-        Route::get('/channel/role', 'AdminChannelRolesController@ChannelRoles');
-        Route::post('/channel/role/store', 'AdminChannelRolesController@RolesPermissionStore');
-        Route::get('/channel/role/view', 'AdminChannelRolesController@AllChannelRoles');
-        Route::get('/channel/role/edit/{id}', 'AdminChannelRolesController@RoleEdit');
-        Route::get('/channel/role/delete/{id}', 'AdminChannelRolesController@RoleDelete');
-        Route::post('/channel/role/update', 'AdminChannelRolesController@RoleUpdate');
+    Route::get('/channel/role', 'AdminChannelRolesController@ChannelRoles');
+    Route::post('/channel/role/store', 'AdminChannelRolesController@RolesPermissionStore');
+    Route::get('/channel/role/view', 'AdminChannelRolesController@AllChannelRoles');
+    Route::get('/channel/role/edit/{id}', 'AdminChannelRolesController@RoleEdit');
+    Route::get('/channel/role/delete/{id}', 'AdminChannelRolesController@RoleDelete');
+    Route::post('/channel/role/update', 'AdminChannelRolesController@RoleUpdate');
 
     /*Ads Management ends*/
 
@@ -1441,7 +1442,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/FlussonicUploadlibrary', 'AdminVideosController@FlussonicUploadlibrary');
     Route::post('/Flussonic_Storage_UploadURL', 'AdminVideosController@Flussonic_Storage_UploadURL');
 
-    
+
     /*Audio Uploads */
 
     Route::post('/uploadAudio', 'AdminAudioController@uploadAudio');
@@ -1652,7 +1653,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/tv-settings/index', 'AdminTvSettingsController@index')->name('TV_Settings_Index');
     Route::get('/tv-settings/edit/{id}', 'AdminTvSettingsController@edit')->name('TV_Settings_Edit');
-    Route::post('/tv-settings/update','AdminTvSettingsController@update')->name('TV_Settings_Update');
+    Route::post('/tv-settings/update', 'AdminTvSettingsController@update')->name('TV_Settings_Update');
 });
 
 Route::get('admin/channel/pendingusers', 'ChannelLoginController@PendingUsers')->name('ChannelPendingUsers');
@@ -1696,19 +1697,19 @@ Route::get('/callback/{provider}', 'GoogleLoginController@callback');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/load-more-series-networks',  'HomeController@loadMore')->name('load.more.series.networks');
+Route::get('/load-more-series-networks', 'HomeController@loadMore')->name('load.more.series.networks');
 Route::get('/Plancountry', 'AdminUsersController@PlanCountry');
 
-    // CPP Payment
+// CPP Payment
 Route::get('/cpp-subscriptions-plans', 'CPPSubscriptionController@CPP_subscriptions_plans')->name('CPP_subscriptions_Plans');
 Route::post('/cpp-stripe-authorization-url', 'CPPSubscriptionController@CPP_Stripe_authorization_url')->name('CPP_Stripe_authorization_url');
 Route::get('/cpp-stripe-payment-verify', 'CPPSubscriptionController@CPP_Stripe_payment_verify')->name('CPP_Stripe_payment_verify');
 
 // Channel Payment
-    Route::get('/channel-subscriptions-plans', 'ChannelSubscriptionController@Channel_subscriptions_plans')->name('Channel_subscriptions_plans');
-    Route::post('/channel-stripe-authorization-url', 'ChannelSubscriptionController@Channel_Stripe_authorization_url')->name('Channel_Stripe_authorization_url');
-    Route::get('/channel-stripe-payment-verify', 'ChannelSubscriptionController@Channel_Stripe_payment_verify')->name('Channel_Stripe_payment_verify');
-    
+Route::get('/channel-subscriptions-plans', 'ChannelSubscriptionController@Channel_subscriptions_plans')->name('Channel_subscriptions_plans');
+Route::post('/channel-stripe-authorization-url', 'ChannelSubscriptionController@Channel_Stripe_authorization_url')->name('Channel_Stripe_authorization_url');
+Route::get('/channel-stripe-payment-verify', 'ChannelSubscriptionController@Channel_Stripe_payment_verify')->name('Channel_Stripe_payment_verify');
+
 
 Route::get('cpp/signup/', 'ModeratorsLoginController@index')->name('CPPRegister');
 Route::get('/cpp', 'ModeratorsLoginController@Signin')->name('CPPSignin');
@@ -1791,7 +1792,7 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
 
     Route::get('/dashboard', 'ModeratorsLoginController@IndexDashboard');
     Route::get('/logout', 'ModeratorsLoginController@logout');
-    
+
     //  CPP Video Management
     Route::get('/videos', 'CPPAdminVideosController@CPPindex');
     Route::get('/videos/edit/{id}', 'CPPAdminVideosController@CPPedit');
@@ -1871,7 +1872,7 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     Route::Post('/Series_Season_order', 'CPPSeriesController@Series_Season_order');
     Route::post('/Flussonicepisodelibrary', 'CPPSeriesController@Flussonicepisodelibrary');
     Route::post('/stream_Flussonic_episode', 'CPPSeriesController@StreamFlussonicEpisode');
-    
+
     //CPP Series Episode Manage
 
     Route::post('/episode/create', 'CPPSeriesController@create_episode');
@@ -1948,7 +1949,7 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
     // Route::get('episode/{episode_name}', 'ChannelSeriesController@PlayEpisode');
     Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
 
-    
+
     Route::post('/upload_bunny_cdn_video', 'ChannelVideosController@UploadBunnyCDNVideo');
     Route::post('/bunnycdn_videolibrary', 'ChannelVideosController@BunnycdnVideolibrary');
     Route::post('/stream_bunny_cdn_video', 'ChannelVideosController@StreamBunnyCdnVideo');
@@ -2106,7 +2107,7 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
     Route::Post('/Series_Season_order', 'ChannelSeriesController@Series_Season_order');
     Route::post('/Flussonicepisodelibrary', 'ChannelSeriesController@Flussonicepisodelibrary');
     Route::post('/stream_Flussonic_episode', 'ChannelSeriesController@StreamFlussonicEpisode');
-    
+
     //Channel Series Episode Manage
 
     Route::post('/episode/create', 'ChannelSeriesController@create_episode');
@@ -2486,18 +2487,18 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
 });
 
 
-    // Channel List
-    Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
-    Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
-    Route::get('channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
-    Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
-    Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
-    Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
-    Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
-    Route::get('Channel/Audios-list/{channel_slug}', 'ChannelHomeController@Channel_Audios_list')->name('Channel_Audios_list');
-    Route::get('Channel/livevideos-list/{channel_slug}', 'ChannelHomeController@Channel_livevideos_list')->name('Channel_livevideos_list');
-    Route::get('Channel/series-list/{channel_slug}', 'ChannelHomeController@Channel_series_list')->name('Channel_series_list');
-    Route::get('Channel/videos-list/{channel_slug}', 'ChannelHomeController@Channel_videos_list')->name('Channel_videos_list');
+// Channel List
+Route::get('channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+Route::get('Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
+Route::get('channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
+Route::get('channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
+Route::get('channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
+Route::get('channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
+Route::get('all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
+Route::get('Channel/Audios-list/{channel_slug}', 'ChannelHomeController@Channel_Audios_list')->name('Channel_Audios_list');
+Route::get('Channel/livevideos-list/{channel_slug}', 'ChannelHomeController@Channel_livevideos_list')->name('Channel_livevideos_list');
+Route::get('Channel/series-list/{channel_slug}', 'ChannelHomeController@Channel_series_list')->name('Channel_series_list');
+Route::get('Channel/videos-list/{channel_slug}', 'ChannelHomeController@Channel_videos_list')->name('Channel_videos_list');
 
 
 // Razorpay
@@ -2541,7 +2542,7 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
 Route::group(['middleware' => []], function () {
     Route::get('Paydunya-verify-request', 'PaydunyaPaymentController@Paydunya_verify_request')->name('Paydunya_verify_request');
     Route::post('Paydunya-checkout', 'PaydunyaPaymentController@Paydunya_checkout')->name('Paydunya_checkout');
-    
+
     Route::get('/Paydunya_live_checkout_Rent_payment/{live_id}/{amount}', 'PaydunyaPaymentController@Paydunya_live_checkout_Rent_payment')->name('Paydunya_live_checkout_Rent_payment');
     Route::get('/Paydunya_live_Rent_payment_verify', 'PaydunyaPaymentController@Paydunya_live_Rent_payment_verify')->name('Paydunya_live_Rent_payment_verify');
 
@@ -2557,7 +2558,7 @@ Route::group(['middleware' => []], function () {
 
 // Recurly Payment
 Route::group(['prefix' => 'recurly', 'middleware' => []], function () {
-    
+
     Route::post('checkout-page', 'RecurlyPaymentController@checkout_page')->name('Recurly.checkout_page');
     Route::get('createSubscription', 'RecurlyPaymentController@createSubscription')->name('Recurly.subscription');
     Route::get('subscription-cancel/{subscription_id}', 'RecurlyPaymentController@CancelSubscription')->name('Recurly.Subscription_cancel');
@@ -2581,348 +2582,348 @@ Route::get('/current-time', 'CurrentTimeController@current_time')->name('Current
 // Datafree URL 
 if (Schema::hasTable('home_settings')) {
 
-$datafree = App\HomeSetting::pluck('theme_choosen')->first();
+    $datafree = App\HomeSetting::pluck('theme_choosen')->first();
 
-    if ( $datafree == "theme5-nemisha") {
+    if ($datafree == "theme5-nemisha") {
         Route::group(['prefix' => '', 'middleware' => []], function () {
 
             // welcome-screen
-                Route::post('datafree/welcome-screen', 'WelcomeScreenController@Screen_store')->name('welcome-screen');
-                Route::get('datafree/welcome-screen/destroy/{id}', 'WelcomeScreenController@destroy')->name('welcomescreen_destroy');
-                Route::get('datafree/welcome-screen/edit/{id}', 'WelcomeScreenController@edit')->name('welcomescreen_edit');
-                Route::post('datafree/welcome-screen/update/{id}', 'WelcomeScreenController@update')->name('welcomescreen_update');
+            Route::post('datafree/welcome-screen', 'WelcomeScreenController@Screen_store')->name('welcome-screen');
+            Route::get('datafree/welcome-screen/destroy/{id}', 'WelcomeScreenController@destroy')->name('welcomescreen_destroy');
+            Route::get('datafree/welcome-screen/edit/{id}', 'WelcomeScreenController@edit')->name('welcomescreen_edit');
+            Route::post('datafree/welcome-screen/update/{id}', 'WelcomeScreenController@update')->name('welcomescreen_update');
 
 
-                Route::get('datafree/Movie-Description', 'HomeController@Movie_description');
+            Route::get('datafree/Movie-Description', 'HomeController@Movie_description');
 
-                    // Reels
-                Route::get('datafree/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
+            // Reels
+            Route::get('datafree/Reals_videos/videos/{slug}', 'ChannelController@Reals_videos');
 
-                    // Cast & crew
-                Route::get('datafree/Artist/{slug}', 'ChannelController@artist_videos');
+            // Cast & crew
+            Route::get('datafree/Artist/{slug}', 'ChannelController@artist_videos');
 
-                // category List
-                Route::get('datafree/categoryList', 'ChannelController@categoryList')->name('categoryList');
-                Route::get('datafree/Movie-list', 'ChannelController@MovieList')->name('MovieList');
-                Route::get('datafree/Live-list', 'ChannelController@liveList')->name('liveList');
-                Route::get('datafree/Series-list', 'ChannelController@Series_List')->name('SeriesList');
-                Route::get('datafree/Series/Genre/{id}', 'ChannelController@Series_genre_list')->name('Series_genre_list');
-                Route::get('datafree/artist-list', 'ChannelController@artist_list')->name('artist_list');
-                Route::get('datafree/LiveCategory/{slug}', 'ChannelController@LiveCategory')->name('LiveCategory');
-                Route::get('datafree/CategoryLive/', 'ChannelController@CategoryLive')->name('CategoryLive');
+            // category List
+            Route::get('datafree/categoryList', 'ChannelController@categoryList')->name('categoryList');
+            Route::get('datafree/Movie-list', 'ChannelController@MovieList')->name('MovieList');
+            Route::get('datafree/Live-list', 'ChannelController@liveList')->name('liveList');
+            Route::get('datafree/Series-list', 'ChannelController@Series_List')->name('SeriesList');
+            Route::get('datafree/Series/Genre/{id}', 'ChannelController@Series_genre_list')->name('Series_genre_list');
+            Route::get('datafree/artist-list', 'ChannelController@artist_list')->name('artist_list');
+            Route::get('datafree/LiveCategory/{slug}', 'ChannelController@LiveCategory')->name('LiveCategory');
+            Route::get('datafree/CategoryLive/', 'ChannelController@CategoryLive')->name('CategoryLive');
 
-                Route::get('datafree/audios/category/{slug}', 'HomePageAudioController@AudioCategory')->name('AudioCategory');
-                Route::get('datafree/AudiocategoryList', 'HomePageAudioController@AudiocategoryList')->name('AudiocategoryList');
+            Route::get('datafree/audios/category/{slug}', 'HomePageAudioController@AudioCategory')->name('AudioCategory');
+            Route::get('datafree/AudiocategoryList', 'HomePageAudioController@AudiocategoryList')->name('AudiocategoryList');
 
-                Route::get('datafree/series/category/{slug}', 'TvshowsController@SeriesCategory')->name('SeriesCategory');
-                Route::get('datafree/SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
+            Route::get('datafree/series/category/{slug}', 'TvshowsController@SeriesCategory')->name('SeriesCategory');
+            Route::get('datafree/SeriescategoryList', 'TvshowsController@SeriescategoryList')->name('SeriescategoryList');
 
-                    // Filter 
-                Route::get('datafree/categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
+            // Filter 
+            Route::get('datafree/categoryfilter', 'ChannelController@categoryfilter')->name('categoryfilter');
 
-                    // Landing page 
-                Route::get('datafree/pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
+            // Landing page 
+            Route::get('datafree/pages/{landing_page_slug}', 'LandingpageController@landing_page')->name('landing_page');
 
-                    // Landing page  category videos
-                Route::get('datafree/landing_category_series', 'LandingpageController@landing_category_series')->name('landing_category_series');
+            // Landing page  category videos
+            Route::get('datafree/landing_category_series', 'LandingpageController@landing_category_series')->name('landing_category_series');
 
-                // Channel List
-                Route::get('datafree/channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
-                Route::get('datafree/Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
-                Route::get('datafree/channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
-                Route::get('datafree/channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
-                Route::get('datafree/channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
-                Route::get('datafree/channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
-                Route::get('datafree/all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
+            // Channel List
+            Route::get('datafree/channel/{slug}', 'ChannelHomeController@ChannelHome')->name('ChannelHome');
+            Route::get('datafree/Channel-list', 'ChannelHomeController@ChannelList')->name('ChannelList');
+            Route::get('datafree/channel_category_series', 'ChannelHomeController@channel_category_series')->name('channel_category_series');
+            Route::get('datafree/channel_category_videos', 'ChannelHomeController@channel_category_videos')->name('channel_category_videos');
+            Route::get('datafree/channel_category_audios', 'ChannelHomeController@channel_category_audios')->name('channel_category_audios');
+            Route::get('datafree/channel_category_live', 'ChannelHomeController@channel_category_live')->name('channel_category_live');
+            Route::get('datafree/all_Channel_videos', 'ChannelHomeController@all_Channel_videos')->name('all_Channel_videos');
 
-                // Content Partner List
-                Route::get('datafree/contentpartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
-                //   Route::get('ContentPartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
-                //   Route::get('Content-list', 'ContentPartnerHomeController@ContentList')->name('ContentList');
-                Route::get('datafree/content-partners', 'ContentPartnerHomeController@ContentList')->name('ContentList');
-                Route::get('datafree/Content_category_series', 'ContentPartnerHomeController@Content_category_series')->name('Content_category_series');
-                Route::get('datafree/Content_category_videos', 'ContentPartnerHomeController@Content_category_videos')->name('Content_category_videos');
-                Route::get('datafree/Content_category_audios', 'ContentPartnerHomeController@Content_category_audios')->name('Content_category_audios');
-                Route::get('datafree/Content_category_live', 'ContentPartnerHomeController@Content_category_live')->name('Content_category_live');
-                Route::get('datafree/all_Content_videos', 'ContentPartnerHomeController@all_Content_videos')->name('all_Content_videos');
-
-                
-                // CinetPay-Video Rent
-                Route::post('datafree/CinetPaySubscription', 'CinetPayController@CinetPaySubscription')->name('CinetPay_Subscription');
-                Route::post('datafree/CinetPay-video-rent', 'CinetPayController@CinetPay_Video_Rent_Payment')->name('CinetPay_Video_Rent_Payment');
-                Route::post('datafree/CinetPay-audio-rent', 'CinetPayController@CinetPay_audio_Rent_Payment')->name('CinetPay_audio_Rent_Payment');
-                Route::post('datafree/CinetPay-live-rent', 'CinetPayController@CinetPay_live_Rent')->name('CinetPay_live_Rent');
-                    
-                // CinetPay- Series/Season Rent
-                Route::post('datafree/CinetPay-series_season-rent', 'PaymentController@CinetPay_series_season_Rent_Payment')->name('CinetPay_series_season_Rent_Payment');
-                                    
-                // Content Partner - Home Page
-
-                Route::get('datafree/channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
-                Route::get('datafree/channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
-                
-                // Live Event For artist 
-                Route::get('datafree/live-artists-event', 'LiveEventArtistStream@index')->name('LiveEventArtistStream_index');
-                Route::get('datafree/live-artist-event/{slug}', 'LiveEventArtistStream@live_event_play')->name('live_event_play');
-
-                Route::post('datafree/live_event_tips', 'LiveEventArtistStream@live_event_tips')->name('live_event_tips');
-                Route::post('datafree/stripePayment-Tips', 'LiveEventArtistStream@stripePaymentTips')->name('stripePaymentTips');
-                Route::post('datafree/purchase-live-artist-event', 'LiveEventArtistStream@rent_live_artist_event')->name('rent_live_artist_event'); 
-
-                Route::get('datafree/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStream');
+            // Content Partner List
+            Route::get('datafree/contentpartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
+            //   Route::get('ContentPartner/{slug}', 'ContentPartnerHomeController@ContentPartnerHome')->name('ContentPartnerHome');
+            //   Route::get('Content-list', 'ContentPartnerHomeController@ContentList')->name('ContentList');
+            Route::get('datafree/content-partners', 'ContentPartnerHomeController@ContentList')->name('ContentList');
+            Route::get('datafree/Content_category_series', 'ContentPartnerHomeController@Content_category_series')->name('Content_category_series');
+            Route::get('datafree/Content_category_videos', 'ContentPartnerHomeController@Content_category_videos')->name('Content_category_videos');
+            Route::get('datafree/Content_category_audios', 'ContentPartnerHomeController@Content_category_audios')->name('Content_category_audios');
+            Route::get('datafree/Content_category_live', 'ContentPartnerHomeController@Content_category_live')->name('Content_category_live');
+            Route::get('datafree/all_Content_videos', 'ContentPartnerHomeController@all_Content_videos')->name('all_Content_videos');
 
 
+            // CinetPay-Video Rent
+            Route::post('datafree/CinetPaySubscription', 'CinetPayController@CinetPaySubscription')->name('CinetPay_Subscription');
+            Route::post('datafree/CinetPay-video-rent', 'CinetPayController@CinetPay_Video_Rent_Payment')->name('CinetPay_Video_Rent_Payment');
+            Route::post('datafree/CinetPay-audio-rent', 'CinetPayController@CinetPay_audio_Rent_Payment')->name('CinetPay_audio_Rent_Payment');
+            Route::post('datafree/CinetPay-live-rent', 'CinetPayController@CinetPay_live_Rent')->name('CinetPay_live_Rent');
 
-                // PPV_live_PurchaseUpdate
+            // CinetPay- Series/Season Rent
+            Route::post('datafree/CinetPay-series_season-rent', 'PaymentController@CinetPay_series_season_Rent_Payment')->name('CinetPay_series_season_Rent_Payment');
 
-                Route::post('datafree/PPV_live_PurchaseUpdate', 'LiveStreamController@PPV_live_PurchaseUpdate')->name('PPV_live_PurchaseUpdate');
-                Route::post('datafree/unseen_expirydate_checking', 'LiveStreamController@unseen_expirydate_checking')->name('unseen_expirydate_checking');
+            // Content Partner - Home Page
 
-                // Paystack
-                                    // Paystack-Subscription
-                Route::post('datafree/Paystack-Subscription', 'PaystackController@Paystack_CreateSubscription')->name('Paystack_CreateSubscription');
-                Route::get('datafree/paystack-verify-request', 'PaystackController@paystack_verify_request')->name('paystack_verify_request');
-                Route::get('datafree/paystack-Andriod-verify-request', 'PaystackController@paystack_Andriod_verify_request')->name('paystack_Andriod_verify_request');
-                Route::get('datafree/paystack-Subscription-update', 'PaystackController@paystack_Subscription_update')->name('paystack_Subscription_update');
-                Route::get('datafree/Paystack-Subscription-cancel/{subscription_id}', 'PaystackController@Paystack_Subscription_cancel')->name('Paystack_Subscription_cancel');
+            Route::get('datafree/channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
+            Route::get('datafree/channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
 
-                                    // Paystack-Video Rent
-                Route::get('datafree/Paystack-video-rent/{video_id}/{amount}', 'PaystackController@Paystack_Video_Rent')->name('Paystack_Video_Rent');
-                Route::get('datafree/Paystack-video-rent-paymentverify', 'PaystackController@Paystack_Video_Rent_Paymentverify')->name('Paystack_Video_Rent_Paymentverify');
+            // Live Event For artist 
+            Route::get('datafree/live-artists-event', 'LiveEventArtistStream@index')->name('LiveEventArtistStream_index');
+            Route::get('datafree/live-artist-event/{slug}', 'LiveEventArtistStream@live_event_play')->name('live_event_play');
 
-                                    // Paystack-Live Rent
-                Route::get('datafree/Paystack-live-rent/{live_id}/{amount}', 'PaystackController@Paystack_live_Rent')->name('Paystack_live_Rent');
-                Route::get('datafree/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_live_Rent_Paymentverify')->name('Paystack_live_Rent_Paymentverify');
+            Route::post('datafree/live_event_tips', 'LiveEventArtistStream@live_event_tips')->name('live_event_tips');
+            Route::post('datafree/stripePayment-Tips', 'LiveEventArtistStream@stripePaymentTips')->name('stripePaymentTips');
+            Route::post('datafree/purchase-live-artist-event', 'LiveEventArtistStream@rent_live_artist_event')->name('rent_live_artist_event');
 
-                                    // Live Stream - M3U file
-                Route::get('datafree/m3u_file_m3u8url', 'LiveStreamController@m3u_file_m3u8url')->name('m3u_file_m3u8url');
-                Route::get('datafree/M3U_video_url', 'LiveStreamController@M3U_video_url')->name('M3U_video_url');
-
-                                        //Rss Feed
-                Route::get('datafree/Rss-Feed-index', 'RssFeedController@index')->name('Rss-Feed-index');
-                Route::get('datafree/Rss-Feed-videos', 'RssFeedController@videos_view')->name('Rss-Feed-videos-view');
-                Route::get('datafree/Rss-Feed-Livestream', 'RssFeedController@livestream_view')->name('Rss-Feed-Livestream-view');
-                Route::get('datafree/Rss-Feed-episode', 'RssFeedController@episode_view')->name('Rss-Feed-episode-view');
-                Route::get('datafree/Rss-Feed-audios', 'RssFeedController@audios_view')->name('Rss-Feed-audios-view');
-
-                Route::get('datafree/feed', 'RssFeedController@feed')->name('feed');
-
-                Route::get('datafree/comment_index', 'WebCommentController@comment_index')->name('comment.index');
-                Route::get('datafree/comment_store', 'WebCommentController@comment_store')->name('comments.store');
-                Route::get('datafree/comment_edit', 'WebCommentController@comment_edit')->name('comments.edit');
-                Route::get('datafree/comment_update/{id}', 'WebCommentController@comment_update')->name('comments.update');
-                Route::get('datafree/comment_destroy/{id}', 'WebCommentController@comment_destroy')->name('comments.destroy');
-
-                Route::get('datafree/comment_reply/{id}', 'WebCommentController@comment_reply')->name('comments.reply');
-
-                // Reset Password 
-
-                Route::get('datafree/Reset-Password', 'PasswordForgetController@Reset_Password')->name('Reset_Password');
-                Route::post('datafree/Send-Reset-Password-link', 'PasswordForgetController@Send_Reset_Password_link')->name('Send_Reset_Password_link');
-                Route::get('datafree/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForgetController@confirm_reset_password')->name('confirm_reset_password');
-                Route::post('datafree/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');
-
-                Route::get('datafree/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
-
-                // Learn Page   
-                Route::get('datafree/learn', 'AllVideosListController@learn')->name('learn');
-
-                //All Video
-                Route::get('datafree/library', 'AllVideosListController@all_videos')->name('all_videos');
-                Route::get('datafree/Most-watched-videos', 'AllVideosListController@All_User_MostwatchedVideos')->name('All_User_MostwatchedVideos');
-                Route::get('datafree/Most-watched-videos-country', 'AllVideosListController@All_Country_MostwatchedVideos')->name('All_Country_MostwatchedVideos');
-                Route::get('datafree/Most-watched-videos-site', 'AllVideosListController@All_MostwatchedVideos')->name('All_MostwatchedVideos');
-
-                // Free-Movies 
-                Route::get('datafree/Free-Movies', 'AllVideosListController@Free_videos')->name('Free_videos');
-
-                // Series
-                Route::get('datafree/series/list', 'AllVideosListController@all_series')->name('all_series');
-                Route::get('datafree/continue-watching-list', 'AllVideosListController@ContinueWatchingList');
-
-                Route::post('datafree/schedule/videos', 'ChannelController@ScheduledVideos');
-                Route::get('datafree/schedule/videos/embed/{name}','ChannelController@EmbedScheduledVideos');
-                Route::get('datafree/videos/category/{cid}', 'ChannelController@channelVideos');
-                Route::get('datafree/movies/category/{cid}', 'ChannelController@channelVideos');
-                
-                Route::post('datafree/register1', 'HomeController@PostcreateStep1');
-                Route::get('datafree/verify-request', 'HomeController@VerifyRequest');
-                Route::get('datafree/verify-request-sent', 'HomeController@VerifyRequestNotsent');
-                Route::get('datafree/verify/{activation_code}', 'SignupController@Verify');
-                Route::get('datafree/category/{cid}', 'ChannelController@channelVideos');
-                Route::get('datafree/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
-                Route::get('datafree/category/videos/{vid}','ChannelController@play_videos');
-                Route::get('datafree/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
-                Route::get('datafree/language/{language}', 'ChannelController@LanguageVideo');
-                Route::post('datafree/saveSubscription', 'PaymentController@saveSubscription');
-                Route::get('datafree/category/wishlist/{slug}', 'ChannelController@Watchlist');
-                Route::post('datafree/favorite', 'ThemeAudioController@add_favorite');
-                Route::post('datafree/albumfavorite', 'ThemeAudioController@albumfavorite');
-                Route::get('datafree/live/category/{cid}', 'LiveStreamController@channelVideos');
-                
-                //theme 3 full Player 
-                Route::get('datafree/category/videos/play/{vid}', 'ChannelController@fullplayer_videos')->name('fullplayer_videos');
-                
-                
-                Route::get('datafree/updatecard', 'PaymentController@UpdateCard');
-                Route::get('datafree/my-refferals', 'PaymentController@MyRefferal');
-                Route::get('datafree/nexmo', 'HomeController@nexmo')->name('nexmo');
-                Route::post('datafree/nexmo', 'HomeController@verify')->name('nexmo');
-                
-                Route::get('datafree/serieslist', array('uses' => 'ChannelController@series', 'as' => 'series') );
-                // Route::get('series/category/{id}', 'ChannelController@series_genre' );
-                Route::get('datafree/datafreewatchlater', 'WatchLaterController@show_watchlaters');
-                Route::get('datafree/myprofile', 'AdminUsersController@myprofile')->name('myprofile');
-                Route::get('datafree/refferal', 'AdminUsersController@refferal');
-                Route::post('datafree/profile/update', 'AdminUsersController@profileUpdate');   
-                Route::get('datafree/latest-videos', 'HomeController@LatestVideos');
-                Route::get('datafree/language/{lanid}/{language}', 'HomeController@LanguageVideo');
-                Route::get('datafree/featured-videos', 'HomeController@Featured_videos');
-                Route::post('datafree/mywishlist', 'WishlistController@mywishlist');
-                Route::post('datafree/ppvWishlist', 'WishlistController@ppvWishlist');
-                Route::get('datafree/mywishlists', 'WishlistController@show_mywishlists');
-                Route::get('datafree/cancelSubscription', 'PaymentController@CancelSubscription');
-                Route::get('datafree/renew', 'PaymentController@RenewSubscription');
-
-                Route::post('datafree/upgradeSubscription', 'PaymentController@UpgradeSubscription');
-                Route::post('datafree/upgrade-stripe-plan', 'PaymentController@UpgradeStripe');
-                Route::post('datafree/upgrade-paypal-plan', 'PaymentController@UpgradePaypalPage');
-                Route::post('datafree/upgradePaypal', 'PaymentController@upgradePaypal');
-                Route::post('datafree/becomePaypal', 'PaymentController@BecomePaypal');
-                Route::get('datafree/upgrade-subscription', 'PaymentController@Upgrade');
-
-                Route::post('datafree/profile/update_username', 'AdminUsersController@update_username');   
-                Route::post('datafree/profile/update_userImage', 'AdminUsersController@update_userImage');   
-                Route::post('datafree/profile/update_userEmail', 'AdminUsersController@update_userEmail');   
-
-                Route::get('datafree/upgrade-subscription_plan', 'PaymentController@Upgrade_Plan');
-                Route::get('datafree/becomesubscriber', 'PaymentController@BecomeSubscriber')->name('payment_becomeSubscriber');
-                Route::get('datafree/BecomeSubscriber_Plans', 'PaymentController@BecomeSubscriber_Plans')->name('BecomeSubscriber_Plans');
-                Route::get('datafree/transactiondetails','PaymentController@TransactionDetails');
-
-                Route::get('datafree/upgrading', 'PaymentController@upgrading');
-
-                Route::get('datafree/channels', 'ChannelController@index');
-                Route::get('datafree/ppvVideos', 'ChannelController@ppvVideos');
-                Route::get('datafree/live', 'LiveStreamController@Index');
-                // Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
-
-                Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
-                Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
-                Route::get('datafree/live/embed/{id}', 'LiveStreamController@EmbedLivePlay');
+            Route::get('datafree/liveStream', 'AdminLiveStreamController@liveStream')->name('liveStream');
 
 
-                Route::post('datafree/lifetime-subscription-payment', 'PaymentController@lifetime_subscription')->name('stripe.lifetime_subscription'); 
 
-                Route::post('datafree/purchase-live', 'PaymentController@StoreLive')->name('stripe.store'); 
-                Route::post('datafree/purchase-video', 'PaymentController@purchaseVideo');
-                Route::post('datafree/purchase-videocount', 'AdminVideosController@purchaseVideocount');
-                Route::post('datafree/player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
-                Route::post('datafree/player_analytics_store', 'AdminPlayerAnalyticsController@PlayerAnalyticsStore');
-                Route::post('datafree/player_seektime_store', 'AdminPlayerAnalyticsController@PlayerSeekTimeStore');
-                Route::post('datafree/purchase-episode', 'PaymentController@purchaseEpisode');
-                Route::post('datafree/purchase-series', 'PaymentController@purchaseSeries');
-                Route::get('datafree/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
-                Route::get('datafree/logout', 'AdminUsersController@logout');
-                Route::post('datafree/stripe-payment', 'PaymentController@store')->name('stripe.store');
-                Route::post('datafree/rentpaypal', 'PaymentController@RentPaypal');
-                // Route::get('stripe', 'PaymentController@index');
-                Route::get('datafree/myppv', 'ChannelController@Myppv');
-                Route::get('datafree/stripe', 'SignupController@index');
-                Route::post('datafree/stripe', 'SignupController@store');
-                Route::get('datafree/form', 'SignupController@form');
-                Route::get('datafree/roles', 'PermissionController@Permission');
-                Route::post('datafree/mywishlist', 'WishlistController@mywishlist');
-                Route::get('datafree/mywishlists', 'WishlistController@show_mywishlists');
-                Route::post('datafree/LiveWishlist', 'WishlistController@LiveWishlist');
-                Route::get('datafree/wishlist_video/{id}', 'WishlistController@wishlist_video');
-                Route::get('datafree/file-upload', 'FileUploadController@index');
-                Route::post('datafree/file-upload/upload', 'FileUploadController@fileStore')->name('upload');
-                Route::post('datafree/profileupdate', 'AdminUsersController@ProfileImage');
+            // PPV_live_PurchaseUpdate
+
+            Route::post('datafree/PPV_live_PurchaseUpdate', 'LiveStreamController@PPV_live_PurchaseUpdate')->name('PPV_live_PurchaseUpdate');
+            Route::post('datafree/unseen_expirydate_checking', 'LiveStreamController@unseen_expirydate_checking')->name('unseen_expirydate_checking');
+
+            // Paystack
+            // Paystack-Subscription
+            Route::post('datafree/Paystack-Subscription', 'PaystackController@Paystack_CreateSubscription')->name('Paystack_CreateSubscription');
+            Route::get('datafree/paystack-verify-request', 'PaystackController@paystack_verify_request')->name('paystack_verify_request');
+            Route::get('datafree/paystack-Andriod-verify-request', 'PaystackController@paystack_Andriod_verify_request')->name('paystack_Andriod_verify_request');
+            Route::get('datafree/paystack-Subscription-update', 'PaystackController@paystack_Subscription_update')->name('paystack_Subscription_update');
+            Route::get('datafree/Paystack-Subscription-cancel/{subscription_id}', 'PaystackController@Paystack_Subscription_cancel')->name('Paystack_Subscription_cancel');
+
+            // Paystack-Video Rent
+            Route::get('datafree/Paystack-video-rent/{video_id}/{amount}', 'PaystackController@Paystack_Video_Rent')->name('Paystack_Video_Rent');
+            Route::get('datafree/Paystack-video-rent-paymentverify', 'PaystackController@Paystack_Video_Rent_Paymentverify')->name('Paystack_Video_Rent_Paymentverify');
+
+            // Paystack-Live Rent
+            Route::get('datafree/Paystack-live-rent/{live_id}/{amount}', 'PaystackController@Paystack_live_Rent')->name('Paystack_live_Rent');
+            Route::get('datafree/Paystack-live-rent-paymentverify', 'PaystackController@Paystack_live_Rent_Paymentverify')->name('Paystack_live_Rent_Paymentverify');
+
+            // Live Stream - M3U file
+            Route::get('datafree/m3u_file_m3u8url', 'LiveStreamController@m3u_file_m3u8url')->name('m3u_file_m3u8url');
+            Route::get('datafree/M3U_video_url', 'LiveStreamController@M3U_video_url')->name('M3U_video_url');
+
+            //Rss Feed
+            Route::get('datafree/Rss-Feed-index', 'RssFeedController@index')->name('Rss-Feed-index');
+            Route::get('datafree/Rss-Feed-videos', 'RssFeedController@videos_view')->name('Rss-Feed-videos-view');
+            Route::get('datafree/Rss-Feed-Livestream', 'RssFeedController@livestream_view')->name('Rss-Feed-Livestream-view');
+            Route::get('datafree/Rss-Feed-episode', 'RssFeedController@episode_view')->name('Rss-Feed-episode-view');
+            Route::get('datafree/Rss-Feed-audios', 'RssFeedController@audios_view')->name('Rss-Feed-audios-view');
+
+            Route::get('datafree/feed', 'RssFeedController@feed')->name('feed');
+
+            Route::get('datafree/comment_index', 'WebCommentController@comment_index')->name('comment.index');
+            Route::get('datafree/comment_store', 'WebCommentController@comment_store')->name('comments.store');
+            Route::get('datafree/comment_edit', 'WebCommentController@comment_edit')->name('comments.edit');
+            Route::get('datafree/comment_update/{id}', 'WebCommentController@comment_update')->name('comments.update');
+            Route::get('datafree/comment_destroy/{id}', 'WebCommentController@comment_destroy')->name('comments.destroy');
+
+            Route::get('datafree/comment_reply/{id}', 'WebCommentController@comment_reply')->name('comments.reply');
+
+            // Reset Password 
+
+            Route::get('datafree/Reset-Password', 'PasswordForgetController@Reset_Password')->name('Reset_Password');
+            Route::post('datafree/Send-Reset-Password-link', 'PasswordForgetController@Send_Reset_Password_link')->name('Send_Reset_Password_link');
+            Route::get('datafree/confirm-Reset-password/{crypt_email}/{reset_token}', 'PasswordForgetController@confirm_reset_password')->name('confirm_reset_password');
+            Route::post('datafree/forget-password-update', 'PasswordForgetController@forget_password_update')->name('forget_password_update');
+
+            Route::get('datafree/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
+
+            // Learn Page   
+            Route::get('datafree/learn', 'AllVideosListController@learn')->name('learn');
+
+            //All Video
+            Route::get('datafree/library', 'AllVideosListController@all_videos')->name('all_videos');
+            Route::get('datafree/Most-watched-videos', 'AllVideosListController@All_User_MostwatchedVideos')->name('All_User_MostwatchedVideos');
+            Route::get('datafree/Most-watched-videos-country', 'AllVideosListController@All_Country_MostwatchedVideos')->name('All_Country_MostwatchedVideos');
+            Route::get('datafree/Most-watched-videos-site', 'AllVideosListController@All_MostwatchedVideos')->name('All_MostwatchedVideos');
+
+            // Free-Movies 
+            Route::get('datafree/Free-Movies', 'AllVideosListController@Free_videos')->name('Free_videos');
+
+            // Series
+            Route::get('datafree/series/list', 'AllVideosListController@all_series')->name('all_series');
+            Route::get('datafree/continue-watching-list', 'AllVideosListController@ContinueWatchingList');
+
+            Route::post('datafree/schedule/videos', 'ChannelController@ScheduledVideos');
+            Route::get('datafree/schedule/videos/embed/{name}', 'ChannelController@EmbedScheduledVideos');
+            Route::get('datafree/videos/category/{cid}', 'ChannelController@channelVideos');
+            Route::get('datafree/movies/category/{cid}', 'ChannelController@channelVideos');
+
+            Route::post('datafree/register1', 'HomeController@PostcreateStep1');
+            Route::get('datafree/verify-request', 'HomeController@VerifyRequest');
+            Route::get('datafree/verify-request-sent', 'HomeController@VerifyRequestNotsent');
+            Route::get('datafree/verify/{activation_code}', 'SignupController@Verify');
+            Route::get('datafree/category/{cid}', 'ChannelController@channelVideos');
+            Route::get('datafree/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
+            Route::get('datafree/category/videos/{vid}', 'ChannelController@play_videos');
+            Route::get('datafree/category/videos/embed/{vid}', 'ChannelController@Embed_play_videos');
+            Route::get('datafree/language/{language}', 'ChannelController@LanguageVideo');
+            Route::post('datafree/saveSubscription', 'PaymentController@saveSubscription');
+            Route::get('datafree/category/wishlist/{slug}', 'ChannelController@Watchlist');
+            Route::post('datafree/favorite', 'ThemeAudioController@add_favorite');
+            Route::post('datafree/albumfavorite', 'ThemeAudioController@albumfavorite');
+            Route::get('datafree/live/category/{cid}', 'LiveStreamController@channelVideos');
+
+            //theme 3 full Player 
+            Route::get('datafree/category/videos/play/{vid}', 'ChannelController@fullplayer_videos')->name('fullplayer_videos');
+
+
+            Route::get('datafree/updatecard', 'PaymentController@UpdateCard');
+            Route::get('datafree/my-refferals', 'PaymentController@MyRefferal');
+            Route::get('datafree/nexmo', 'HomeController@nexmo')->name('nexmo');
+            Route::post('datafree/nexmo', 'HomeController@verify')->name('nexmo');
+
+            Route::get('datafree/serieslist', array('uses' => 'ChannelController@series', 'as' => 'series'));
+            // Route::get('series/category/{id}', 'ChannelController@series_genre' );
+            Route::get('datafree/datafreewatchlater', 'WatchLaterController@show_watchlaters');
+            Route::get('datafree/myprofile', 'AdminUsersController@myprofile')->name('myprofile');
+            Route::get('datafree/refferal', 'AdminUsersController@refferal');
+            Route::post('datafree/profile/update', 'AdminUsersController@profileUpdate');
+            Route::get('datafree/latest-videos', 'HomeController@LatestVideos');
+            Route::get('datafree/language/{lanid}/{language}', 'HomeController@LanguageVideo');
+            Route::get('datafree/featured-videos', 'HomeController@Featured_videos');
+            Route::post('datafree/mywishlist', 'WishlistController@mywishlist');
+            Route::post('datafree/ppvWishlist', 'WishlistController@ppvWishlist');
+            Route::get('datafree/mywishlists', 'WishlistController@show_mywishlists');
+            Route::get('datafree/cancelSubscription', 'PaymentController@CancelSubscription');
+            Route::get('datafree/renew', 'PaymentController@RenewSubscription');
+
+            Route::post('datafree/upgradeSubscription', 'PaymentController@UpgradeSubscription');
+            Route::post('datafree/upgrade-stripe-plan', 'PaymentController@UpgradeStripe');
+            Route::post('datafree/upgrade-paypal-plan', 'PaymentController@UpgradePaypalPage');
+            Route::post('datafree/upgradePaypal', 'PaymentController@upgradePaypal');
+            Route::post('datafree/becomePaypal', 'PaymentController@BecomePaypal');
+            Route::get('datafree/upgrade-subscription', 'PaymentController@Upgrade');
+
+            Route::post('datafree/profile/update_username', 'AdminUsersController@update_username');
+            Route::post('datafree/profile/update_userImage', 'AdminUsersController@update_userImage');
+            Route::post('datafree/profile/update_userEmail', 'AdminUsersController@update_userEmail');
+
+            Route::get('datafree/upgrade-subscription_plan', 'PaymentController@Upgrade_Plan');
+            Route::get('datafree/becomesubscriber', 'PaymentController@BecomeSubscriber')->name('payment_becomeSubscriber');
+            Route::get('datafree/BecomeSubscriber_Plans', 'PaymentController@BecomeSubscriber_Plans')->name('BecomeSubscriber_Plans');
+            Route::get('datafree/transactiondetails', 'PaymentController@TransactionDetails');
+
+            Route::get('datafree/upgrading', 'PaymentController@upgrading');
+
+            Route::get('datafree/channels', 'ChannelController@index');
+            Route::get('datafree/ppvVideos', 'ChannelController@ppvVideos');
+            Route::get('datafree/live', 'LiveStreamController@Index');
+            // Route::get('/live/{play}/{id}', 'LiveStreamController@Play');
+
+            Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
+            Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
+            Route::get('datafree/live/embed/{id}', 'LiveStreamController@EmbedLivePlay');
+
+
+            Route::post('datafree/lifetime-subscription-payment', 'PaymentController@lifetime_subscription')->name('stripe.lifetime_subscription');
+
+            Route::post('datafree/purchase-live', 'PaymentController@StoreLive')->name('stripe.store');
+            Route::post('datafree/purchase-video', 'PaymentController@purchaseVideo');
+            Route::post('datafree/purchase-videocount', 'AdminVideosController@purchaseVideocount');
+            Route::post('datafree/player_analytics_create', 'AdminPlayerAnalyticsController@PlayerAnalyticsCreate');
+            Route::post('datafree/player_analytics_store', 'AdminPlayerAnalyticsController@PlayerAnalyticsStore');
+            Route::post('datafree/player_seektime_store', 'AdminPlayerAnalyticsController@PlayerSeekTimeStore');
+            Route::post('datafree/purchase-episode', 'PaymentController@purchaseEpisode');
+            Route::post('datafree/purchase-series', 'PaymentController@purchaseSeries');
+            Route::get('datafree/ppvVideos/play_videos/{vid}', 'ChannelController@PlayPpv');
+            Route::get('datafree/logout', 'AdminUsersController@logout');
+            Route::post('datafree/stripe-payment', 'PaymentController@store')->name('stripe.store');
+            Route::post('datafree/rentpaypal', 'PaymentController@RentPaypal');
+            // Route::get('stripe', 'PaymentController@index');
+            Route::get('datafree/myppv', 'ChannelController@Myppv');
+            Route::get('datafree/stripe', 'SignupController@index');
+            Route::post('datafree/stripe', 'SignupController@store');
+            Route::get('datafree/form', 'SignupController@form');
+            Route::get('datafree/roles', 'PermissionController@Permission');
+            Route::post('datafree/mywishlist', 'WishlistController@mywishlist');
+            Route::get('datafree/mywishlists', 'WishlistController@show_mywishlists');
+            Route::post('datafree/LiveWishlist', 'WishlistController@LiveWishlist');
+            Route::get('datafree/wishlist_video/{id}', 'WishlistController@wishlist_video');
+            Route::get('datafree/file-upload', 'FileUploadController@index');
+            Route::post('datafree/file-upload/upload', 'FileUploadController@fileStore')->name('upload');
+            Route::post('datafree/profileupdate', 'AdminUsersController@ProfileImage');
 
 
             //custom login route 
-            
-                Route::get('datafree/mobileLogin', 'HomeController@mobileLogin');
-                Route::post('datafree/stripesubscription', 'HomeController@stripes');
-                Route::post('datafree/ckeditor/image_upload', 'AdminPageController@upload')->name('upload');
-                Route::get('datafree/image/index', 'ImageController@index');
-            
-                Route::post('datafree/image/upload', 'ImageController@upload');
-                Route::get('datafree/', 'HomeController@FirstLanging');
 
-                // Reels 
-            
-                Route::get('datafree/reels', 'AdminReelsVideo@index');
-            
-            
-                Route::get('datafree/home', 'HomeController@index')->name('home');
-            
-                /*TV-shows */ 
-                Route::get('datafree/tv-shows', 'TvshowsController@index');
-                Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
-                Route::get('datafree/episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
-                Route::get('datafree/episode/{episode_name}', 'TvshowsController@PlayEpisode');
-            
-                Route::get('datafree/play_series/{name}/', 'TvshowsController@play_series');    
-            
-                /* Audio Pages */
-                Route::get('datafree/audios', 'ThemeAudioController@audios');
-                Route::get('datafree/artist/{slug}', 'ThemeAudioController@artist' );
-            
-                Route::post('datafree/artist/following', 'ThemeAudioController@ArtistFollow' );
-                Route::get('datafree/audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
-                Route::get('datafree/album/{album_slug}', 'ThemeAudioController@album');
-                Route::get('datafree/albums-list', 'ThemeAudioController@albums_list')->name('albums_list');
-            
-                    
-                Route::post('datafree/sendOtp', 'HomeController@SendOTP');
-                Route::post('datafree/verifyOtp', 'HomeController@verifyOtp');  
-                Route::post('datafree/directVerify', 'SignupController@directVerify');
-                Route::get('datafree/signup', 'SignupController@createStep1')->name('signup');
-                Route::post('datafree/SignupMobile_val', 'SignupController@SignupMobile_val')->name('SignupMobile_val');
-            
-                
-            
-                Route::get('datafree/registerUser', 'SignupController@SaveAsRegisterUser');
-                Route::get('datafree/register2', 'SignupController@createStep2');
+            Route::get('datafree/mobileLogin', 'HomeController@mobileLogin');
+            Route::post('datafree/stripesubscription', 'HomeController@stripes');
+            Route::post('datafree/ckeditor/image_upload', 'AdminPageController@upload')->name('upload');
+            Route::get('datafree/image/index', 'ImageController@index');
 
-                Route::post('datafree/remove-image', 'SignupController@removeImage');
-                Route::post('datafree/store', 'SignupController@store');
-                Route::get('datafree/data', 'SignupController@index');
-                Route::get('datafree/stripe1', 'PaymentController@stripe');
-                Route::post('datafree/stripe', 'PaymentController@stripePost')->name('stripe.post');
-            
-                                // search
-                Route::get('datafree/search','HomeController@search');
-                Route::post('datafree/searchResult', 'HomeController@searchResult')->name('searchResult');
-                Route::get('datafree/search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
-                Route::get('datafree/search-livestream/{livestreams_search_value}', 'HomeController@searchResult_livestream')->name('searchResult_livestream');
-                Route::get('datafree/search-series/{series_search_value}', 'HomeController@searchResult_series')->name('searchResult_series');
-                Route::get('datafree/search-episode/{Episode_search_value}', 'HomeController@searchResult_episode')->name('searchResult_episode');
-                Route::get('datafree/search-audios/{Audios_search_value}', 'HomeController@searchResult_audios')->name('searchResult_audios');
-            
-                Route::get('datafree/showPayperview', 'WatchLaterController@showPayperview');
-                Route::post('datafree/watchlater', 'WatchLaterController@watchlater');
-                Route::get('datafree/purchased-media', 'WatchLaterController@showPayperview');
-                Route::post('datafree/addwatchlater', 'WatchLaterController@watchlater');
-                Route::post('datafree/ppvWatchlater', 'WatchLaterController@ppvWatchlater');
-                Route::get('datafree/promotions', 'HomeController@promotions');
-                Route::get('datafree/page/{slug}', 'PagesController@index');
-            
+            Route::post('datafree/image/upload', 'ImageController@upload');
+            Route::get('datafree/', 'HomeController@FirstLanging');
+
+            // Reels 
+
+            Route::get('datafree/reels', 'AdminReelsVideo@index');
+
+
+            Route::get('datafree/home', 'HomeController@index')->name('home');
+
+            /*TV-shows */
+            Route::get('datafree/tv-shows', 'TvshowsController@index');
+            Route::get('datafree/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
+            Route::get('datafree/episode/embed/{series_name}/{episode_name}', 'TvshowsController@Embedplay_episode');
+            Route::get('datafree/episode/{episode_name}', 'TvshowsController@PlayEpisode');
+
+            Route::get('datafree/play_series/{name}/', 'TvshowsController@play_series');
+
+            /* Audio Pages */
+            Route::get('datafree/audios', 'ThemeAudioController@audios');
+            Route::get('datafree/artist/{slug}', 'ThemeAudioController@artist');
+
+            Route::post('datafree/artist/following', 'ThemeAudioController@ArtistFollow');
+            Route::get('datafree/audio/{slug}', 'ThemeAudioController@index')->name('play_audios');
+            Route::get('datafree/album/{album_slug}', 'ThemeAudioController@album');
+            Route::get('datafree/albums-list', 'ThemeAudioController@albums_list')->name('albums_list');
+
+
+            Route::post('datafree/sendOtp', 'HomeController@SendOTP');
+            Route::post('datafree/verifyOtp', 'HomeController@verifyOtp');
+            Route::post('datafree/directVerify', 'SignupController@directVerify');
+            Route::get('datafree/signup', 'SignupController@createStep1')->name('signup');
+            Route::post('datafree/SignupMobile_val', 'SignupController@SignupMobile_val')->name('SignupMobile_val');
+
+
+
+            Route::get('datafree/registerUser', 'SignupController@SaveAsRegisterUser');
+            Route::get('datafree/register2', 'SignupController@createStep2');
+
+            Route::post('datafree/remove-image', 'SignupController@removeImage');
+            Route::post('datafree/store', 'SignupController@store');
+            Route::get('datafree/data', 'SignupController@index');
+            Route::get('datafree/stripe1', 'PaymentController@stripe');
+            Route::post('datafree/stripe', 'PaymentController@stripePost')->name('stripe.post');
+
+            // search
+            Route::get('datafree/search', 'HomeController@search');
+            Route::post('datafree/searchResult', 'HomeController@searchResult')->name('searchResult');
+            Route::get('datafree/search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
+            Route::get('datafree/search-livestream/{livestreams_search_value}', 'HomeController@searchResult_livestream')->name('searchResult_livestream');
+            Route::get('datafree/search-series/{series_search_value}', 'HomeController@searchResult_series')->name('searchResult_series');
+            Route::get('datafree/search-episode/{Episode_search_value}', 'HomeController@searchResult_episode')->name('searchResult_episode');
+            Route::get('datafree/search-audios/{Audios_search_value}', 'HomeController@searchResult_audios')->name('searchResult_audios');
+
+            Route::get('datafree/showPayperview', 'WatchLaterController@showPayperview');
+            Route::post('datafree/watchlater', 'WatchLaterController@watchlater');
+            Route::get('datafree/purchased-media', 'WatchLaterController@showPayperview');
+            Route::post('datafree/addwatchlater', 'WatchLaterController@watchlater');
+            Route::post('datafree/ppvWatchlater', 'WatchLaterController@ppvWatchlater');
+            Route::get('datafree/promotions', 'HomeController@promotions');
+            Route::get('datafree/page/{slug}', 'PagesController@index');
+
             // Episode watchlater and wishlist
-            
-                Route::get('datafree/episode_watchlist', 'WatchLaterController@episode_watchlist');
-                Route::get('datafree/episode_watchlist_remove', 'WatchLaterController@episode_watchlist_remove');
-            
-                Route::get('datafree/episode_wishlist', 'WishlistController@episode_wishlist');
-                Route::get('datafree/episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
-            
-                Route::post('datafree/like-episode', 'TvshowsController@LikeEpisode');
-                Route::post('datafree/remove_like-episode', 'TvshowsController@RemoveLikeEpisode');
-            
-                Route::post('datafree/dislike-episode', 'TvshowsController@DisLikeEpisode');
-                Route::post('datafree/remove_dislike-episode', 'TvshowsController@RemoveDisLikeEpisode');
+
+            Route::get('datafree/episode_watchlist', 'WatchLaterController@episode_watchlist');
+            Route::get('datafree/episode_watchlist_remove', 'WatchLaterController@episode_watchlist_remove');
+
+            Route::get('datafree/episode_wishlist', 'WishlistController@episode_wishlist');
+            Route::get('datafree/episode_wishlist_remove', 'WishlistController@episode_wishlist_remove');
+
+            Route::post('datafree/like-episode', 'TvshowsController@LikeEpisode');
+            Route::post('datafree/remove_like-episode', 'TvshowsController@RemoveLikeEpisode');
+
+            Route::post('datafree/dislike-episode', 'TvshowsController@DisLikeEpisode');
+            Route::post('datafree/remove_dislike-episode', 'TvshowsController@RemoveDisLikeEpisode');
         });
     }
 }
@@ -2949,7 +2950,7 @@ Route::get('Ads-Views-Count', 'AdvertisementCountController@Advertisement_Views_
 Route::get('current-currency', 'AdminCurrencySettings@currentcurrency');
 // Route::get('exchangeCurrency','AdminCurrencySettings@exchangeCurrency');
 
-Route::get('exchangeCurrency','AdminCurrencyConvert@Index');
+Route::get('exchangeCurrency', 'AdminCurrencyConvert@Index');
 
 Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duration_Logs')->name('PPV_Free_Duration_Logs');
 
@@ -2986,8 +2987,8 @@ Route::get('activationcode', 'AdminUsersController@myprofile');
 Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end.EPG_date_filter');
 
 // videoJs player continue watching
-Route::post('saveContinueWatching','ChannelController@saveContinueWatching')->name('saveContinueWatching');
-Route::post('EpisodeContinueWatching','TvshowsController@EpisodeContinueWatching')->name('EpisodeContinueWatching');
+Route::post('saveContinueWatching', 'ChannelController@saveContinueWatching')->name('saveContinueWatching');
+Route::post('EpisodeContinueWatching', 'TvshowsController@EpisodeContinueWatching')->name('EpisodeContinueWatching');
 
 // For theme6 
 
@@ -3060,7 +3061,7 @@ Route::group(['prefix' => '/producer', 'middleware' => ['runmawi.CheckCPPLoginSe
 
     Route::get('/home', 'ProducerController@home')->name('producer.home');
     Route::get('/stats/{source}/{source_id}', 'ProducerController@stats')->name('producer.stats');
-    
+
     Route::get('/logout', 'ProducerController@logout')->name('producer.logout');
 });
 Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
@@ -3074,11 +3075,11 @@ Route::get('admin/partner_monetization_payouts/analytics', 'AdminPartnerMonetiza
 Route::get('admin/partner_monetization_payouts/partner_payment/{id}', 'AdminPartnerMonetizationPayouts@Partnerpayment');
 Route::post('admin/partner_monetization_payouts/store', 'AdminPartnerMonetizationPayouts@Store');
 Route::get('admin/partner_monetization_payouts/history', 'AdminPartnerMonetizationPayouts@PartnerPaymentHistory')->name('partner-monetization-history');
-Route::get('/get-channel-data/{id}', 'AdminPartnerMonetizationPayouts@getChannelData' )->name('get.channel.data');
+Route::get('/get-channel-data/{id}', 'AdminPartnerMonetizationPayouts@getChannelData')->name('get.channel.data');
 Route::get('/admin/get-user-details/{id}', 'AdminPartnerMonetizationPayouts@getUserDetails')->name('get.user.details');
 
-Route::post('PartnerMonetization','ChannelController@PartnerMonetization')->name('PartnerMonetization');
-Route::post('EpisodePartnerMonetization','TvshowsController@EpisodePartnerMonetization')->name('EpisodePartnerMonetization');
+Route::post('PartnerMonetization', 'ChannelController@PartnerMonetization')->name('PartnerMonetization');
+Route::post('EpisodePartnerMonetization', 'TvshowsController@EpisodePartnerMonetization')->name('EpisodePartnerMonetization');
 Route::post('LivestreamPartnerMonetization', 'AdminLiveStreamController@LivestreamPartnerMonetization')->name('LivestreamPartnerMonetization');
 
 Route::get('admin/transaction_details', 'AdminTransactionDetailsController@index')->name('admin.transaction-details.index');
@@ -3092,20 +3093,20 @@ Route::get('admin/missing-transaction', 'RazorpayController@Razorpay_Missingtran
 Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');
 
 // Unassigned episodes assign
-Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisodes')->name('season.unassigned_episodes');
+Route::post('season/unassigned_episodes', 'AdminSeriesController@UnassignedEpisodes')->name('season.unassigned_episodes');
 Route::get('/get-epg-content', 'LiveStreamController@getEpgContent');
-Route::post('/toggle-favorite','LiveStreamController@toggleFavorite')->name('toggle.favorite');
+Route::post('/toggle-favorite', 'LiveStreamController@toggleFavorite')->name('toggle.favorite');
 Route::post('datafree/toggle-favorite', 'LiveStreamController@toggleFavorite')->name('toggle.favorite');
 
-Route::post('getSeriesEpisodeImg','FrontEndQueryController@getSeriesEpisodeImg')->name('getSeriesEpisodeImg');
-Route::post('getModalEpisodeImg','FrontEndQueryController@getModalEpisodeImg')->name('getModalEpisodeImg');
-Route::post('getLiveDropImg','FrontEndQueryController@getLiveDropImg')->name('getLiveDropImg');
-Route::post('getnetworkSeriesImg','FrontEndQueryController@getnetworkSeriesImg')->name('getnetworkSeriesImg');
-Route::post('getSeriesNetworkModalImg','FrontEndQueryController@getSeriesNetworkModalImg')->name('getSeriesNetworkModalImg');
-Route::post('getLatestSeriesImg','FrontEndQueryController@getLatestSeriesImg')->name('getLatestSeriesImg');
-Route::post('getLiveModal','FrontEndQueryController@getLiveModal')->name('getLiveModal');
-Route::post('getartistSeriesImg','FrontEndQueryController@getartistSeriesImg')->name('getartistSeriesImg');
-Route::post('getSeriesArtistModalImg','FrontEndQueryController@getSeriesArtistModalImg')->name('getSeriesArtistModalImg');
+Route::post('getSeriesEpisodeImg', 'FrontEndQueryController@getSeriesEpisodeImg')->name('getSeriesEpisodeImg');
+Route::post('getModalEpisodeImg', 'FrontEndQueryController@getModalEpisodeImg')->name('getModalEpisodeImg');
+Route::post('getLiveDropImg', 'FrontEndQueryController@getLiveDropImg')->name('getLiveDropImg');
+Route::post('getnetworkSeriesImg', 'FrontEndQueryController@getnetworkSeriesImg')->name('getnetworkSeriesImg');
+Route::post('getSeriesNetworkModalImg', 'FrontEndQueryController@getSeriesNetworkModalImg')->name('getSeriesNetworkModalImg');
+Route::post('getLatestSeriesImg', 'FrontEndQueryController@getLatestSeriesImg')->name('getLatestSeriesImg');
+Route::post('getLiveModal', 'FrontEndQueryController@getLiveModal')->name('getLiveModal');
+Route::post('getartistSeriesImg', 'FrontEndQueryController@getartistSeriesImg')->name('getartistSeriesImg');
+Route::post('getSeriesArtistModalImg', 'FrontEndQueryController@getSeriesArtistModalImg')->name('getSeriesArtistModalImg');
 Route::post('loadMoreNetworksSections', 'FrontEndQueryController@loadMoreNetworkSection')->name('loadMoreNetworksSections');
 
 Route::get('/series/image/{series_id}', function ($series_id) {
@@ -3114,7 +3115,7 @@ Route::get('/series/image/{series_id}', function ($series_id) {
     $BunnyCDNEnable = \App\StorageSetting::pluck('bunny_cdn_storage')->first();
     $defaultVerticalImageUrl = default_vertical_image_url();
 
-    $BaseURL = $BunnyCDNEnable == 1 
+    $BaseURL = $BunnyCDNEnable == 1
         ? \App\StorageSetting::pluck('bunny_cdn_base_url')->first()
         : url('public/uploads');
 
@@ -3126,9 +3127,9 @@ Route::get('/series/image/{series_id}', function ($series_id) {
     return response()->json(['image_url' => $image]);
 })->name('network.series.image');
 
-Route::get('/header_menus','HomeController@header_menus')->name('header_menus');
+Route::get('/header_menus', 'HomeController@header_menus')->name('header_menus');
 Route::get('/fetch-menus', 'HomeController@fetchMenus');
-Route::get('/admin/livestream/search', 'AdminLiveStreamController@search' )->name('admin.livestream.search');
+Route::get('/admin/livestream/search', 'AdminLiveStreamController@search')->name('admin.livestream.search');
 Route::get('/send-email', 'HomeController@sendEmail');
 Route::get('/logs', 'HomeController@Storagelogs');
 Route::get('/footer-links', 'HomeController@getFooterLinks');
