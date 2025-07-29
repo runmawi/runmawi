@@ -32103,6 +32103,122 @@ class ApiAuthController extends Controller
     }
   }
 
+  /**
+   * Create Razorpay order specifically for livestream purchases
+   * This endpoint is dedicated to livestream purchases and adds the correct metadata
+   */
+  public function create_livestream_razorpay_order(Request $request)
+  {
+    DB::beginTransaction();
+    try {
+      $live_id = $request->live_id;
+      $user_id = $request->user_id;
+      $amount = $request->amount;
+      $ppv_plan = $request->ppv_plan;
+      $platform = $request->platform ?: 'Android';
+
+      // Validate required fields
+      if (empty($user_id) || empty($amount) || empty($live_id)) {
+        return response()->json([
+          'status' => 'false',
+          'message' => 'User ID, live ID, and amount are required'
+        ]);
+      }
+
+      // Check if user already has active purchase for this livestream
+      $existingPurchase = DB::table('live_purchases')
+        ->where('user_id', $user_id)
+        ->where('video_id', $live_id)
+        ->where('payment_status', 'completed')
+        ->where('to_time', '>', now())
+        ->first();
+
+      if ($existingPurchase) {
+        return response()->json([
+          'status' => 'false',
+          'message' => 'You already have access to this livestream'
+        ]);
+      }
+
+      // Get Razorpay configuration
+      $PaymentSetting = PaymentSetting::where('payment_type', 'Razorpay')->first();
+
+      if (!$PaymentSetting) {
+        return response()->json([
+          'status' => 'false',
+          'message' => 'Razorpay configuration not found'
+        ]);
+      }
+
+      $razorpayKeyId = $PaymentSetting->live_mode == 0
+        ? $PaymentSetting->test_publishable_key
+        : $PaymentSetting->live_publishable_key;
+
+      $razorpayKeySecret = $PaymentSetting->live_mode == 0
+        ? $PaymentSetting->test_secret_key
+        : $PaymentSetting->live_secret_key;
+
+      // Create Razorpay API instance
+      $api = new \Razorpay\Api\Api($razorpayKeyId, $razorpayKeySecret);
+
+      // Prepare order notes with livestream-specific metadata
+      $orderNotes = [
+        'user_id' => (string)$user_id,
+        'platform' => $platform,
+        'ppv_plan' => $ppv_plan,
+        'purchase_type' => 'live_event', // This is the key identifier for webhook routing
+        'live_id' => (string)$live_id,
+        'original_amount' => (string)$amount
+      ];
+
+      // Create Razorpay order
+      $orderData = [
+        'receipt' => 'livestream_' . \Illuminate\Support\Str::random(10),
+        'amount' => $amount * 100, // Convert to paisa
+        'currency' => 'INR',
+        'payment_capture' => 1,
+        'notes' => $orderNotes
+      ];
+
+      $razorpayOrder = $api->order->create($orderData);
+
+      \Log::info('Livestream Razorpay order created - webhook will create purchase record after payment', [
+        'order_id' => $razorpayOrder['id'],
+        'user_id' => $user_id,
+        'live_id' => $live_id,
+        'amount' => $amount,
+        'platform' => $platform,
+        'note' => 'Livestream order created successfully. Purchase record will be created by webhook after payment completion.'
+      ]);
+
+      DB::commit();
+
+      return response()->json([
+        'status' => 'true',
+        'message' => 'Livestream Razorpay order created successfully',
+        'order_id' => $razorpayOrder['id'],
+        'amount' => $amount,
+        'currency' => 'INR',
+        'key_id' => $razorpayKeyId
+      ]);
+
+    } catch (\Exception $e) {
+      DB::rollback();
+      \Log::error('Failed to create livestream Razorpay order', [
+        'error' => $e->getMessage(),
+        'user_id' => $request->user_id ?? 'unknown',
+        'live_id' => $request->live_id ?? 'unknown',
+        'amount' => $request->amount ?? 'unknown',
+        'trace' => $e->getTraceAsString()
+      ]);
+
+      return response()->json([
+        'status' => 'false',
+        'message' => 'Failed to create livestream payment order: ' . $e->getMessage()
+      ]);
+    }
+  }
+
   // REMOVED: createInitialPurchaseRecord method no longer needed
   // All purchase records are now created only by webhook when payment is actually captured
 

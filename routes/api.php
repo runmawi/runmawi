@@ -121,6 +121,7 @@ Route::group(
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('add_payperview', 'ApiAuthController@add_payperview');
         Route::post('create_razorpay_order', 'ApiAuthController@create_razorpay_order');
+        Route::post('create_livestream_razorpay_order', 'ApiAuthController@create_livestream_razorpay_order');
         Route::get('debug_payment_status', 'ApiAuthController@debug_payment_status');
         Route::post('verify_apple_receipt', 'ApiAuthController@verify_apple_receipt');
         Route::post('apple_server_notification', 'ApiAuthController@apple_server_notification');
