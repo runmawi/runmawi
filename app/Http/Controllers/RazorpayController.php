@@ -887,7 +887,7 @@ class RazorpayController extends Controller
 
             $respond = array(
                 'status' => 'true',
-                'redirect_url' => URL::to('/live/' . $request->video_id)
+                'redirect_url' => URL::to('/live/' . ($request->video_slug ?? $request->video_id))
             );
             
             SiteLogs::create([
@@ -909,7 +909,7 @@ class RazorpayController extends Controller
             
             $respond = array(
                 'status' => 'false',
-                'redirect_url' => URL::to('/live/' . ($request->video_id ?? 'home'))
+                'redirect_url' => URL::to('/live/' . ($request->video_slug ?? $request->video_id ?? 'home'))
             );
 
             SiteLogs::create([

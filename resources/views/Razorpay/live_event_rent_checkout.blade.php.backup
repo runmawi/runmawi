@@ -86,8 +86,6 @@ document.getElementById('rzp-button1').onclick = function(e){
     <input type="text"  name="video_id"  value="{{ $response['live_event_id'] }}" />
     <input type="text"  name="amount"    value="{{ $response['amount'] }}" />
     <input type="text"  name="ppv_plan"  value="{{ $response['ppv_plan'] }}" />
-    <input type="text"  name="video_slug"  value="{{ $response['Video_slug'] }}" />
-    <input type="text"  name="platform"  value="website" />
 
     <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">Submit</button>
 </form>
