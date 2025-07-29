@@ -12955,26 +12955,26 @@ class ApiAuthController extends Controller
 
         // Use updateOrCreate to handle existing records gracefully
         // This is crucial for webhook processing to find the record later.
-        $purchase = \App\LiveEventPurchase::updateOrCreate(
+        $purchase = \App\LivePurchase::updateOrCreate(
             [
                 'payment_id' => $data['py_id'], // Razorpay Order ID
                 'user_id' => $data['user_id'],
-                'live_event_id' => $data['video_id'],
+                'video_id' => $data['video_id'], // live_purchases uses video_id
             ],
             [
-                'from_time' => $from_time,
                 'to_time' => $to_time,
+                'expired_date' => $to_time,
                 'ppv_plan' => $data['ppv_plan'],
                 'total_amount' => $data['amount'],
                 'payment_gateway' => $data['payment_type'],
-                'status' => $data['py_status'], // 'captured' or 'failed'
+                'payment_status' => $data['py_status'], // 'captured' or 'failed'
                 'platform' => $data['platform'],
-                'razorpay_payment_id' => null, // To be filled by webhook
-                'payment_failure_reason' => $data['py_failure_reason'] ?? null,
+                'status' => 1, // live_purchases uses integer status
+                'amount' => $data['amount'],
             ]
         );
 
-        Log::info('✅ Live event purchase record created/updated successfully.', ['purchase_id' => $purchase->id, 'order_id' => $data['py_id']]);
+        Log::info('✅ Live purchase record created/updated successfully.', ['purchase_id' => $purchase->id, 'order_id' => $data['py_id']]);
 
         $response = ['status' => 'true', 'message' => 'Live event purchase recorded successfully.'];
         return response()->json($response, 200);

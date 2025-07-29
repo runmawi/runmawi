@@ -827,17 +827,24 @@ class RazorpayController extends Controller
 
     public function RazorpayLiveRent_Payment(Request $request)
     {
-
-        $setting = Setting::first();
-        $ppv_hours = $setting->ppv_hours;
-
-        $d = new \DateTime('now');
-        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
-        $now = $d->format('Y-m-d h:i:s a');
-        $time = date('h:i:s', strtotime($now));
-        $to_time = date('Y-m-d h:i:s a', strtotime('+' . $ppv_hours . ' hour', strtotime($now)));
-
         try {
+            Log::info('Razorpay payment received', [
+                'platform' => $request->platform ?? 'unknown',
+                'user_id' => $request->user_id,
+                'video_id' => $request->video_id,
+                'amount' => $request->amount,
+                'payment_id' => $request->rzp_paymentid
+            ]);
+
+            $setting = Setting::first();
+            $ppv_hours = $setting->ppv_hours;
+
+            $d = new \DateTime('now');
+            $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+            $now = $d->format('Y-m-d h:i:s a');
+            $time = date('h:i:s', strtotime($now));
+            $to_time = date('Y-m-d h:i:s a', strtotime('+' . $ppv_hours . ' hour', strtotime($now)));
+
             $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
             $attributes = array(
@@ -854,89 +861,63 @@ class RazorpayController extends Controller
             }
             $payment_status = $payment->status;
 
-            // $video = LiveStream::where('id','=',$request->live_id)->first();
+            Log::info('Payment verified successfully', ['payment_status' => $payment_status]);
 
-            // if(!empty($video)){
-            // $moderators_id = $video->user_id;
-            // }
+            // Use the correct table: live_purchases
+            $purchase = LivePurchase::updateOrCreate(
+                [
+                    'payment_id' => $request->rzp_orderid, // Razorpay Order ID
+                    'user_id' => $request->user_id,
+                    'video_id' => $request->video_id, // live_purchases uses video_id
+                ],
+                [
+                    'ppv_plan' => $request->ppv_plan ?? 'default',
+                    'total_amount' => $request->get('amount') / 100,
+                    'payment_gateway' => 'razorpay',
+                    'payment_status' => $payment_status, // 'captured' or 'failed'
+                    'platform' => $request->platform ?? 'website',
+                    'status' => 1, // live_purchases uses integer status
+                    'amount' => $request->get('amount') / 100,
+                    'to_time' => $to_time,
+                    'expired_date' => $to_time,
+                ]
+            );
 
-            // if(!empty($moderators_id)){
-            //     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-            //     if ($moderator) {
-            //         $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
-            //     } else {
-            //         $percentage = 0;
-            //     }
-            //     $total_amount        =  $video->ppv_price;
-            //     $title               =  $video->title;
-            //     $commssion           =  VideoCommission::where('type','CPP')->first();
-            //     $ppv_price           =  $video->ppv_price;
-            //     $moderator_commssion =  ($percentage/100) * $ppv_price ;
-            //     $admin_commssion     =  $ppv_price - $moderator_commssion;
-            //     $moderator_id        =  $moderators_id;
-            // }
-            // else
-            // {
-            //     $total_amount   = $video->ppv_price;
-            //     $title          =  $video->title;
-            //     $commssion      =  VideoCommission::where('type','CPP')->first();
-            //     $percentage     = null; 
-            //     $ppv_price       = $video->ppv_price;
-            //     $admin_commssion =  null;
-            //     $moderator_commssion = null;
-            //     $moderator_id = null;
-            // }
-
-            $purchase = new PpvPurchase; // Simplified from find()
-            $purchase->user_id = $request->user_id;
-            $purchase->live_id = $request->live_id;
-            $purchase->total_amount = $request->get('amount') / 100;
-            // $purchase->admin_commssion = $admin_commssion;
-            // $purchase->moderator_commssion = $moderator_commssion;
-            // $purchase->moderator_id = $moderator_id;
-            $purchase->status = $payment_status;
-            $purchase->to_time = $to_time;
-            $purchase->platform = 'website';
-            $purchase->payment_id = $request->rzp_paymentid;
-            $purchase->payment_gateway = 'razorpay';
-            $purchase->save();
-
-
-            $livepurchase = LivePurchase::find($request->livepurchase_id);
-            $livepurchase->user_id = $request->user_id;
-            $livepurchase->video_id = $request->live_id;
-            $livepurchase->to_time = $to_time;
-            $livepurchase->expired_date = $to_time;
-            $livepurchase->amount = $request->get('amount') / 100;
-            $livepurchase->status = 1;
-            $livepurchase->platform = 'website';
-            $livepurchase->payment_gateway = 'razorpay';
-            $livepurchase->payment_status = $payment_status;
-            $livepurchase->payment_id = $request->rzp_paymentid;
-            $livepurchase->save();
+            Log::info('LivePurchase record created/updated', ['purchase_id' => $purchase->id]);
 
             $respond = array(
                 'status' => 'true',
+                'redirect_url' => URL::to('/live/' . $request->video_id)
             );
+            
             SiteLogs::create([
-                'level' => 'success,' . $purchase->status,
-                'message' => 'Razorpay live rent payment stored successfully!',
+                'level' => 'success',
+                'message' => 'Razorpay live rent payment stored successfully! User: ' . $request->user_id . ', Live: ' . $request->video_id,
                 'context' => 'RazorpayLiveRent_Payment'
             ]);
+
+            Log::info('Payment process completed successfully');
 
             return Theme::view('Razorpay.Rent_message', compact('respond'), $respond);
 
         } catch (\Exception $e) {
-
+            Log::error('Razorpay payment error: ' . $e->getMessage(), [
+                'user_id' => $request->user_id ?? 'unknown',
+                'video_id' => $request->video_id ?? 'unknown',
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             $respond = array(
                 'status' => 'false',
+                'redirect_url' => URL::to('/live/' . ($request->video_id ?? 'home'))
             );
 
             SiteLogs::create([
-                'level' => 'fails',
-                'message' => $e->getMessage(),
+                'level' => 'error',
+                'message' => 'Razorpay payment failed: ' . $e->getMessage(),
                 'context' => 'RazorpayLiveRent_Payment'
             ]);
+            
             return Theme::view('Razorpay.Rent_message', compact('respond'), $respond);
         }
     }
@@ -2744,7 +2725,7 @@ class RazorpayController extends Controller
                         'status' => 'failed',
                         'payment_failure_reason' => $payment['error_description'] ?? $payment['error_code'] ?? 'Unknown error',
                         'payment_gateway' => 'razorpay',
-                        'platform' => 'website',
+                        'platform' => $request->platform ?? 'website',
                         'to_time' => null,
                         'admin_commssion' => null,
                         'moderator_commssion' => null,

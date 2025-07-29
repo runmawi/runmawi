@@ -21,35 +21,30 @@
 <script type="text/javascript">
 
     $( document ).ready(function() {
-        var RedirectUrl="<?php echo $URL; ?>";
-        var Status     = {{ $status }} ;
+        var RedirectUrl = "<?php echo $URL; ?>";
+        var Status = "<?php echo $status; ?>" === "true";
 
-        if(Status == true){
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Success.',
-            text: 'Payment done Successfully',
-            timer: 5000,
-            allowOutsideClick: false})
-            .then(function() {
-                window.location = RedirectUrl;
+        if(Status){
+            Swal.fire({
+                icon: 'success',
+                title: 'Payment Successful!',
+                text: 'Your payment has been processed successfully. You can now access the content.',
+                timer: 3000,
+                allowOutsideClick: false
+            }).then(function() {
+                window.location.href = RedirectUrl;
             });
-
-        }else{
-
-        Swal.fire({
-            icon: 'info',
-            title: 'Oops...',
-            text: 'Sorry! Payment failure',
-            timer: 5000,
-            allowOutsideClick: false})
-            .then(function() {
-                window.location = RedirectUrl;
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Payment Failed',
+                text: 'Sorry! There was an error processing your payment. Please try again.',
+                timer: 3000,
+                allowOutsideClick: false
+            }).then(function() {
+                window.location.href = RedirectUrl;
             });
-
         }
-       
     });
     
 </script>
