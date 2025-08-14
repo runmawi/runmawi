@@ -5726,19 +5726,31 @@ class ApiAuthController extends Controller
       
       $existingActivePurchase = $query->first();
 
-      // Check if this is the exact same payment attempt (same payment_id)
+      // Check if this is the exact same payment attempt for THIS user/content
       $samePaymentAttempt = null;
       if (!empty($data['py_id'])) {
-        $samePaymentAttempt = DB::table('ppv_purchases')
+        $contentColumn = null;
+        $contentId = null;
+        if (!empty($data['video_id'])) { $contentColumn = 'video_id'; $contentId = $data['video_id']; }
+        elseif (!empty($data['live_id'])) { $contentColumn = 'video_id'; $contentId = $data['live_id']; }
+        elseif (!empty($data['audio_id'])) { $contentColumn = 'audio_id'; $contentId = $data['audio_id']; }
+        elseif (!empty($data['series_id']) && !empty($data['season_id'])) { $contentColumn = 'series_id'; $contentId = $data['series_id']; }
+
+        $querySame = DB::table('ppv_purchases')
           ->where('payment_id', $data['py_id'])
-          ->first();
+          ->where('user_id', $data['user_id']);
+        if ($contentColumn && $contentId) {
+          $querySame->where($contentColumn, $contentId);
+        }
+        $samePaymentAttempt = $querySame->first();
       }
 
       if ($samePaymentAttempt) {
-        \Log::info('Same payment ID already exists, returning existing record', [
+        \Log::info('Same payment ID already exists for this user/content, returning existing record', [
           'payment_id' => $data['py_id'],
           'existing_status' => $samePaymentAttempt->status,
           'existing_purchase_id' => $samePaymentAttempt->id,
+          'user_id' => $data['user_id'],
           'new_status' => $data['status']
         ]);
         
