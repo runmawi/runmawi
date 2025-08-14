@@ -5715,7 +5715,8 @@ class ApiAuthController extends Controller
       if (!empty($data['video_id'])) {
         $query->where('video_id', $data['video_id']);
       } elseif (!empty($data['live_id'])) {
-        $query->where('live_id', $data['live_id']);
+        // Live purchases are stored using video_id in both tables
+        $query->where('video_id', $data['live_id']);
       } elseif (!empty($data['audio_id'])) {
         $query->where('audio_id', $data['audio_id']);
       } elseif (!empty($data['series_id']) && !empty($data['season_id'])) {
@@ -5885,47 +5886,44 @@ class ApiAuthController extends Controller
 
   private function processLivePurchase(array $baseData, array $requestData)
   {
-    $purchaseData = array_merge($baseData, [
-      'live_id' => $requestData['live_id'],
-      'status' => 1 // Assuming 1 means active for live purchases
+    // Map request live_id to video_id column used in both live_purchases and ppv_purchases
+    $livePurchaseData = array_merge($baseData, [
+      'video_id' => $requestData['live_id'],
+      'status' => 1 // 1 means active
     ]);
 
     \Log::info('=== ATTEMPTING LIVE PURCHASE DATABASE INSERT ===', [
-      'user_id' => $purchaseData['user_id'],
-      'live_id' => $purchaseData['live_id'],
-      'amount' => $purchaseData['total_amount'],
-      'payment_id' => $purchaseData['payment_id'],
-      'payment_gateway' => $purchaseData['payment_gateway'],
-      'platform' => $purchaseData['platform'],
-      'status' => $purchaseData['status'],
-      'full_data' => $purchaseData
+      'user_id' => $livePurchaseData['user_id'],
+      'video_id' => $livePurchaseData['video_id'],
+      'amount' => $livePurchaseData['total_amount'],
+      'payment_id' => $livePurchaseData['payment_id'],
+      'payment_gateway' => $livePurchaseData['payment_gateway'],
+      'platform' => $livePurchaseData['platform'],
+      'status' => $livePurchaseData['status'],
+      'full_data' => $livePurchaseData
     ]);
 
     try {
       // Insert into live_purchases table
-      DB::table('live_purchases')->insert($purchaseData);
+      DB::table('live_purchases')->insert($livePurchaseData);
       \Log::info('✅ Live purchase inserted into live_purchases table');
 
-      // Also add to ppv_purchases for consistency
-      $ppvInsertId = DB::table('ppv_purchases')->insertGetId($purchaseData);
-      
-      \Log::info('✅ LIVE PURCHASE DATABASE INSERT SUCCESSFUL', [
-        'purchase_id' => $ppvInsertId,
-        'user_id' => $purchaseData['user_id'],
-        'live_id' => $purchaseData['live_id'],
-        'payment_id' => $purchaseData['payment_id'],
-        'amount' => $purchaseData['total_amount'],
-        'status' => $purchaseData['status'],
+      \Log::info('✅ LIVE PURCHASE INSERTED', [
+        'user_id' => $livePurchaseData['user_id'],
+        'video_id' => $livePurchaseData['video_id'],
+        'payment_id' => $livePurchaseData['payment_id'],
+        'amount' => $livePurchaseData['total_amount'],
+        'status' => $livePurchaseData['status'],
         'inserted_at' => now()
       ]);
-      
-      return $ppvInsertId;
+
+      return true;
     } catch (\Exception $e) {
       \Log::error('❌ LIVE PURCHASE DATABASE INSERT FAILED', [
         'error' => $e->getMessage(),
-        'user_id' => $purchaseData['user_id'],
-        'live_id' => $purchaseData['live_id'],
-        'payment_id' => $purchaseData['payment_id'],
+        'user_id' => $livePurchaseData['user_id'],
+        'video_id' => $livePurchaseData['video_id'],
+        'payment_id' => $livePurchaseData['payment_id'],
         'trace' => $e->getTraceAsString()
       ]);
       throw $e;
@@ -12953,28 +12951,30 @@ class ApiAuthController extends Controller
         $from_time = $d->format('Y-m-d H:i:s');
         $to_time = date('Y-m-d H:i:s', strtotime('+' . $ppv_hours . ' hour', strtotime($from_time)));
 
-        // Use updateOrCreate to handle existing records gracefully
-        // This is crucial for webhook processing to find the record later.
-        $purchase = \App\LivePurchase::updateOrCreate(
+        // Insert or update without Eloquent fillable constraints; include from_time to satisfy NOT NULL
+        DB::table('live_purchases')->updateOrInsert(
             [
-                'payment_id' => $data['py_id'], // Razorpay Order ID
+                'payment_id' => $data['py_id'],
                 'user_id' => $data['user_id'],
-                'video_id' => $data['video_id'], // live_purchases uses video_id
+                'video_id' => $data['video_id'],
             ],
             [
+                'from_time' => $from_time,
                 'to_time' => $to_time,
                 'expired_date' => $to_time,
                 'ppv_plan' => $data['ppv_plan'],
                 'total_amount' => $data['amount'],
                 'payment_gateway' => $data['payment_type'],
-                'payment_status' => $data['py_status'], // 'captured' or 'failed'
+                'payment_status' => $data['py_status'],
                 'platform' => $data['platform'],
-                'status' => 1, // live_purchases uses integer status
+                'status' => 1,
                 'amount' => $data['amount'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         );
 
-        Log::info('✅ Live purchase record created/updated successfully.', ['purchase_id' => $purchase->id, 'order_id' => $data['py_id']]);
+        Log::info('✅ Live purchase record created/updated successfully.', ['order_id' => $data['py_id'], 'user_id' => $data['user_id'], 'video_id' => $data['video_id']]);
 
         $response = ['status' => 'true', 'message' => 'Live event purchase recorded successfully.'];
         return response()->json($response, 200);
