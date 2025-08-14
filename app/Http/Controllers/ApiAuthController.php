@@ -5944,6 +5944,49 @@ class ApiAuthController extends Controller
     }
   }
 
+  /**
+   * Return live PPV status for a user and live event.
+   * Input: user_id, video_id (live_event_id)
+   * Output keys align with iOS expectations: pay_now, ppv_video_status
+   */
+  public function live_ppv_status(Request $request)
+  {
+    try {
+      $request->validate([
+        'user_id' => 'required|integer',
+        'video_id' => 'required|integer',
+      ]);
+
+      $userId = (int) $request->user_id;
+      $videoId = (int) $request->video_id;
+
+      $latest = \App\LivePurchase::where('user_id', $userId)
+        ->where('video_id', $videoId)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+      $status = 'pay_now';
+      if ($latest) {
+        // Consider only successful payments for access
+        if (($latest->payment_status === 'captured' || $latest->status == 1) && !empty($latest->to_time)) {
+          $status = (\Carbon\Carbon::parse($latest->to_time)->isFuture()) ? 'can_view' : 'expired';
+        }
+      }
+
+      return response()->json([
+        'status' => 'true',
+        'pay_now' => $status,
+        'ppv_video_status' => $status,
+      ]);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return response()->json(['status' => 'false', 'message' => $e->getMessage()], 422);
+    } catch (\Exception $e) {
+      \Log::error('live_ppv_status error', ['error' => $e->getMessage()]);
+      return response()->json(['status' => 'false', 'message' => 'Server error'], 500);
+    }
+  }
+
   private function processAudioPurchase(array $baseData, array $requestData)
   {
     $purchaseData = array_merge($baseData, [

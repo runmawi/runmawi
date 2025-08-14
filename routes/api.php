@@ -357,6 +357,8 @@ Route::group(
         Route::get('audiocategory', 'ApiAuthController@AudioCategory');
         Route::post('ppv_videocount', 'ApiAuthController@PPVVideocount');
         Route::post('ppv_videorent', 'ApiAuthController@PPVVideorent');
+        // iOS Live PPV status check (reads live_purchases)
+        Route::post('live_ppv_status', 'ApiAuthController@live_ppv_status');
         Route::post('album_audios', 'ApiAuthController@album_audios');
         Route::get('homepage_order', 'ApiAuthController@HomepageOrder');
 
