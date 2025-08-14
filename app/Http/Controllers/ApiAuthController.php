@@ -12951,30 +12951,28 @@ class ApiAuthController extends Controller
         $from_time = $d->format('Y-m-d H:i:s');
         $to_time = date('Y-m-d H:i:s', strtotime('+' . $ppv_hours . ' hour', strtotime($from_time)));
 
-        // Insert or update without Eloquent fillable constraints; include from_time to satisfy NOT NULL
-        DB::table('live_purchases')->updateOrInsert(
+        // Use updateOrCreate to handle existing records gracefully
+        // This is crucial for webhook processing to find the record later.
+        $purchase = \App\LivePurchase::updateOrCreate(
             [
-                'payment_id' => $data['py_id'],
+                'payment_id' => $data['py_id'], // Razorpay Order ID
                 'user_id' => $data['user_id'],
-                'video_id' => $data['video_id'],
+                'video_id' => $data['video_id'], // live_purchases uses video_id
             ],
             [
-                'from_time' => $from_time,
                 'to_time' => $to_time,
                 'expired_date' => $to_time,
                 'ppv_plan' => $data['ppv_plan'],
                 'total_amount' => $data['amount'],
                 'payment_gateway' => $data['payment_type'],
-                'payment_status' => $data['py_status'],
+                'payment_status' => $data['py_status'], // 'captured' or 'failed'
                 'platform' => $data['platform'],
-                'status' => 1,
+                'status' => 1, // live_purchases uses integer status
                 'amount' => $data['amount'],
-                'created_at' => now(),
-                'updated_at' => now(),
             ]
         );
 
-        Log::info('✅ Live purchase record created/updated successfully.', ['order_id' => $data['py_id'], 'user_id' => $data['user_id'], 'video_id' => $data['video_id']]);
+        Log::info('✅ Live purchase record created/updated successfully.', ['purchase_id' => $purchase->id, 'order_id' => $data['py_id']]);
 
         $response = ['status' => 'true', 'message' => 'Live event purchase recorded successfully.'];
         return response()->json($response, 200);
