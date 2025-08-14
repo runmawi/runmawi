@@ -5886,10 +5886,23 @@ class ApiAuthController extends Controller
 
   private function processLivePurchase(array $baseData, array $requestData)
   {
-    // Map request live_id to video_id column used in both live_purchases and ppv_purchases
+    // Normalize Apple payment id for consistency with other gateways
+    $normalizedPaymentId = $baseData['payment_id'] ?? null;
+    if (!empty($normalizedPaymentId) && preg_match('/^\d+$/', $normalizedPaymentId)) {
+      $normalizedPaymentId = 'apple_' . $normalizedPaymentId;
+    }
+
+    // Map request live_id to video_id column and ensure amount/payment_status are populated
     $livePurchaseData = array_merge($baseData, [
-      'video_id' => $requestData['live_id'],
-      'status' => 1 // 1 means active
+      'video_id'        => $requestData['live_id'],
+      // Mirror to legacy amount column as well as total_amount
+      'amount'          => $baseData['total_amount'] ?? ($requestData['amount'] ?? null),
+      // Persist gateway-level payment status (captured/failed/pending)
+      'payment_status'  => $requestData['status'] ?? 'pending',
+      // Keep numeric status column as active (1)
+      'status'          => 1,
+      // Overwrite with normalized id when applicable
+      'payment_id'      => $normalizedPaymentId ?? ($baseData['payment_id'] ?? null),
     ]);
 
     \Log::info('=== ATTEMPTING LIVE PURCHASE DATABASE INSERT ===', [
@@ -5913,6 +5926,7 @@ class ApiAuthController extends Controller
         'video_id' => $livePurchaseData['video_id'],
         'payment_id' => $livePurchaseData['payment_id'],
         'amount' => $livePurchaseData['total_amount'],
+        'payment_status' => $livePurchaseData['payment_status'] ?? null,
         'status' => $livePurchaseData['status'],
         'inserted_at' => now()
       ]);
