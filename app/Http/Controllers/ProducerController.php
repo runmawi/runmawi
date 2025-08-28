@@ -14,6 +14,7 @@ use App\ModeratorsUser;
 use App\SeriesSeason;
 use App\PpvPurchase;
 use App\LiveStream;
+use App\LivePurchase;
 use App\UserAccess;
 use App\Video;
 use App\Series;
@@ -23,6 +24,7 @@ use App\Setting;
 
 class ProducerController extends Controller
 {
+    protected $current_time;
     public function __construct()
     {
         $current_timezone = 'Asia/Kolkata';
@@ -290,12 +292,14 @@ class ProducerController extends Controller
             // Previous Time
             $last_year = $current_time->copy()->subYear()->year;
 
-            $last_month_year    = $current_time->copy()->subMonth(1);
-            $last2nd_month_year =  $current_time->copy()->subMonth(2);
-            $last3nd_month_year =  $current_time->copy()->subMonth(3);
+            $last_month_year    = $current_time->copy()->subMonths(1);
+            $last2nd_month_year =  $current_time->copy()->subMonths(2);
+            $last3nd_month_year =  $current_time->copy()->subMonths(3);
 
+            // PPV metrics (exclude live to avoid double counting with live_purchases)
             $ppv_purchases_today = PpvPurchase::query()
                                                     ->where('moderator_id', $cpp_user_id)
+                                                    ->whereNull('live_id')
                                                     ->where('created_at', '>=', $filter_date) 
                                                     ->whereDate('created_at', $today)
                                                     ->where(function ($query) {
@@ -304,6 +308,7 @@ class ProducerController extends Controller
                                                     ->get();
 
             $ppv_purchases_current_month = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                     ->whereNull('live_id')
                                                      ->where('created_at', '>=', $filter_date) 
                                                     ->whereYear('created_at', $current_year)
                                                     ->whereMonth('created_at', $current_month)
@@ -313,6 +318,7 @@ class ProducerController extends Controller
                                                     ->get();
 
             $ppv_purchases_last_month = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                ->whereNull('live_id')
                                                 ->where('created_at', '>=', $filter_date) 
                                                 ->whereYear('created_at', $last_month_year->year)
                                                 ->whereMonth('created_at', $last_month_year->month)
@@ -323,6 +329,7 @@ class ProducerController extends Controller
 
                                                 
             $ppv_purchases_last2ndmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                ->whereNull('live_id')
                                                 ->where('created_at', '>=', $filter_date) 
                                                 ->whereYear('created_at', $last2nd_month_year->year)
                                                 ->whereMonth('created_at', $last2nd_month_year->month)
@@ -333,6 +340,7 @@ class ProducerController extends Controller
 
                                                 
             $ppv_purchases_last3rdmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                ->whereNull('live_id')
                                                 ->where('created_at', '>=', $filter_date) 
                                                 ->whereYear('created_at', $last3nd_month_year->year)
                                                 ->whereMonth('created_at', $last3nd_month_year->month)
@@ -342,6 +350,7 @@ class ProducerController extends Controller
                                                 ->get();
 
             $ppv_purchases_current_year = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                    ->whereNull('live_id')
                                                     ->where('created_at', '>=', $filter_date) 
                                                     ->whereYear('created_at', $current_year)
                                                     ->where(function ($query) {
@@ -350,6 +359,7 @@ class ProducerController extends Controller
                                                     ->get();
 
             $ppv_purchases_last_year = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                ->whereNull('live_id')
                                                 ->where('created_at', '>=', $filter_date) 
                                                 ->whereYear('created_at', $last_year)
                                                 ->where(function ($query) {
@@ -358,20 +368,47 @@ class ProducerController extends Controller
                                                 ->get();
 
             $ppv_purchases_total = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                ->whereNull('live_id')
                                                 ->where('created_at', '>=', $filter_date) 
                                                 ->where(function ($query) {
                                                     $query->where('status', 'captured')->orWhere('status', '1');
                                                 })
                                                 ->get();
 
+            // Live purchases metrics from live_purchases joined to producer-owned streams
+            $live_base = LivePurchase::query()
+                ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
+                ->where('live_streams.user_id', $cpp_user_id)
+                ->where(function ($q) {
+                    $q->where('live_purchases.status', 1)
+                      ->orWhereIn('live_purchases.payment_status', ['captured', 'completed']);
+                })
+                ->where('live_purchases.created_at', '>=', $filter_date)
+                ->select('live_purchases.*');
+
+            $live_today = (clone $live_base)->whereDate('live_purchases.created_at', $today)->get();
+            $live_current_month = (clone $live_base)->whereYear('live_purchases.created_at', $current_year)
+                                                    ->whereMonth('live_purchases.created_at', $current_month)->get();
+            $live_last_month = (clone $live_base)->whereYear('live_purchases.created_at', $last_month_year->year)
+                                                 ->whereMonth('live_purchases.created_at', $last_month_year->month)->get();
+            $live_last2ndmonth = (clone $live_base)->whereYear('live_purchases.created_at', $last2nd_month_year->year)
+                                                   ->whereMonth('live_purchases.created_at', $last2nd_month_year->month)->get();
+            $live_last3rdmonth = (clone $live_base)->whereYear('live_purchases.created_at', $last3nd_month_year->year)
+                                                   ->whereMonth('live_purchases.created_at', $last3nd_month_year->month)->get();
+            $live_current_year = (clone $live_base)->whereYear('live_purchases.created_at', $current_year)->get();
+            $live_last_year = (clone $live_base)->whereYear('live_purchases.created_at', $last_year)->get();
+            $live_total = (clone $live_base)->get();
+
+            // Sales summary from PPV (excluding live) and LIVE
             $Sales_Summary = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                            ->whereNull('live_id')
                                             ->where('created_at', '>=', $filter_date) 
                                             ->where(function ($query) {
                                                 $query->where('status', 'captured')->orWhere('status', '1');
                                             })
                                             ->select([
                                                 'video_id', 
-                                                'live_id', 
+                                                DB::raw('NULL as live_id'), 
                                                 'audio_id', 
                                                 'series_id', 
                                                 'season_id',
@@ -384,7 +421,6 @@ class ProducerController extends Controller
                                                 DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18))) / ( SUM(total_amount) - SUM(total_amount * 0.18))) * 100 as moderator_commission_percentage'),  // Admin commission percentage
                                                 // DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion) * 0.18)) / SUM(total_amount * 0.18)) * 100 as moderator_commission_percentage'),  // Moderator commission percentage
                                                 DB::raw('CASE 
-                                                            WHEN live_id IS NOT NULL THEN live_id
                                                             WHEN video_id IS NOT NULL THEN video_id
                                                             WHEN audio_id IS NOT NULL THEN audio_id
                                                             WHEN series_id IS NOT NULL THEN series_id
@@ -392,7 +428,6 @@ class ProducerController extends Controller
                                                             ELSE NULL
                                                         END as source_id'),
                                                 DB::raw('CASE 
-                                                            WHEN live_id IS NOT NULL THEN "LiveStream"
                                                             WHEN video_id IS NOT NULL THEN "Video"
                                                             WHEN audio_id IS NOT NULL THEN "Audio"
                                                             WHEN series_id IS NOT NULL THEN "Series"
@@ -400,15 +435,11 @@ class ProducerController extends Controller
                                                             ELSE NULL
                                                         END as source')  
                                             ])
-                                            ->groupBy('video_id', 'live_id', 'audio_id', 'series_id', 'season_id')
+                                            ->groupBy('video_id', 'audio_id', 'series_id', 'season_id')
 
                                             ->get()->map(function($item) {
 
                                                 switch ($item->source) {
-
-                                                    case 'LiveStream':
-                                                        $item['source_name'] = LiveStream::where('uploaded_by','CPP')->where('id',$item->source_id)->pluck('title')->first();
-                                                    break;
 
                                                     case 'Video':
                                                         $item['source_name'] = Video::where('uploaded_by','CPP')->where('id',$item->source_id)->pluck('title')->first();
@@ -433,15 +464,45 @@ class ProducerController extends Controller
                                                 return $item;
                                             });
 
+            // Live part of Sales Summary from live_purchases
+            $Sales_Summary_Live = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
+                                            ->where('live_streams.user_id', $cpp_user_id)
+                                            ->where('live_purchases.created_at', '>=', $filter_date)
+                                            ->where(function ($q) {
+                                                $q->where('live_purchases.status', 1)
+                                                  ->orWhereIn('live_purchases.payment_status', ['captured','completed']);
+                                            })
+                                            ->select([
+                                                DB::raw('live_purchases.video_id as source_id'),
+                                                DB::raw('"LiveStream" as source'),
+                                                DB::raw('SUM(COALESCE(live_purchases.total_amount, live_purchases.amount)) as total_amount_without_gst'),
+                                                DB::raw('SUM(COALESCE(live_purchases.total_amount, live_purchases.amount) * 0.18) as total_amount_with_gst'),
+                                                DB::raw('SUM(COALESCE(live_purchases.total_amount, live_purchases.amount)) - SUM(COALESCE(live_purchases.total_amount, live_purchases.amount) * 0.18) as gst_value'),
+                                                DB::raw('0 as admin_commission_sum'),
+                                                DB::raw('0 as moderator_commission_sum'),
+                                                DB::raw('0 as admin_commission_percentage'),
+                                                DB::raw('0 as moderator_commission_percentage')
+                                            ])
+                                            ->groupBy('live_purchases.video_id')
+                                            ->get()
+                                            ->map(function($item){
+                                                $item['source_name'] = LiveStream::where('id',$item->source_id)->pluck('title')->first();
+                                                return $item;
+                                            });
+
+            $Sales_Summary = $Sales_Summary->merge($Sales_Summary_Live);
+
                                             
+            // Monthly summary combining PPV(non-live) and LIVE
             $monthly_Summary  = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                ->whereNull('live_id')
                                                 ->where('created_at', '>=', $filter_date) 
                                                 ->where(function ($query) {
                                                     $query->where('status', 'captured')->orWhere('status', '1');
                                                 })
                                                 ->select([
                                                 'video_id', 
-                                                'live_id', 
+                                                DB::raw('NULL as live_id'), 
                                                 'audio_id', 
                                                 'series_id', 
                                                 'season_id',
@@ -453,7 +514,6 @@ class ProducerController extends Controller
                                                 DB::raw('((SUM(admin_commssion) - (SUM(admin_commssion * 0.18))) / ( SUM(total_amount) - SUM(total_amount * 0.18))) * 100 as admin_commission_percentage'),  // Admin commission percentage
                                                 DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18))) / ( SUM(total_amount) - SUM(total_amount * 0.18))) * 100 as moderator_commission_percentage'),  // Moderator commission percentage
                                                 DB::raw('CASE 
-                                                            WHEN live_id IS NOT NULL THEN live_id
                                                             WHEN video_id IS NOT NULL THEN video_id
                                                             WHEN audio_id IS NOT NULL THEN audio_id
                                                             WHEN series_id IS NOT NULL THEN series_id
@@ -461,7 +521,6 @@ class ProducerController extends Controller
                                                             ELSE NULL
                                                         END as source_id'),
                                                 DB::raw('CASE 
-                                                            WHEN live_id IS NOT NULL THEN "LiveStream"
                                                             WHEN video_id IS NOT NULL THEN "Video"
                                                             WHEN audio_id IS NOT NULL THEN "Audio"
                                                             WHEN series_id IS NOT NULL THEN "Series"
@@ -469,7 +528,7 @@ class ProducerController extends Controller
                                                             ELSE NULL
                                                         END as source')  
                                             ])
-                                            ->groupBy('video_id', 'live_id', 'audio_id', 'series_id', 'season_id')
+                                            ->groupBy('video_id', 'audio_id', 'series_id', 'season_id')
 
                                             ->get()->map(function($item) use ( $cpp_user_id,$filter_date)  {
 
@@ -490,9 +549,6 @@ class ProducerController extends Controller
                                                             ->groupBy(DB::raw('DATE_FORMAT(created_at, "%M, %Y")'))  
                                                             ->orderBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'), 'desc')  
                                             
-                                                                ->when($item->source == 'LiveStream', function ($query) use ($item) {
-                                                                    return $query->where('live_id',$item->source_id);
-                                                                })
                                                                 ->when($item->source == 'Video', function ($query)  use ($item){
                                                                     return $query->where('video_id',$item->source_id);
                                                                 })
@@ -510,7 +566,7 @@ class ProducerController extends Controller
                                                 switch ($item->source) {
 
                                                     case 'LiveStream':
-                                                        $item['source_name'] = LiveStream::where('uploaded_by','CPP')->where('id',$item->source_id)->pluck('title')->first();
+                                                        $item['source_name'] = LiveStream::where('id',$item->source_id)->pluck('title')->first();
                                                     break;
 
                                                     case 'Video':
@@ -537,41 +593,42 @@ class ProducerController extends Controller
                                             });
 
             $ppv_purchases_count = [
-                'ppv_purchases_today_count'         => $ppv_purchases_today->count(),
-                'ppv_purchases_current_month_count' => $ppv_purchases_current_month->count(),
-                'ppv_purchases_current_year_count'  => $ppv_purchases_current_year->count(),
+                'ppv_purchases_today_count'         => $ppv_purchases_today->count() + $live_today->count(),
+                'ppv_purchases_current_month_count' => $ppv_purchases_current_month->count() + $live_current_month->count(),
+                'ppv_purchases_current_year_count'  => $ppv_purchases_current_year->count() + $live_current_year->count(),
 
-                'ppv_purchases_last_month_count'    => $ppv_purchases_last_month->count(),
-                'ppv_purchases_last2ndmonth_count'  => $ppv_purchases_last2ndmonth->count(),
-                'ppv_purchases_last3rdmonth_count'  => $ppv_purchases_last3rdmonth->count(),
+                'ppv_purchases_last_month_count'    => $ppv_purchases_last_month->count() + $live_last_month->count(),
+                'ppv_purchases_last2ndmonth_count'  => $ppv_purchases_last2ndmonth->count() + $live_last2ndmonth->count(),
+                'ppv_purchases_last3rdmonth_count'  => $ppv_purchases_last3rdmonth->count() + $live_last3rdmonth->count(),
 
-                'ppv_purchases_last_year_count'     => $ppv_purchases_last_year->count(),
+                'ppv_purchases_last_year_count'     => $ppv_purchases_last_year->count() + $live_last_year->count(),
 
-                'ppv_purchases_total_count'     => $ppv_purchases_total->count(),
+                'ppv_purchases_total_count'     => $ppv_purchases_total->count() + $live_total->count(),
                 'Free_access_with_promotions'   => 0,
             ];
 
+            $sumLive = function($c) { return $c->sum(function($x){ return $x->total_amount ?? $x->amount ?? 0; }); };
             $ppv_purchases_amount = [
-                'ppv_purchases_today_total_amount'         => $ppv_purchases_today->sum('total_amount'),
-                'ppv_purchases_current_month_total_amount' => $ppv_purchases_current_month->sum('total_amount'),
-                'ppv_purchases_current_year_total_amount' => $ppv_purchases_current_year->sum('total_amount'),
+                'ppv_purchases_today_total_amount'         => $ppv_purchases_today->sum('total_amount') + $sumLive($live_today),
+                'ppv_purchases_current_month_total_amount' => $ppv_purchases_current_month->sum('total_amount') + $sumLive($live_current_month),
+                'ppv_purchases_current_year_total_amount'  => $ppv_purchases_current_year->sum('total_amount') + $sumLive($live_current_year),
 
-                'ppv_purchases_last_month_total_amount'    => $ppv_purchases_last_month->sum('total_amount'),
-                'ppv_purchases_last2ndmonth_total_amount'  => $ppv_purchases_last2ndmonth->count(),
-                'ppv_purchases_last3rdmonth_total_amount'  => $ppv_purchases_last3rdmonth->count(),
+                'ppv_purchases_last_month_total_amount'    => $ppv_purchases_last_month->sum('total_amount') + $sumLive($live_last_month),
+                'ppv_purchases_last2ndmonth_total_amount'  => $ppv_purchases_last2ndmonth->sum('total_amount') + $sumLive($live_last2ndmonth),
+                'ppv_purchases_last3rdmonth_total_amount'  => $ppv_purchases_last3rdmonth->sum('total_amount') + $sumLive($live_last3rdmonth),
 
-                'ppv_purchases_last_year_total_amount'    => $ppv_purchases_last_year->sum('total_amount'),
+                'ppv_purchases_last_year_total_amount'     => $ppv_purchases_last_year->sum('total_amount') + $sumLive($live_last_year),
                 
-                'ppv_purchases_total_amount'  => $ppv_purchases_total->sum('total_amount'),
-                'ppv_purchases_admin_commission_sum' => $ppv_purchases_total->sum('admin_commssion'),
-                'ppv_purchases_cpp_commission_sum'  => $ppv_purchases_total->sum('moderator_commssion'),
+                'ppv_purchases_total_amount'               => $ppv_purchases_total->sum('total_amount') + $sumLive($live_total),
+                'ppv_purchases_admin_commission_sum'       => $ppv_purchases_total->sum('admin_commssion'),
+                'ppv_purchases_cpp_commission_sum'         => $ppv_purchases_total->sum('moderator_commssion'),
 
                 'Free_access_with_promotions' =>  0,
             ];
 
 
             $sources_data = [
-                'livestream' => LiveStream::where('user_id',$cpp_user_id)->where('uploaded_by','CPP')->orderBy('created_at', 'DESC')->get(),
+                'livestream' => LiveStream::where('user_id',$cpp_user_id)->orderBy('created_at', 'DESC')->get(),
                 'video'      => Video::where('user_id',$cpp_user_id)->where('uploaded_by','CPP')->orderBy("created_at", "DESC")->get(),
                 'series'     => Series::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy('created_at', 'DESC')->get(),
                 'series_season' => SeriesSeason::where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
@@ -580,12 +637,27 @@ class ProducerController extends Controller
 
             // Improved Line Chart Data - Single optimized query
             $chart_data = PpvPurchase::where('moderator_id', $cpp_user_id)
+                ->whereNull('live_id')
                 ->where('created_at', '>=', $filter_date)
                 ->where('created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
                 ->where(function ($query) {
                     $query->where('status', 'captured')->orWhere('status', '1');
                 })
                 ->selectRaw('DATE(created_at) as purchase_date, COUNT(*) as daily_count, SUM(total_amount) as daily_amount')
+                ->groupBy('purchase_date')
+                ->orderBy('purchase_date', 'asc')
+                ->get()
+                ->keyBy('purchase_date');
+
+            $chart_data_live = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
+                ->where('live_streams.user_id', $cpp_user_id)
+                ->where('live_purchases.created_at', '>=', $filter_date)
+                ->where('live_purchases.created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
+                ->where(function ($q) {
+                    $q->where('live_purchases.status', 1)
+                      ->orWhereIn('live_purchases.payment_status', ['captured','completed']);
+                })
+                ->selectRaw('DATE(live_purchases.created_at) as purchase_date, COUNT(*) as daily_count, SUM(COALESCE(live_purchases.total_amount, live_purchases.amount)) as daily_amount')
                 ->groupBy('purchase_date')
                 ->orderBy('purchase_date', 'asc')
                 ->get()
@@ -599,11 +671,18 @@ class ProducerController extends Controller
             for ($i = 14; $i >= 0; $i--) {
                 $date = Carbon::now()->subDays($i)->toDateString();
                 $ppv_purchases_count_labels[] = $date;
-                
-                // Use data from optimized query or default to 0
-                $daily_data = $chart_data->get($date);
-                $ppv_purchases_count_data[] = $daily_data ? $daily_data->daily_count : 0;
-                $ppv_purchases_amount_data[] = $daily_data ? $daily_data->daily_amount : 0;
+
+                // Use data from optimized queries or default to 0
+                $daily_data_ppv = $chart_data->get($date);
+                $daily_data_live = $chart_data_live->get($date);
+
+                $count_ppv = $daily_data_ppv->daily_count ?? 0;
+                $count_live = $daily_data_live->daily_count ?? 0;
+                $amount_ppv = $daily_data_ppv->daily_amount ?? 0;
+                $amount_live = $daily_data_live->daily_amount ?? 0;
+
+                $ppv_purchases_count_data[] = $count_ppv + $count_live;
+                $ppv_purchases_amount_data[] = $amount_ppv + $amount_live;
             }
 
             $data = array(
@@ -636,18 +715,107 @@ class ProducerController extends Controller
             $current_time = $this->current_time;
             $cpp_user_id  = session()->get('cpp_user_id');
 
+            // filter date
+            $filter_date = '2024-12-15';
+
             // Current Time
             $today         = $current_time->toDateString();
             $current_month = $current_time->month;
             $current_year  = $current_time->year;
 
             // Previous Time
-            $last_year = $current_time->copy()->subMonth()->year;
             $last_year = $current_time->copy()->subYear()->year;
 
-            $last_month    = $current_time->copy()->subMonth(1);
-            $last2ndmonth =$current_time->copy()->subMonth(2);
-            $last3ndmonth = $current_time->copy()->subMonth(3);
+            $last_month    = $current_time->copy()->subMonths(1);
+            $last2ndmonth  = $current_time->copy()->subMonths(2);
+            $last3ndmonth  = $current_time->copy()->subMonths(3);
+
+            // If source is livestream, use live_purchases directly and return early
+            if ($source === 'livestream') {
+                $live_base = LivePurchase::query()
+                    ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
+                    ->where('live_streams.user_id', $cpp_user_id)
+                    ->where('live_purchases.video_id', $source_id)
+                    ->where('live_purchases.created_at', '>=', $filter_date)
+                    ->where(function ($q) {
+                        $q->where('live_purchases.status', 1)
+                          ->orWhereIn('live_purchases.payment_status', ['captured','completed']);
+                    })
+                    ->select('live_purchases.*');
+
+                $lp_today = (clone $live_base)->whereDate('live_purchases.created_at', $today)->get();
+                $lp_current_month = (clone $live_base)->whereYear('live_purchases.created_at', $current_year)
+                                                     ->whereMonth('live_purchases.created_at', $current_month)->get();
+                $lp_last_month = (clone $live_base)->whereYear('live_purchases.created_at', $current_year)
+                                                   ->whereMonth('live_purchases.created_at', $last_month->month)->get();
+                $lp_last2ndmonth = (clone $live_base)->whereYear('live_purchases.created_at', $current_year)
+                                                     ->whereMonth('live_purchases.created_at', $last2ndmonth->month)->get();
+                $lp_last3rdmonth = (clone $live_base)->whereYear('live_purchases.created_at', $current_year)
+                                                     ->whereMonth('live_purchases.created_at', $last3ndmonth->month)->get();
+                $lp_current_year = (clone $live_base)->whereYear('live_purchases.created_at', $current_year)->get();
+                $lp_last_year = (clone $live_base)->whereYear('live_purchases.created_at', $last_year)->get();
+                $lp_total = (clone $live_base)->get();
+
+                $sumLive = function($c) { return $c->sum(function($x){ return $x->total_amount ?? $x->amount ?? 0; }); };
+
+                $ppv_purchases_count = [
+                    'ppv_purchases_today_count'         => $lp_today->count(),
+                    'ppv_purchases_current_month_count' => $lp_current_month->count(),
+                    'ppv_purchases_current_year_count'  => $lp_current_year->count(),
+                    'ppv_purchases_last_month_count'    => $lp_last_month->count(),
+                    'ppv_purchases_last2ndmonth_count'  => $lp_last2ndmonth->count(),
+                    'ppv_purchases_last3rdmonth_count'  => $lp_last3rdmonth->count(),
+                    'ppv_purchases_last_year_count'     => $lp_last_year->count(),
+                    'ppv_purchases_total_count'         => $lp_total->count(),
+                    'Free_access_with_promotions'       => 0,
+                ];
+
+                // Compute producer share for LIVE using CPP_commission_percentage from the stream
+                $stream_for_pct = LiveStream::where('user_id', $cpp_user_id)->where('id', $source_id)->first();
+                $producer_pct = $stream_for_pct && isset($stream_for_pct->CPP_commission_percentage)
+                    ? ((float) $stream_for_pct->CPP_commission_percentage) / 100
+                    : 0.0;
+
+                $ppv_purchases_cpp_commission_sum = $sumLive($lp_total) * $producer_pct;
+
+                $ppv_purchases_amount = [
+                    'ppv_purchases_today_total_amount'         => $sumLive($lp_today),
+                    'ppv_purchases_current_month_total_amount' => $sumLive($lp_current_month),
+                    'ppv_purchases_current_year_total_amount'  => $sumLive($lp_current_year),
+                    'ppv_purchases_last_month_total_amount'    => $sumLive($lp_last_month),
+                    'ppv_purchases_last2ndmonth_total_amount'  => $sumLive($lp_last2ndmonth),
+                    'ppv_purchases_last3rdmonth_total_amount'  => $sumLive($lp_last3rdmonth),
+                    'ppv_purchases_last_year_total_amount'     => $sumLive($lp_last_year),
+                    'ppv_purchases_total_amount'               => $sumLive($lp_total),
+                    'ppv_purchases_admin_commission_sum'       => max($sumLive($lp_total) - $ppv_purchases_cpp_commission_sum, 0),
+                    'ppv_purchases_cpp_commission_sum'         => $ppv_purchases_cpp_commission_sum,
+                    'Free_access_with_promotions'              => 0,
+                ];
+
+                $stats_sources = LiveStream::where('user_id', $cpp_user_id)
+                                    ->where('id', $source_id)
+                                    ->orderBy('created_at', 'DESC')->first();
+
+                $sources_data = [
+                    'livestream' => LiveStream::where('user_id',$cpp_user_id)->orderBy('created_at', 'DESC')->get(),
+                    'video'      => Video::where('user_id',$cpp_user_id)->where('uploaded_by','CPP')->orderBy("created_at", "DESC")->get(),
+                    'series'     => Series::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy('created_at', 'DESC')->get(),
+                    'series_season' => SeriesSeason::where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
+                    'audios' => Audio::where('user_id', $cpp_user_id)->where('uploaded_by','CPP')->get(),
+                ];
+
+                $data = array(
+                    'ppv_purchases_count' => $ppv_purchases_count ,
+                    'ppv_purchases_amount' => $ppv_purchases_amount ,
+                    'sources_data'     => $sources_data,
+                    'stats_sources'    => $stats_sources,
+                    'cpp_user_id'      => $cpp_user_id,
+                    'source'           => $source,
+                    'producer_share_percentage' => $stream_for_pct ? (float) $stream_for_pct->CPP_commission_percentage : 0.0,
+                );
+
+                return view('producer.stats', $data);
+            }
 
             $ppv_purchases_today = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->where('created_at', '>=', $filter_date) 
@@ -883,7 +1051,7 @@ class ProducerController extends Controller
             
                 case 'livestream': 
                     $stats_sources = LiveStream::where('user_id', $cpp_user_id)
-                                        ->where('uploaded_by', 'CPP')->where('id', $source_id)
+                                        ->where('id', $source_id)
                                         ->orderBy('created_at', 'DESC')->first();
                     break;
 
