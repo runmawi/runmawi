@@ -1158,7 +1158,7 @@ class ProducerController extends Controller
             }
 
             $sources_data = [
-                'livestream' => LiveStream::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy('created_at', 'DESC')->get(),
+                'livestream' => LiveStream::where('user_id', $cpp_user_id)->orderBy('created_at', 'DESC')->get(),
                 'video' => Video::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy("created_at", "DESC")->get(),
                 'series' => Series::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy('created_at', 'DESC')->get(),
                 'series_season' => SeriesSeason::where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
