@@ -614,7 +614,15 @@ class ProducerController extends Controller
                 'Free_access_with_promotions'   => 0,
             ];
 
-            $sumLive = function($c) { return $c->sum(function($x){ return $x->total_amount ?? $x->amount ?? 0; }); };
+            $sumLive = function($c) {
+                return $c->sum(function($x){
+                    $val = $x->total_amount ?? $x->amount ?? 0;
+                    if (is_string($val)) {
+                        $val = preg_replace('/[^\d.\-]/', '', $val);
+                    }
+                    return (float) $val;
+                });
+            };
             $ppv_purchases_amount = [
                 'ppv_purchases_today_total_amount'         => $ppv_purchases_today->sum('total_amount') + $sumLive($live_today),
                 'ppv_purchases_current_month_total_amount' => $ppv_purchases_current_month->sum('total_amount') + $sumLive($live_current_month),
