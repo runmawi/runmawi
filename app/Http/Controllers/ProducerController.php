@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\AdminOTPCredentials;
 use App\VideoCommission;
@@ -53,6 +54,14 @@ class ProducerController extends Controller
             return view('producer.login',$data);
 
         } catch (\Throwable $th) {
+            Log::error('ProducerController.stats exception', [
+                'error' => $th->getMessage(),
+                'trace' => $th->getTraceAsString(),
+                'cpp_user_id' => session()->get('cpp_user_id'),
+                'source' => isset($source) ? $source : null,
+                'source_id' => isset($source_id) ? $source_id : null,
+                'route' => 'producer.stats',
+            ]);
             return abort(404);
         }
     }
@@ -380,8 +389,7 @@ class ProducerController extends Controller
                 ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
                 ->where('live_streams.user_id', $cpp_user_id)
                 ->where(function ($q) {
-                    $q->where('live_purchases.status', 1)
-                      ->orWhereIn('live_purchases.payment_status', ['captured', 'completed']);
+                    $q->where('live_purchases.status', 1);
                 })
                 ->where('live_purchases.created_at', '>=', $filter_date)
                 ->select('live_purchases.*');
@@ -417,8 +425,8 @@ class ProducerController extends Controller
                                                 DB::raw('SUM(total_amount) - SUM(total_amount * 0.18) as gst_value'),  // Exact GST value (18%)
                                                 DB::raw('SUM(admin_commssion) - (SUM(admin_commssion * 0.18)) as admin_commission_sum'),
                                                 DB::raw('SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18)) as moderator_commission_sum'),
-                                                DB::raw('((SUM(admin_commssion) - (SUM(admin_commssion * 0.18))) / ( SUM(total_amount) - SUM(total_amount * 0.18))) * 100 as admin_commission_percentage'),  // Admin commission percentage
-                                                DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18))) / ( SUM(total_amount) - SUM(total_amount * 0.18))) * 100 as moderator_commission_percentage'),  // Admin commission percentage
+                                                DB::raw('((SUM(admin_commssion) - (SUM(admin_commssion * 0.18))) / NULLIF(( SUM(total_amount) - SUM(total_amount * 0.18)), 0)) * 100 as admin_commission_percentage'),  // Admin commission percentage
+                                                DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18))) / NULLIF(( SUM(total_amount) - SUM(total_amount * 0.18)), 0)) * 100 as moderator_commission_percentage'),  // Moderator commission percentage
                                                 // DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion) * 0.18)) / SUM(total_amount * 0.18)) * 100 as moderator_commission_percentage'),  // Moderator commission percentage
                                                 DB::raw('CASE 
                                                             WHEN video_id IS NOT NULL THEN video_id
@@ -469,15 +477,14 @@ class ProducerController extends Controller
                                             ->where('live_streams.user_id', $cpp_user_id)
                                             ->where('live_purchases.created_at', '>=', $filter_date)
                                             ->where(function ($q) {
-                                                $q->where('live_purchases.status', 1)
-                                                  ->orWhereIn('live_purchases.payment_status', ['captured','completed']);
+                                                $q->where('live_purchases.status', 1);
                                             })
                                             ->select([
                                                 DB::raw('live_purchases.video_id as source_id'),
                                                 DB::raw('"LiveStream" as source'),
-                                                DB::raw('SUM(COALESCE(live_purchases.total_amount, live_purchases.amount)) as total_amount_without_gst'),
-                                                DB::raw('SUM(COALESCE(live_purchases.total_amount, live_purchases.amount) * 0.18) as total_amount_with_gst'),
-                                                DB::raw('SUM(COALESCE(live_purchases.total_amount, live_purchases.amount)) - SUM(COALESCE(live_purchases.total_amount, live_purchases.amount) * 0.18) as gst_value'),
+                                                DB::raw('SUM(live_purchases.amount) as total_amount_without_gst'),
+                                                DB::raw('SUM(live_purchases.amount * 0.18) as total_amount_with_gst'),
+                                                DB::raw('SUM(live_purchases.amount) - SUM(live_purchases.amount * 0.18) as gst_value'),
                                                 DB::raw('0 as admin_commission_sum'),
                                                 DB::raw('0 as moderator_commission_sum'),
                                                 DB::raw('0 as admin_commission_percentage'),
@@ -511,8 +518,8 @@ class ProducerController extends Controller
                                                 DB::raw('SUM(total_amount) - SUM(total_amount * 0.18) as gst_value'),  // Exact GST value (18%)
                                                 DB::raw('SUM(admin_commssion) as admin_commission_sum'), 
                                                 DB::raw('SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18)) as moderator_commission_sum'),
-                                                DB::raw('((SUM(admin_commssion) - (SUM(admin_commssion * 0.18))) / ( SUM(total_amount) - SUM(total_amount * 0.18))) * 100 as admin_commission_percentage'),  // Admin commission percentage
-                                                DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18))) / ( SUM(total_amount) - SUM(total_amount * 0.18))) * 100 as moderator_commission_percentage'),  // Moderator commission percentage
+                                                DB::raw('((SUM(admin_commssion) - (SUM(admin_commssion * 0.18))) / NULLIF(( SUM(total_amount) - SUM(total_amount * 0.18)), 0)) * 100 as admin_commission_percentage'),  // Admin commission percentage
+                                                DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18))) / NULLIF(( SUM(total_amount) - SUM(total_amount * 0.18)), 0)) * 100 as moderator_commission_percentage'),  // Moderator commission percentage
                                                 DB::raw('CASE 
                                                             WHEN video_id IS NOT NULL THEN video_id
                                                             WHEN audio_id IS NOT NULL THEN audio_id
@@ -543,7 +550,7 @@ class ProducerController extends Controller
                                                                 DB::raw('COUNT(*) as units_sold'), 
                                                                 DB::raw('SUM(total_amount) - SUM(total_amount * 0.18) as total_amount'),  
                                                                 DB::raw('SUM(admin_commssion) as admin_commission_sum'), 
-                                                                DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion) * 0.18)) / SUM(total_amount)) * 100 as moderator_commission_percentage'),
+                                                                DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion) * 0.18)) / NULLIF(SUM(total_amount), 0)) * 100 as moderator_commission_percentage'),
                                                                 DB::raw('SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18)) as moderator_commission_sum'),
                                                             ])
                                                             ->groupBy(DB::raw('DATE_FORMAT(created_at, "%M, %Y")'))  
@@ -654,10 +661,9 @@ class ProducerController extends Controller
                 ->where('live_purchases.created_at', '>=', $filter_date)
                 ->where('live_purchases.created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
                 ->where(function ($q) {
-                    $q->where('live_purchases.status', 1)
-                      ->orWhereIn('live_purchases.payment_status', ['captured','completed']);
+                    $q->where('live_purchases.status', 1);
                 })
-                ->selectRaw('DATE(live_purchases.created_at) as purchase_date, COUNT(*) as daily_count, SUM(COALESCE(live_purchases.total_amount, live_purchases.amount)) as daily_amount')
+                ->selectRaw('DATE(live_purchases.created_at) as purchase_date, COUNT(*) as daily_count, SUM(live_purchases.amount) as daily_amount')
                 ->groupBy('purchase_date')
                 ->orderBy('purchase_date', 'asc')
                 ->get()
@@ -703,7 +709,12 @@ class ProducerController extends Controller
             return view('producer.home', $data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            Log::error('ProducerController.home exception', [
+                'error' => $th->getMessage(),
+                'trace' => $th->getTraceAsString(),
+                'cpp_user_id' => session()->get('cpp_user_id'),
+                'route' => 'producer.home',
+            ]);
             return abort(404);
         }
     }

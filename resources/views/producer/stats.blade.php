@@ -3,23 +3,19 @@
 @section('producer.section')
 
     <div class="row center">
-        <h4>{{ $stats_sources->title }} <br> 
+        <h4>{{ optional($stats_sources)->title ?? 'Livestream' }} <br> 
             @if ($source === 'livestream')
                 <small>
-                    ( Producer's share: {{ isset($producer_share_percentage) ? number_format($producer_share_percentage, 2) . '%' : (isset($stats_sources->CPP_commission_percentage) ? number_format($stats_sources->CPP_commission_percentage, 2) . '%' : 'N/A') }} )
+                    ( Producer's share: {{ isset($producer_share_percentage) ? number_format($producer_share_percentage, 2) . '%' : (optional($stats_sources)->CPP_commission_percentage !== null ? number_format(optional($stats_sources)->CPP_commission_percentage, 2) . '%' : 'N/A') }} )
                 </small>
-            @elseif ( $stats_sources->access == "ppv" )
+            @elseif ( optional($stats_sources)->access == "ppv" )
                 <small> 
                     ( Producer's share:  {{  $ppv_purchases_amount['ppv_purchases_total_amount']  > 0 ? number_format(( $ppv_purchases_amount['ppv_purchases_cpp_commission_sum']  / $ppv_purchases_amount['ppv_purchases_total_amount']  ) * 100, 2) . '%' : 'N/A' }} )
                 </small>
             @endif
     </div>
 
-    @if ( $stats_sources->access != "ppv" )
-
-        <p class='center'>No data. This item is Not PPV </p>
-
-    @else
+    @if ($source === 'livestream' || optional($stats_sources)->access === 'ppv')
         <div class="row">
             <div class="col s12 m6">
                 <div class="icon-block">
@@ -127,6 +123,8 @@
                 </tbody>
             </table>
         </div>
+    @else
+        <p class='center'>No data. This item is Not PPV </p>
     @endif
 
     <?php
