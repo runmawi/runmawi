@@ -772,6 +772,10 @@ class ProducerController extends Controller
                     ->where('live_purchases.video_id', $source_id)
                     ->where('live_purchases.created_at', '>=', $filter_date)
                     ->whereIn('live_purchases.payment_status', ['captured','completed'])
+                    ->where(function ($q) {
+                        $q->where('live_purchases.total_amount', '>', 0)
+                          ->orWhere('live_purchases.amount', '>', 0);
+                    })
                     ->select('live_purchases.*');
 
                 $lp_today = (clone $live_base)->whereDate('live_purchases.created_at', $today)->get();
