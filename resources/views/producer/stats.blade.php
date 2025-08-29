@@ -10,7 +10,11 @@
                 </small>
             @elseif ( optional($stats_sources)->access == "ppv" )
                 <small> 
-                    ( Producer's share:  {{  $ppv_purchases_amount['ppv_purchases_total_amount']  > 0 ? number_format(( $ppv_purchases_amount['ppv_purchases_cpp_commission_sum']  / $ppv_purchases_amount['ppv_purchases_total_amount']  ) * 100, 2) . '%' : 'N/A' }} )
+                    ( Producer's share:  {{ isset($producer_share_percentage)
+                        ? number_format($producer_share_percentage, 2) . '%'
+                        : ($ppv_purchases_amount['ppv_purchases_total_amount']  > 0
+                            ? number_format(( $ppv_purchases_amount['ppv_purchases_cpp_commission_sum']  / $ppv_purchases_amount['ppv_purchases_total_amount']  ) * 100, 2) . '%'
+                            : 'N/A') }} )
                 </small>
             @endif
     </div>
@@ -94,7 +98,11 @@
                                         @if ($source === 'livestream')
                                             Producer's share ( {{ isset($producer_share_percentage) ? number_format($producer_share_percentage, 2) . '%' : (isset($stats_sources->CPP_commission_percentage) ? number_format($stats_sources->CPP_commission_percentage, 2) . '%' : 'N/A') }} ) :
                                         @else
-                                            Producer's share ( {{  $ppv_purchases_amount['ppv_purchases_total_amount']  > 0 ? number_format(( $ppv_purchases_amount['ppv_purchases_cpp_commission_sum']  / $ppv_purchases_amount['ppv_purchases_total_amount']  ) * 100, 2) . '%' : 'N/A' }} ) :
+                                            Producer's share ( {{ isset($producer_share_percentage)
+                                                ? number_format($producer_share_percentage, 2) . '%'
+                                                : ($ppv_purchases_amount['ppv_purchases_total_amount']  > 0
+                                                    ? number_format(( $ppv_purchases_amount['ppv_purchases_cpp_commission_sum']  / $ppv_purchases_amount['ppv_purchases_total_amount']  ) * 100, 2) . '%'
+                                                    : 'N/A') }} ) :
                                         @endif
                                      </td>
                                     <td class="right"><b> {{ currency_symbol() ." ". number_format( $ppv_purchases_amount['ppv_purchases_cpp_commission_sum'], 2) }} </b></td>

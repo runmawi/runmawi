@@ -1097,6 +1097,12 @@ class ProducerController extends Controller
             ];
 
             $ppv_purchases_cpp_commission_sum = $ppv_purchases_total->sum('moderator_commssion') - ($ppv_purchases_total->sum('moderator_commssion') * 0.18);
+            $producer_share_percentage_gross = null;
+            $total_amount_sum = (float) $ppv_purchases_total->sum('total_amount');
+            $moderator_comm_sum = (float) $ppv_purchases_total->sum('moderator_commssion');
+            if ($total_amount_sum > 0) {
+                $producer_share_percentage_gross = ($moderator_comm_sum / $total_amount_sum) * 100.0;
+            }
             $ppv_purchases_amount = [
                 'ppv_purchases_today_total_amount' => $ppv_purchases_today->sum('total_amount'),
                 'ppv_purchases_current_month_total_amount' => $ppv_purchases_current_month->sum('total_amount'),
@@ -1212,6 +1218,7 @@ class ProducerController extends Controller
                 'chart_labels' => json_encode($chart_labels),
                 'chart_count_data' => json_encode($chart_count_data),
                 'chart_amount_data' => json_encode($chart_amount_data),
+                'producer_share_percentage' => $producer_share_percentage_gross,
             );
 
             return view('producer.stats', $data);
