@@ -127,43 +127,25 @@
         <p class='center'>No data. This item is Not PPV </p>
     @endif
 
-    <?php
-
-        $ppv_purchases_count_labels = [];
-        $ppv_purchases_count_data = [];
-
-        $ppv_purchases_amount_data = [];
-
-        for ($i = 14; $i >= 0; $i--) {
-            $date = Carbon\Carbon::now()->subDays($i)->toDateString();
-            
-            $count = App\PpvPurchase::where('moderator_id', $cpp_user_id)->whereDate('created_at', $date)->count();
-
-            $amount = App\PpvPurchase::where('moderator_id', $cpp_user_id)->whereDate('created_at', $date)->sum('total_amount');
-            
-            $ppv_purchases_count_labels[] = $date;
-            $ppv_purchases_count_data[] = $count;
-            $ppv_purchases_amount_data[] = $amount;
-        }
-
-        $ppv_purchases_count_labels = json_encode($ppv_purchases_count_labels);
-        $ppv_purchases_count_data = json_encode($ppv_purchases_count_data);
-        $ppv_purchases_amount_data = json_encode($ppv_purchases_amount_data);
-    ?>
+    <?php /* Chart data now comes from controller: chart_labels, chart_count_data, chart_amount_data */ ?>
 
 <script>
     $(document).ready(function() {
 
         $('.modal').modal();
 
+        const chartLabels = {!! $chart_labels ?? '[]' !!};
+        const chartCount = {!! $chart_count_data ?? '[]' !!};
+        const chartAmount = {!! $chart_amount_data ?? '[]' !!};
+
         var ctx1 = document.getElementById('myppv_purchases_count').getContext('2d');
         var myppv_purchases_count = new Chart(ctx1, {
             type: 'line',
             data: {
-                labels: <?php echo $ppv_purchases_count_labels; ?>, // Labels (dates)
+                labels: chartLabels, // Labels (dates)
                 datasets: [{
                     label: 'No of purchased',
-                    data: <?php echo $ppv_purchases_count_data; ?>, 
+                    data: chartCount, 
 
                     borderColor: 'rgb(54, 162, 235)',
                     backgroundColor: ['rgba(54, 162, 235, 0.5)'],
@@ -185,10 +167,10 @@
         var myChart2 = new Chart(ctx2, {
             type: 'bar',
             data: {
-                labels: <?php echo $ppv_purchases_count_labels; ?>,
+                labels: chartLabels,
                 datasets: [{
                     label: 'Earnings (Rs)',
-                    data: <?php echo $ppv_purchases_amount_data; ?>, // Total purchase amounts
+                    data: chartAmount, // Total purchase amounts
                     
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor:['rgba(255, 99, 132, 0.5)'],

@@ -848,9 +848,57 @@ class ProducerController extends Controller
                     'ppv_purchases_amount' => $ppv_purchases_amount,
                     'sources_data' => $sources_data,
                     'stats_sources' => $stats_sources,
+                    'currency_symbol' => currency_symbol(),
                     'cpp_user_id' => $cpp_user_id,
                     'source' => $source,
                     'producer_share_percentage' => $stream_for_pct ? (float) $stream_for_pct->CPP_commission_percentage : 0.0,
+                    // 15-day chart data for this livestream only
+                    'chart_labels' => json_encode(
+                        (function () {
+                            $labels = [];
+                            for ($i = 14; $i >= 0; $i--) {
+                                $labels[] = Carbon::now()->subDays($i)->toDateString();
+                            }
+                            return $labels;
+                        })()
+                    ),
+                    'chart_count_data' => json_encode(
+                        (function () use ($source_id, $cpp_user_id) {
+                            $map = LivePurchase::query()
+                                ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
+                                ->where('live_streams.user_id', $cpp_user_id)
+                                ->where('live_purchases.video_id', $source_id)
+                                ->where('live_purchases.created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
+                                ->whereIn('live_purchases.payment_status', ['captured','completed'])
+                                ->selectRaw('DATE(live_purchases.created_at) as d, COUNT(*) as c')
+                                ->groupBy('d')->pluck('c', 'd');
+                            $series = [];
+                            for ($i = 14; $i >= 0; $i--) {
+                                $date = Carbon::now()->subDays($i)->toDateString();
+                                $series[] = (int) ($map[$date] ?? 0);
+                            }
+                            return $series;
+                        })()
+                    ),
+                    'chart_amount_data' => json_encode(
+                        (function () use ($source_id, $cpp_user_id) {
+                            $map = LivePurchase::query()
+                                ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
+                                ->where('live_streams.user_id', $cpp_user_id)
+                                ->where('live_purchases.video_id', $source_id)
+                                ->where('live_purchases.created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
+                                ->whereIn('live_purchases.payment_status', ['captured','completed'])
+                                ->selectRaw('DATE(live_purchases.created_at) as d, SUM(live_purchases.amount) as s')
+                                ->groupBy('d')->pluck('s', 'd');
+                            $series = [];
+                            for ($i = 14; $i >= 0; $i--) {
+                                $date = Carbon::now()->subDays($i)->toDateString();
+                                $val = $map[$date] ?? 0;
+                                $series[] = (float) $val;
+                            }
+                            return $series;
+                        })()
+                    ),
                 );
 
                 return view('producer.stats', $data);
@@ -927,7 +975,6 @@ class ProducerController extends Controller
                 })
                 ->get();
 
-
             $ppv_purchases_last2ndmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
                 ->where('created_at', '>=', $filter_date)
                 ->whereYear('created_at', $current_year)
@@ -951,7 +998,6 @@ class ProducerController extends Controller
                     return $query->where('season_id', $source_id);
                 })
                 ->get();
-
 
             $ppv_purchases_last3rdmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
                 ->where('created_at', '>=', $filter_date)
@@ -1000,7 +1046,6 @@ class ProducerController extends Controller
                 })
                 ->get();
 
-
             $ppv_purchases_last_year = PpvPurchase::where('moderator_id', $cpp_user_id)
                 ->where('created_at', '>=', $filter_date)
                 ->whereYear('created_at', $last_year)
@@ -1044,18 +1089,14 @@ class ProducerController extends Controller
                 })
                 ->get();
 
-            // dd($ppv_purchases_total);
             $ppv_purchases_count = [
                 'ppv_purchases_today_count' => $ppv_purchases_today->count(),
                 'ppv_purchases_current_month_count' => $ppv_purchases_current_month->count(),
                 'ppv_purchases_current_year_count' => $ppv_purchases_current_year->count(),
-
                 'ppv_purchases_last_month_count' => $ppv_purchases_last_month->count(),
                 'ppv_purchases_last2ndmonth_count' => $ppv_purchases_last2ndmonth->count(),
                 'ppv_purchases_last3rdmonth_count' => $ppv_purchases_last3rdmonth->count(),
-
                 'ppv_purchases_last_year_count' => $ppv_purchases_last_year->count(),
-
                 'ppv_purchases_total_count' => $ppv_purchases_total->count(),
                 'Free_access_with_promotions' => 0,
             ];
@@ -1065,19 +1106,13 @@ class ProducerController extends Controller
                 'ppv_purchases_today_total_amount' => $ppv_purchases_today->sum('total_amount'),
                 'ppv_purchases_current_month_total_amount' => $ppv_purchases_current_month->sum('total_amount'),
                 'ppv_purchases_current_year_total_amount' => $ppv_purchases_current_year->sum('total_amount'),
-
                 'ppv_purchases_last_month_total_amount' => $ppv_purchases_last_month->sum('total_amount'),
-                'ppv_purchases_last2ndmonth_total_amount' => $ppv_purchases_last2ndmonth->count(),
-                'ppv_purchases_last3rdmonth_total_amount' => $ppv_purchases_last3rdmonth->count(),
-
+                'ppv_purchases_last2ndmonth_total_amount' => $ppv_purchases_last2ndmonth->sum('total_amount'),
+                'ppv_purchases_last3rdmonth_total_amount' => $ppv_purchases_last3rdmonth->sum('total_amount'),
                 'ppv_purchases_last_year_total_amount' => $ppv_purchases_last_year->sum('total_amount'),
-
                 'ppv_purchases_total_amount' => $ppv_purchases_total->sum('total_amount'),
-                'ppv_purchases_admin_commission_sum' => $ppv_purchases_total->sum('admin_commssion'),
                 'ppv_purchases_cpp_commission_sum' => $ppv_purchases_cpp_commission_sum,
                 'ppv_purchases_admin_commission_sum' => $ppv_purchases_total->sum('total_amount') - $ppv_purchases_cpp_commission_sum,
-                // 'ppv_purchases_cpp_commission_sum'  => $ppv_purchases_total->sum('moderator_commssion') -  sum('moderator_commssion') * 0.18,
-
                 'Free_access_with_promotions' => 0,
             ];
 
@@ -1130,6 +1165,47 @@ class ProducerController extends Controller
                 'audios' => Audio::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
             ];
 
+            // Build 15-day chart data for PPV purchases limited to the selected source
+            $ppvChartBase = PpvPurchase::query()
+                ->where('moderator_id', $cpp_user_id)
+                ->where('created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
+                ->where(function ($query) {
+                    $query->where('status', 'captured')->orWhere('status', '1');
+                })
+                ->when($source === 'video', function ($query) use ($source_id) {
+                    return $query->where('video_id', $source_id);
+                })
+                ->when($source === 'livestream', function ($query) use ($source_id) {
+                    return $query->where('live_id', $source_id);
+                })
+                ->when($source === 'audio', function ($query) use ($source_id) {
+                    return $query->where('audio_id', $source_id);
+                })
+                ->when($source === 'series', function ($query) use ($source_id) {
+                    return $query->where('series_id', $source_id);
+                })
+                ->when($source === 'series_season', function ($query) use ($source_id) {
+                    return $query->where('season_id', $source_id);
+                });
+
+            $ppvCountMap = (clone $ppvChartBase)
+                ->selectRaw('DATE(created_at) as d, COUNT(*) as c')
+                ->groupBy('d')->pluck('c', 'd');
+
+            $ppvAmountMap = (clone $ppvChartBase)
+                ->selectRaw('DATE(created_at) as d, SUM(total_amount) as s')
+                ->groupBy('d')->pluck('s', 'd');
+
+            $chart_labels = [];
+            $chart_count_data = [];
+            $chart_amount_data = [];
+            for ($i = 14; $i >= 0; $i--) {
+                $date = Carbon::now()->subDays($i)->toDateString();
+                $chart_labels[] = $date;
+                $chart_count_data[] = (int) ($ppvCountMap[$date] ?? 0);
+                $chart_amount_data[] = (float) ($ppvAmountMap[$date] ?? 0);
+            }
+
             $data = array(
                 'ppv_purchases_count' => $ppv_purchases_count,
                 'ppv_purchases_amount' => $ppv_purchases_amount,
@@ -1137,6 +1213,10 @@ class ProducerController extends Controller
                 'stats_sources' => $stats_sources,
                 'currency_symbol' => currency_symbol(),
                 'cpp_user_id' => $cpp_user_id,
+                'source' => $source,
+                'chart_labels' => json_encode($chart_labels),
+                'chart_count_data' => json_encode($chart_count_data),
+                'chart_amount_data' => json_encode($chart_amount_data),
             );
 
             return view('producer.stats', $data);
