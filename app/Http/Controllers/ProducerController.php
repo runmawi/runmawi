@@ -951,10 +951,9 @@ class ProducerController extends Controller
                 })
                 ->get();
 
+            // Use explicit month ranges for reliability
             $ppv_purchases_last_month = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->where('created_at', '>=', $filter_date)
-                ->whereYear('created_at', $current_year)
-                ->whereMonth('created_at', $last_month->month)
+                ->whereBetween('created_at', [$last_month->copy()->startOfMonth(), $last_month->copy()->endOfMonth()])
                 ->where(function ($query) {
                     $query->where('status', 'captured')->orWhere('status', '1');
                 })
@@ -976,9 +975,7 @@ class ProducerController extends Controller
                 ->get();
 
             $ppv_purchases_last2ndmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->where('created_at', '>=', $filter_date)
-                ->whereYear('created_at', $current_year)
-                ->whereMonth('created_at', $last2ndmonth->month)
+                ->whereBetween('created_at', [$last2ndmonth->copy()->startOfMonth(), $last2ndmonth->copy()->endOfMonth()])
                 ->where(function ($query) {
                     $query->where('status', 'captured')->orWhere('status', '1');
                 })
@@ -1000,9 +997,7 @@ class ProducerController extends Controller
                 ->get();
 
             $ppv_purchases_last3rdmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->where('created_at', '>=', $filter_date)
-                ->whereYear('created_at', $current_year)
-                ->whereMonth('created_at', $last3ndmonth->month)
+                ->whereBetween('created_at', [$last3ndmonth->copy()->startOfMonth(), $last3ndmonth->copy()->endOfMonth()])
                 ->where(function ($query) {
                     $query->where('status', 'captured')->orWhere('status', '1');
                 })
