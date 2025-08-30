@@ -28,9 +28,15 @@ class AuthPageServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Skip heavy boot logic when running in console (e.g., artisan),
+        // to avoid accessing HTTP request/route context during CLI.
+        if (app()->runningInConsole()) {
+            return;
+        }
+
         // Always load settings for all views to ensure $settings is always available
         $this->loadMinimalSettings();
-        
+
         // For non-auth pages, we still want to share the settings
         if (!$this->isAuthPage()) {
             $this->shareSettings();
@@ -84,16 +90,23 @@ class AuthPageServiceProvider extends ServiceProvider
     {
         $path = request()->path();
         $authPaths = [
-            'login', 'register', 'password/reset', 
+            'login', 'register', 'password/reset',
             'password/email', 'password/reset/*', 'email/verify/*', 'logout',
             'admin/login', 'admin/password/reset', 'admin/password/email',
             'admin/verify', 'admin/verify/*', 'admin/logout'
         ];
 
         foreach ($authPaths as $authPath) {
-            if ($path === $authPath || 
-                (str_ends_with($authPath, '/*') && str_starts_with($path, rtrim($authPath, '/*')))) {
+            // Exact match
+            if ($path === $authPath) {
                 return true;
+            }
+            // Prefix match for patterns ending with /* (PHP 7.3 compatible)
+            if (substr($authPath, -2) === '/*') {
+                $prefix = substr($authPath, 0, -2);
+                if (strncmp($path, $prefix, strlen($prefix)) === 0) {
+                    return true;
+                }
             }
         }
 

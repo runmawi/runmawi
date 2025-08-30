@@ -157,7 +157,7 @@ class OTPController extends Controller
 
                 $response = Http::withOptions(['verify' => false, ])->get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
-                if (str_contains($response->body(), 'success')) {
+                if (strpos($response->body(), 'success') !== false) {
 
                     $parts = explode(':', $response->body());
                     $msgId = $parts[1];
