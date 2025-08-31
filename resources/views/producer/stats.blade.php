@@ -94,22 +94,28 @@
                                     <td class="right"> {{ currency_symbol() ." ".number_format($ppv_purchases_amount['ppv_purchases_total_amount'], 2) }} </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        @if ($source === 'livestream')
-                                            Producer's share ( {{ isset($producer_share_percentage) ? number_format($producer_share_percentage, 2) . '%' : (isset($stats_sources->CPP_commission_percentage) ? number_format($stats_sources->CPP_commission_percentage, 2) . '%' : 'N/A') }} ) :
-                                        @else
-                                            Producer's share ( {{ isset($producer_share_percentage)
-                                                ? number_format($producer_share_percentage, 2) . '%'
-                                                : ($ppv_purchases_amount['ppv_purchases_total_amount']  > 0
-                                                    ? number_format(( $ppv_purchases_amount['ppv_purchases_cpp_commission_sum']  / $ppv_purchases_amount['ppv_purchases_total_amount']  ) * 100, 2) . '%'
-                                                    : 'N/A') }} ) :
-                                        @endif
-                                     </td>
-                                    <td class="right"><b> {{ currency_symbol() ." ". number_format( $ppv_purchases_amount['ppv_purchases_cpp_commission_sum'], 2) }} </b></td>
+                                    <td>Amount (Gross) :</td>
+                                    <td class="right">{{ currency_symbol() ." ". number_format($ppv_purchases_amount['gross_total'] ?? 0, 2) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Runmawi's share + transaction fee : </td>
-                                    <td class="right">{{ currency_symbol() ." ". number_format( $ppv_purchases_amount['ppv_purchases_admin_commission_sum'] , 2) }}</td>
+                                    <td>GST (18%) :</td>
+                                    <td class="right">{{ currency_symbol() ." ". number_format($ppv_purchases_amount['gst_total'] ?? 0, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Amount (Net) :</td>
+                                    <td class="right"><b>{{ currency_symbol() ." ". number_format($ppv_purchases_amount['net_total'] ?? 0, 2) }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Producer's share ( {{ number_format($ppv_purchases_amount['effective_producer_pct'] ?? 0, 2) }}% of Net ) :</td>
+                                    <td class="right"><b>{{ currency_symbol() ." ". number_format($ppv_purchases_amount['producer_share_net_total'] ?? 0, 2) }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Runmawi's share ( {{ number_format($ppv_purchases_amount['effective_admin_pct'] ?? 0, 2) }}% of Net ) :</td>
+                                    <td class="right">{{ currency_symbol() ." ". number_format($ppv_purchases_amount['runmawi_share_net_total'] ?? 0, 2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Transaction fees (gateway etc.) :</td>
+                                    <td class="right">{{ currency_symbol() ." ". number_format($ppv_purchases_amount['transaction_fees_total'] ?? 0, 2) }}</td>
                                 </tr>
                             </tbody>
                         </table>

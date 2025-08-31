@@ -658,6 +658,54 @@ class ProducerController extends Controller
                 'Free_access_with_promotions' => 0,
             ];
 
+            // Unified totals for presentation: Gross, GST, Net, and split shares (excluding GST)
+            $gross_ppv = (float) $ppv_purchases_total->sum('total_amount');
+            $gross_live = (float) $sumLive($live_total);
+            $gross_total = $gross_ppv + $gross_live;
+
+            $gst_total = round($gross_total * 0.18, 2);
+            $net_total = max($gross_total - $gst_total, 0);
+
+            // PPV producer share (net of GST) using existing storage convention
+            $ppv_producer_sum_net = 0.0;
+            if ($ppv_purchases_total->count() > 0) {
+                $ppv_comm_sum = (float) $ppv_purchases_total->sum('moderator_commssion');
+                // historic convention in this project subtracts 18% on commission while presenting net
+                $ppv_producer_sum_net = $ppv_comm_sum - ($ppv_comm_sum * 0.18);
+            }
+
+            // LIVE producer share (net of GST) using stream-specific commission percentage
+            $live_producer_sum_net = 0.0;
+            if ($live_total->count() > 0) {
+                $liveStreamPercents = LiveStream::whereIn('id', $live_total->pluck('video_id')->unique())
+                    ->pluck('CPP_commission_percentage', 'id');
+                foreach ($live_total as $row) {
+                    $amt = (float) ($row->amount ?? 0);
+                    $netAmt = $amt - ($amt * 0.18);
+                    $pct = (float) ($liveStreamPercents[$row->video_id] ?? 0);
+                    $live_producer_sum_net += ($netAmt * ($pct / 100.0));
+                }
+            }
+
+            $producer_share_net_total = $ppv_producer_sum_net + $live_producer_sum_net;
+            $runmawi_share_net_total = max($net_total - $producer_share_net_total, 0);
+
+            // If you later add gateway fee tracking, compute and replace this value.
+            $transaction_fees_total = 0.0;
+
+            $effective_producer_pct = $net_total > 0 ? round(($producer_share_net_total / $net_total) * 100, 2) : 0.0;
+            $effective_admin_pct = $net_total > 0 ? round(($runmawi_share_net_total / $net_total) * 100, 2) : 0.0;
+
+            // Expose unified totals to the view while keeping previous keys for backward compatibility
+            $ppv_purchases_amount['gross_total'] = $gross_total;
+            $ppv_purchases_amount['gst_total'] = $gst_total;
+            $ppv_purchases_amount['net_total'] = $net_total;
+            $ppv_purchases_amount['producer_share_net_total'] = $producer_share_net_total;
+            $ppv_purchases_amount['runmawi_share_net_total'] = $runmawi_share_net_total;
+            $ppv_purchases_amount['transaction_fees_total'] = $transaction_fees_total;
+            $ppv_purchases_amount['effective_producer_pct'] = $effective_producer_pct;
+            $ppv_purchases_amount['effective_admin_pct'] = $effective_admin_pct;
+
 
             $sources_data = [
                 'livestream' => LiveStream::where('user_id', $cpp_user_id)->orderBy('created_at', 'DESC')->get(),
