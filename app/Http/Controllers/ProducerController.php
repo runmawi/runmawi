@@ -459,9 +459,11 @@ class ProducerController extends Controller
 
             // Live part of Sales Summary from live_purchases
             $Sales_Summary_Live = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
-                ->where('live_streams.user_id', $cpp_user_id)
+                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                    return $q->where('live_streams.user_id', $cpp_user_id);
+                })
                 ->where('live_purchases.created_at', '>=', $filter_date)
-                ->whereIn('live_purchases.payment_status', ['captured', 'completed'])
+                ->whereIn('live_purchases.payment_status', ['captured','completed'])
                 ->select([
                     DB::raw('live_purchases.video_id as source_id'),
                     DB::raw('"LiveStream" as source'),
@@ -474,9 +476,12 @@ class ProducerController extends Controller
                 ])
                 ->groupBy('live_purchases.video_id')
                 ->get()
-                ->map(function ($item) use ($cpp_user_id) {
-                    $stream = LiveStream::where('id', $item->source_id)
-                        ->where('user_id', $cpp_user_id)
+                ->map(function ($item) use ($cpp_user_id, $isAdminProducer) {
+                    $stream = LiveStream::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id);
+                        })
+                        ->where('id', $item->source_id)
                         ->first();
                     $producer_pct = $stream && isset($stream->CPP_commission_percentage)
                         ? (float) $stream->CPP_commission_percentage
@@ -500,49 +505,38 @@ class ProducerController extends Controller
             $Sales_Summary = $Sales_Summary->merge($Sales_Summary_Live);
 
 
-            // Monthly summary combining PPV(non-live) and LIVE
+            // Monthly summary for Videos only (non-live), sorted by latest video IDs
             $monthly_Summary = PpvPurchase::query()
-                ->when(!$isAdminProducer, function ($q) use ($cpp_user_id) {
+                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
                     return $q->where('moderator_id', $cpp_user_id);
                 })
                 ->whereNull('live_id')
+                ->whereNotNull('video_id')
                 ->where('created_at', '>=', $filter_date)
                 ->where(function ($query) {
                     $query->where('status', 'captured')->orWhere('status', '1');
                 })
                 ->select([
                     'video_id',
-                    DB::raw('NULL as live_id'),
-                    'audio_id',
-                    'series_id',
-                    'season_id',
                     DB::raw('SUM(total_amount) as total_amount_with_gst'),  // Original total amount with GST
                     DB::raw('SUM(total_amount * 0.18) as total_amount_without_gst'),  // Amount without GST
                     DB::raw('SUM(total_amount) - SUM(total_amount * 0.18) as gst_value'),  // Exact GST value (18%)
                     DB::raw('SUM(admin_commssion) as admin_commission_sum'),
                     DB::raw('SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18)) as moderator_commission_sum'),
-                    DB::raw('((SUM(admin_commssion) - (SUM(admin_commssion * 0.18))) / NULLIF(( SUM(total_amount) - SUM(total_amount * 0.18)), 0)) * 100 as admin_commission_percentage'),  // Admin commission percentage
-                    DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18))) / NULLIF(( SUM(total_amount) - SUM(total_amount * 0.18)), 0)) * 100 as moderator_commission_percentage'),  // Moderator commission percentage
-                    DB::raw('CASE 
-                                                            WHEN video_id IS NOT NULL THEN video_id
-                                                            WHEN audio_id IS NOT NULL THEN audio_id
-                                                            WHEN series_id IS NOT NULL THEN series_id
-                                                            WHEN season_id IS NOT NULL THEN season_id
-                                                            ELSE NULL
-                                                        END as source_id'),
-                    DB::raw('CASE 
-                                                            WHEN video_id IS NOT NULL THEN "Video"
-                                                            WHEN audio_id IS NOT NULL THEN "Audio"
-                                                            WHEN series_id IS NOT NULL THEN "Series"
-                                                            WHEN season_id IS NOT NULL THEN "SeriesSeason"
-                                                            ELSE NULL
-                                                        END as source')
+                    DB::raw('((SUM(admin_commssion) - (SUM(admin_commssion * 0.18))) / NULLIF(( SUM(total_amount) - SUM(total_amount * 0.18)), 0)) * 100 as admin_commission_percentage'),
+                    DB::raw('((SUM(moderator_commssion) - (SUM(moderator_commssion * 0.18))) / NULLIF(( SUM(total_amount) - SUM(total_amount * 0.18)), 0)) * 100 as moderator_commission_percentage'),
+                    DB::raw('video_id as source_id'),
+                    DB::raw('"Video" as source')
                 ])
-                ->groupBy('video_id', 'audio_id', 'series_id', 'season_id')
+                ->groupBy('video_id')
+                ->orderBy('video_id', 'DESC')
+                ->get()->map(function ($item) use ($cpp_user_id, $filter_date, $isAdminProducer) {
 
-                ->get()->map(function ($item) use ($cpp_user_id, $filter_date) {
-
-                    $item['monthly_Summary'] = PpvPurchase::where('moderator_id', $cpp_user_id)
+                    $item['monthly_Summary'] = PpvPurchase::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('moderator_id', $cpp_user_id);
+                        })
+                        ->whereNull('live_id')
                         ->whereBetween('created_at', [Carbon::now()->subMonths(6), Carbon::now()])
                         ->where('created_at', '>=', $filter_date)
                         ->where(function ($query) {
@@ -558,41 +552,17 @@ class ProducerController extends Controller
                         ])
                         ->groupBy(DB::raw('DATE_FORMAT(created_at, "%M, %Y")'))
                         ->orderBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'), 'desc')
-
-                        ->when($item->source == 'Video', function ($query) use ($item) {
-                            return $query->where('video_id', $item->source_id);
-                        })
-                        ->when($item->source == 'Audio', function ($query) use ($item) {
-                            return $query->where('audio_id', $item->source_id);
-                        })
-                        ->when($item->source == 'Series', function ($query) use ($item) {
-                            return $query->where('series_id', $item->source_id);
-                        })
-                        ->when($item->source == 'SeriesSeason', function ($query) use ($item) {
-                            return $query->where('season_id', $item->source_id);
-                        })
+                        ->where('video_id', $item->source_id)
                         ->get();
 
+                    // Set source_name and commission from content tables (admin-aware)
                     switch ($item->source) {
 
-                        case 'LiveStream':
-                            $item['source_name'] = LiveStream::where('id', $item->source_id)->pluck('title')->first();
-                            break;
-
                         case 'Video':
-                            $item['source_name'] = Video::where('uploaded_by', 'CPP')->where('id', $item->source_id)->pluck('title')->first();
-                            break;
-
-                        case 'Audio':
-                            $item['source_name'] = Audio::where('uploaded_by', 'CPP')->where('id', $item->source_id)->pluck('title')->first();
-                            break;
-
-                        case 'Series':
-                            $item['source_name'] = Series::where('uploaded_by', 'CPP')->where('id', $item->source_id)->pluck('title')->first();
-                            break;
-
-                        case 'SeriesSeason':
-                            $item['source_name'] = SeriesSeason::where('uploaded_by', 'CPP')->where('id', $item->source_id)->pluck('title')->first();
+                            $vQ = Video::query()->where('id', $item->source_id);
+                            if(!$isAdminProducer){ $vQ->where('uploaded_by','CPP'); }
+                            $item['source_name'] = $vQ->pluck('title')->first();
+                            $item['moderator_commission_percentage'] = (float) (Video::where('id',$item->source_id)->pluck('CPP_commission_percentage')->first() ?? $item['moderator_commission_percentage']);
                             break;
 
                         default:
@@ -1151,13 +1121,15 @@ class ProducerController extends Controller
             $gst_total = round($gross_total * 0.18, 2);
             $net_total = max($gross_total - $gst_total, 0);
 
-            // $ppv_purchases_cpp_commission_sum is already net-of-GST for moderator in this project
-            $producer_share_net_total = (float) $ppv_purchases_cpp_commission_sum;
+            // Compute shares DIRECTLY from content percentage for accuracy
+            $pct = (float) ($producer_share_percentage_gross ?? 0);
+            $producer_share_net_total = round($net_total * ($pct / 100.0), 2);
             $runmawi_share_net_total = max($net_total - $producer_share_net_total, 0);
             $transaction_fees_total = 0.0;
 
-            $effective_producer_pct = $net_total > 0 ? round(($producer_share_net_total / $net_total) * 100, 2) : 0.0;
-            $effective_admin_pct = $net_total > 0 ? round(($runmawi_share_net_total / $net_total) * 100, 2) : 0.0;
+            // Effective pcts shown in the UI should equal the configured percentages
+            $effective_producer_pct = round($pct, 2);
+            $effective_admin_pct = round(100 - $pct, 2);
 
             $ppv_purchases_amount['gross_total'] = $gross_total;
             $ppv_purchases_amount['gst_total'] = $gst_total;
