@@ -3,7 +3,7 @@
 @section('producer.section')
 
     <div class="row center">
-        <h4>{{ optional($stats_sources)->title ?? 'Livestream' }} <br> 
+        <h4>{{ optional($stats_sources)->title ?? ucfirst($source) }} <br> 
             @if ($source === 'livestream')
                 <small>
                     ( Producer's share: {{ isset($producer_share_percentage) ? number_format($producer_share_percentage, 2) . '%' : (optional($stats_sources)->CPP_commission_percentage !== null ? number_format(optional($stats_sources)->CPP_commission_percentage, 2) . '%' : 'N/A') }} )

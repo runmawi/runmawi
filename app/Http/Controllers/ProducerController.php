@@ -22,6 +22,7 @@ use App\Series;
 use App\Audio;
 use Theme;
 use App\Setting;
+use App\ModeratorsRole;
 
 class ProducerController extends Controller
 {
@@ -285,6 +286,9 @@ class ProducerController extends Controller
 
             $commission_btn = Setting::pluck('CPP_Commission_Status')->first();
             $CppUser_details = ModeratorsUser::where('id', $cpp_user_id)->first();
+            $role_name = $CppUser_details ? ModeratorsRole::where('id', $CppUser_details->user_role)->pluck('role_name')->first() : null;
+            $normalizedRole = $role_name !== null ? strtolower(trim($role_name)) : null;
+            $isAdminProducer = $normalizedRole !== null && (in_array($normalizedRole, ['admin','administrator','super admin','superadmin']) || stripos($role_name, 'admin') !== false);
             $video_commission_percentage = VideoCommission::where('type', 'Cpp')->pluck('percentage')->first();
             $commission_percentage_value = null;
 
@@ -308,88 +312,56 @@ class ProducerController extends Controller
             $last3nd_month_year = $current_time->copy()->subMonths(3);
 
             // PPV metrics (exclude live to avoid double counting with live_purchases)
-            $ppv_purchases_today = PpvPurchase::query()
-                ->where('moderator_id', $cpp_user_id)
+            $ppv_base = PpvPurchase::query()
+                ->when(!$isAdminProducer, function ($q) use ($cpp_user_id) {
+                    return $q->where('moderator_id', $cpp_user_id);
+                })
                 ->whereNull('live_id')
                 ->where('created_at', '>=', $filter_date)
-                ->whereDate('created_at', $today)
                 ->where(function ($query) {
                     $query->where('status', 'captured')->orWhere('status', 1);
-                })
+                });
+
+            $ppv_purchases_today = (clone $ppv_base)
+                ->whereDate('created_at', $today)
                 ->get();
 
-            $ppv_purchases_current_month = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->whereNull('live_id')
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_current_month = (clone $ppv_base)
                 ->whereYear('created_at', $current_year)
                 ->whereMonth('created_at', $current_month)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', 1);
-                })
                 ->get();
 
-            $ppv_purchases_last_month = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->whereNull('live_id')
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_last_month = (clone $ppv_base)
                 ->whereYear('created_at', $last_month_year->year)
                 ->whereMonth('created_at', $last_month_year->month)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', 1);
-                })
                 ->get();
 
-
-            $ppv_purchases_last2ndmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->whereNull('live_id')
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_last2ndmonth = (clone $ppv_base)
                 ->whereYear('created_at', $last2nd_month_year->year)
                 ->whereMonth('created_at', $last2nd_month_year->month)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', 1);
-                })
                 ->get();
 
-
-            $ppv_purchases_last3rdmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->whereNull('live_id')
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_last3rdmonth = (clone $ppv_base)
                 ->whereYear('created_at', $last3nd_month_year->year)
                 ->whereMonth('created_at', $last3nd_month_year->month)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', '1');
-                })
                 ->get();
 
-            $ppv_purchases_current_year = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->whereNull('live_id')
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_current_year = (clone $ppv_base)
                 ->whereYear('created_at', $current_year)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', 1);
-                })
                 ->get();
 
-            $ppv_purchases_last_year = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->whereNull('live_id')
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_last_year = (clone $ppv_base)
                 ->whereYear('created_at', $last_year)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', 1);
-                })
                 ->get();
 
-            $ppv_purchases_total = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->whereNull('live_id')
-                ->where('created_at', '>=', $filter_date)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', '1');
-                })
-                ->get();
+            $ppv_purchases_total = (clone $ppv_base)->get();
 
             // Live purchases metrics from live_purchases joined to producer-owned streams
             $live_base = LivePurchase::query()
                 ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
-                ->where('live_streams.user_id', $cpp_user_id)
+                ->when(!$isAdminProducer, function ($q) use ($cpp_user_id) {
+                    return $q->where('live_streams.user_id', $cpp_user_id);
+                })
                 ->where(function ($q) {
                     $q->where('live_purchases.status', 1);
                 })
@@ -410,7 +382,10 @@ class ProducerController extends Controller
             $live_total = (clone $live_base)->get();
 
             // Sales summary from PPV (excluding live) and LIVE
-            $Sales_Summary = PpvPurchase::where('moderator_id', $cpp_user_id)
+            $Sales_Summary = PpvPurchase::query()
+                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                    return $q->where('moderator_id', $cpp_user_id);
+                })
                 ->whereNull('live_id')
                 ->where('created_at', '>=', $filter_date)
                 ->where(function ($query) {
@@ -447,24 +422,32 @@ class ProducerController extends Controller
                 ])
                 ->groupBy('video_id', 'audio_id', 'series_id', 'season_id')
 
-                ->get()->map(function ($item) {
+                ->get()->map(function ($item) use ($isAdminProducer) {
 
                     switch ($item->source) {
 
                         case 'Video':
-                            $item['source_name'] = Video::where('uploaded_by', 'CPP')->where('id', $item->source_id)->pluck('title')->first();
+                            $q = Video::query()->where('id', $item->source_id);
+                            if(!$isAdminProducer){ $q->where('uploaded_by','CPP'); }
+                            $item['source_name'] = $q->pluck('title')->first();
                             break;
 
                         case 'Audio':
-                            $item['source_name'] = Audio::where('uploaded_by', 'CPP')->where('id', $item->source_id)->pluck('title')->first();
+                            $q = Audio::query()->where('id', $item->source_id);
+                            if(!$isAdminProducer){ $q->where('uploaded_by','CPP'); }
+                            $item['source_name'] = $q->pluck('title')->first();
                             break;
 
                         case 'Series':
-                            $item['source_name'] = Series::where('uploaded_by', 'CPP')->where('id', $item->source_id)->pluck('title')->first();
+                            $q = Series::query()->where('id', $item->source_id);
+                            if(!$isAdminProducer){ $q->where('uploaded_by','CPP'); }
+                            $item['source_name'] = $q->pluck('title')->first();
                             break;
 
                         case 'SeriesSeason':
-                            $item['source_name'] = SeriesSeason::where('uploaded_by', 'CPP')->where('id', $item->source_id)->pluck('title')->first();
+                            $q = SeriesSeason::query()->where('id', $item->source_id);
+                            if(!$isAdminProducer){ $q->where('uploaded_by','CPP'); }
+                            $item['source_name'] = $q->pluck('title')->first();
                             break;
 
                         default:
@@ -478,7 +461,7 @@ class ProducerController extends Controller
             $Sales_Summary_Live = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
                 ->where('live_streams.user_id', $cpp_user_id)
                 ->where('live_purchases.created_at', '>=', $filter_date)
-                ->whereIn('live_purchases.payment_status', ['captured','completed'])
+                ->whereIn('live_purchases.payment_status', ['captured', 'completed'])
                 ->select([
                     DB::raw('live_purchases.video_id as source_id'),
                     DB::raw('"LiveStream" as source'),
@@ -518,7 +501,10 @@ class ProducerController extends Controller
 
 
             // Monthly summary combining PPV(non-live) and LIVE
-            $monthly_Summary = PpvPurchase::where('moderator_id', $cpp_user_id)
+            $monthly_Summary = PpvPurchase::query()
+                ->when(!$isAdminProducer, function ($q) use ($cpp_user_id) {
+                    return $q->where('moderator_id', $cpp_user_id);
+                })
                 ->whereNull('live_id')
                 ->where('created_at', '>=', $filter_date)
                 ->where(function ($query) {
@@ -708,15 +694,61 @@ class ProducerController extends Controller
 
 
             $sources_data = [
-                'livestream' => LiveStream::where('user_id', $cpp_user_id)->orderBy('created_at', 'DESC')->get(),
-                'video' => Video::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy("created_at", "DESC")->get(),
-                'series' => Series::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy('created_at', 'DESC')->get(),
-                'series_season' => SeriesSeason::where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
-                'audios' => Audio::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
+                'livestream' => LiveStream::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id);
+                    })
+                    ->where('access', 'ppv')
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'video' => Video::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id)
+                                 ->where('uploaded_by', 'CPP');
+                    })
+                    ->when($isAdminProducer, function($q){
+                        return $q; // no restriction for admin
+                    })
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'series' => Series::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id)
+                                 ->where('uploaded_by', 'CPP');
+                    })
+                    ->when($isAdminProducer, function($q){
+                        return $q; // no restriction for admin
+                    })
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'series_season' => SeriesSeason::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        // original code filtered by series_id = user_id which seems off, keeping behavior for non-admin to avoid breaking deps
+                        return $q->where('series_id', $cpp_user_id)
+                                 ->where('uploaded_by', 'CPP');
+                    })
+                    ->when($isAdminProducer, function($q){
+                        return $q; // no restriction for admin
+                    })
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
+                'audios' => Audio::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id)
+                                 ->where('uploaded_by', 'CPP');
+                    })
+                    ->when($isAdminProducer, function($q){
+                        return $q; // no restriction for admin
+                    })
+                    ->orderBy('created_at', 'DESC')
+                    ->get(),
             ];
 
             // Improved Line Chart Data - Single optimized query
-            $chart_data = PpvPurchase::where('moderator_id', $cpp_user_id)
+            $chart_data = PpvPurchase::query()
+                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                    return $q->where('moderator_id', $cpp_user_id);
+                })
                 ->whereNull('live_id')
                 ->where('created_at', '>=', $filter_date)
                 ->where('created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
@@ -729,11 +761,14 @@ class ProducerController extends Controller
                 ->get()
                 ->keyBy('purchase_date');
 
-            $chart_data_live = LivePurchase::join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
-                ->where('live_streams.user_id', $cpp_user_id)
+            $chart_data_live = LivePurchase::query()
+                ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
+                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                    return $q->where('live_streams.user_id', $cpp_user_id);
+                })
                 ->where('live_purchases.created_at', '>=', $filter_date)
                 ->where('live_purchases.created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
-                ->whereIn('live_purchases.payment_status', ['captured','completed'])
+                ->whereIn('live_purchases.payment_status', ['captured', 'completed'])
                 ->selectRaw('DATE(live_purchases.created_at) as purchase_date, COUNT(*) as daily_count, SUM(live_purchases.amount) as daily_amount')
                 ->groupBy('purchase_date')
                 ->orderBy('purchase_date', 'asc')
@@ -796,6 +831,10 @@ class ProducerController extends Controller
 
             $current_time = $this->current_time;
             $cpp_user_id = session()->get('cpp_user_id');
+            $CppUser_details = ModeratorsUser::where('id', $cpp_user_id)->first();
+            $role_name = $CppUser_details ? ModeratorsRole::where('id', $CppUser_details->user_role)->pluck('role_name')->first() : null;
+            $normalizedRole = $role_name !== null ? strtolower(trim($role_name)) : null;
+            $isAdminProducer = $normalizedRole !== null && (in_array($normalizedRole, ['admin','administrator','super admin','superadmin']) || stripos($role_name, 'admin') !== false);
 
             // filter date
             $filter_date = '2024-12-15';
@@ -816,13 +855,15 @@ class ProducerController extends Controller
             if ($source === 'livestream') {
                 $live_base = LivePurchase::query()
                     ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
-                    ->where('live_streams.user_id', $cpp_user_id)
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('live_streams.user_id', $cpp_user_id);
+                    })
                     ->where('live_purchases.video_id', $source_id)
                     ->where('live_purchases.created_at', '>=', $filter_date)
-                    ->whereIn('live_purchases.payment_status', ['captured','completed'])
+                    ->whereIn('live_purchases.payment_status', ['captured', 'completed'])
                     ->where(function ($q) {
                         $q->where('live_purchases.total_amount', '>', 0)
-                          ->orWhere('live_purchases.amount', '>', 0);
+                            ->orWhere('live_purchases.amount', '>', 0);
                     })
                     ->select('live_purchases.*');
 
@@ -862,7 +903,12 @@ class ProducerController extends Controller
                 ];
 
                 // Compute producer share for LIVE using CPP_commission_percentage from the stream
-                $stream_for_pct = LiveStream::where('user_id', $cpp_user_id)->where('id', $source_id)->first();
+                $stream_for_pct = LiveStream::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id);
+                    })
+                    ->where('id', $source_id)
+                    ->first();
                 $producer_pct = $stream_for_pct && isset($stream_for_pct->CPP_commission_percentage)
                     ? ((float) $stream_for_pct->CPP_commission_percentage) / 100
                     : 0.0;
@@ -904,16 +950,44 @@ class ProducerController extends Controller
                 $ppv_purchases_amount['effective_producer_pct'] = $effective_producer_pct;
                 $ppv_purchases_amount['effective_admin_pct'] = $effective_admin_pct;
 
-                $stats_sources = LiveStream::where('user_id', $cpp_user_id)
+                $stats_sources = LiveStream::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id);
+                    })
                     ->where('id', $source_id)
                     ->orderBy('created_at', 'DESC')->first();
 
                 $sources_data = [
-                    'livestream' => LiveStream::where('user_id', $cpp_user_id)->orderBy('created_at', 'DESC')->get(),
-                    'video' => Video::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy("created_at", "DESC")->get(),
-                    'series' => Series::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy('created_at', 'DESC')->get(),
-                    'series_season' => SeriesSeason::where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
-                    'audios' => Audio::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
+                    'livestream' => LiveStream::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id);
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->get(),
+                    'video' => Video::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->get(),
+                    'series' => Series::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->get(),
+                    'series_season' => SeriesSeason::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->get(),
+                    'audios' => Audio::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->get(),
                 ];
 
                 $data = array(
@@ -936,13 +1010,15 @@ class ProducerController extends Controller
                         })()
                     ),
                     'chart_count_data' => json_encode(
-                        (function () use ($source_id, $cpp_user_id) {
+                        (function () use ($source_id, $cpp_user_id, $isAdminProducer) {
                             $map = LivePurchase::query()
                                 ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
-                                ->where('live_streams.user_id', $cpp_user_id)
+                                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                                    return $q->where('live_streams.user_id', $cpp_user_id);
+                                })
                                 ->where('live_purchases.video_id', $source_id)
                                 ->where('live_purchases.created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
-                                ->whereIn('live_purchases.payment_status', ['captured','completed'])
+                                ->whereIn('live_purchases.payment_status', ['captured', 'completed'])
                                 ->selectRaw('DATE(live_purchases.created_at) as d, COUNT(*) as c')
                                 ->groupBy('d')->pluck('c', 'd');
                             $series = [];
@@ -954,13 +1030,15 @@ class ProducerController extends Controller
                         })()
                     ),
                     'chart_amount_data' => json_encode(
-                        (function () use ($source_id, $cpp_user_id) {
+                        (function () use ($source_id, $cpp_user_id, $isAdminProducer) {
                             $map = LivePurchase::query()
                                 ->join('live_streams', 'live_streams.id', '=', 'live_purchases.video_id')
-                                ->where('live_streams.user_id', $cpp_user_id)
+                                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                                    return $q->where('live_streams.user_id', $cpp_user_id);
+                                })
                                 ->where('live_purchases.video_id', $source_id)
                                 ->where('live_purchases.created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
-                                ->whereIn('live_purchases.payment_status', ['captured','completed'])
+                                ->whereIn('live_purchases.payment_status', ['captured', 'completed'])
                                 ->selectRaw('DATE(live_purchases.created_at) as d, SUM(live_purchases.amount) as s')
                                 ->groupBy('d')->pluck('s', 'd');
                             $series = [];
@@ -977,9 +1055,13 @@ class ProducerController extends Controller
                 return view('producer.stats', $data);
             }
 
-            $ppv_purchases_today = PpvPurchase::where('moderator_id', $cpp_user_id)
+            // Build a common PPV base that is admin-aware
+            $ppv_base = PpvPurchase::query()
+                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                    return $q->where('moderator_id', $cpp_user_id);
+                })
+                ->whereNull('live_id')
                 ->where('created_at', '>=', $filter_date)
-                ->whereDate('created_at', $today)
                 ->where(function ($query) {
                     $query->where('status', 'captured')->orWhere('status', '1');
                 })
@@ -997,165 +1079,39 @@ class ProducerController extends Controller
                 })
                 ->when($source === 'series_season', function ($query) use ($source_id) {
                     return $query->where('season_id', $source_id);
-                })
+                });
+
+            $ppv_purchases_today = (clone $ppv_base)
+                ->whereDate('created_at', $today)
                 ->get();
 
-            $ppv_purchases_current_month = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_current_month = (clone $ppv_base)
                 ->whereYear('created_at', $current_year)
                 ->whereMonth('created_at', $current_month)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', '1');
-                })
-                ->when($source === 'video', function ($query) use ($source_id) {
-                    return $query->where('video_id', $source_id);
-                })
-                ->when($source === 'livestream', function ($query) use ($source_id) {
-                    return $query->where('live_id', $source_id);
-                })
-                ->when($source === 'audio', function ($query) use ($source_id) {
-                    return $query->where('audio_id', $source_id);
-                })
-                ->when($source === 'series', function ($query) use ($source_id) {
-                    return $query->where('series_id', $source_id);
-                })
-                ->when($source === 'series_season', function ($query) use ($source_id) {
-                    return $query->where('season_id', $source_id);
-                })
                 ->get();
 
             // Use explicit month ranges for reliability
-            $ppv_purchases_last_month = PpvPurchase::where('moderator_id', $cpp_user_id)
+            $ppv_purchases_last_month = (clone $ppv_base)
                 ->whereBetween('created_at', [$last_month->copy()->startOfMonth(), $last_month->copy()->endOfMonth()])
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', '1');
-                })
-                ->when($source === 'video', function ($query) use ($source_id) {
-                    return $query->where('video_id', $source_id);
-                })
-                ->when($source === 'livestream', function ($query) use ($source_id) {
-                    return $query->where('live_id', $source_id);
-                })
-                ->when($source === 'audio', function ($query) use ($source_id) {
-                    return $query->where('audio_id', $source_id);
-                })
-                ->when($source === 'series', function ($query) use ($source_id) {
-                    return $query->where('series_id', $source_id);
-                })
-                ->when($source === 'series_season', function ($query) use ($source_id) {
-                    return $query->where('season_id', $source_id);
-                })
                 ->get();
 
-            $ppv_purchases_last2ndmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
+            $ppv_purchases_last2ndmonth = (clone $ppv_base)
                 ->whereBetween('created_at', [$last2ndmonth->copy()->startOfMonth(), $last2ndmonth->copy()->endOfMonth()])
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', '1');
-                })
-                ->when($source === 'video', function ($query) use ($source_id) {
-                    return $query->where('video_id', $source_id);
-                })
-                ->when($source === 'livestream', function ($query) use ($source_id) {
-                    return $query->where('live_id', $source_id);
-                })
-                ->when($source === 'audio', function ($query) use ($source_id) {
-                    return $query->where('audio_id', $source_id);
-                })
-                ->when($source === 'series', function ($query) use ($source_id) {
-                    return $query->where('series_id', $source_id);
-                })
-                ->when($source === 'series_season', function ($query) use ($source_id) {
-                    return $query->where('season_id', $source_id);
-                })
                 ->get();
 
-            $ppv_purchases_last3rdmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
+            $ppv_purchases_last3rdmonth = (clone $ppv_base)
                 ->whereBetween('created_at', [$last3ndmonth->copy()->startOfMonth(), $last3ndmonth->copy()->endOfMonth()])
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', '1');
-                })
-                ->when($source === 'video', function ($query) use ($source_id) {
-                    return $query->where('video_id', $source_id);
-                })
-                ->when($source === 'livestream', function ($query) use ($source_id) {
-                    return $query->where('live_id', $source_id);
-                })
-                ->when($source === 'audio', function ($query) use ($source_id) {
-                    return $query->where('audio_id', $source_id);
-                })
-                ->when($source === 'series', function ($query) use ($source_id) {
-                    return $query->where('series_id', $source_id);
-                })
-                ->when($source === 'series_season', function ($query) use ($source_id) {
-                    return $query->where('season_id', $source_id);
-                })
                 ->get();
 
-            $ppv_purchases_current_year = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_current_year = (clone $ppv_base)
                 ->whereYear('created_at', $current_year)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', '1');
-                })
-                ->when($source === 'video', function ($query) use ($source_id) {
-                    return $query->where('video_id', $source_id);
-                })
-                ->when($source === 'livestream', function ($query) use ($source_id) {
-                    return $query->where('live_id', $source_id);
-                })
-                ->when($source === 'audio', function ($query) use ($source_id) {
-                    return $query->where('audio_id', $source_id);
-                })
-                ->when($source === 'series', function ($query) use ($source_id) {
-                    return $query->where('series_id', $source_id);
-                })
-                ->when($source === 'series_season', function ($query) use ($source_id) {
-                    return $query->where('season_id', $source_id);
-                })
                 ->get();
 
-            $ppv_purchases_last_year = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->where('created_at', '>=', $filter_date)
+            $ppv_purchases_last_year = (clone $ppv_base)
                 ->whereYear('created_at', $last_year)
-                ->where(function ($query) {
-                    $query->where('status', 'captured')->orWhere('status', '1');
-                })
-                ->when($source === 'video', function ($query) use ($source_id) {
-                    return $query->where('video_id', $source_id);
-                })
-                ->when($source === 'livestream', function ($query) use ($source_id) {
-                    return $query->where('live_id', $source_id);
-                })
-                ->when($source === 'audio', function ($query) use ($source_id) {
-                    return $query->where('audio_id', $source_id);
-                })
-                ->when($source === 'series', function ($query) use ($source_id) {
-                    return $query->where('series_id', $source_id);
-                })
-                ->when($source === 'series_season', function ($query) use ($source_id) {
-                    return $query->where('season_id', $source_id);
-                })
                 ->get();
 
-            $ppv_purchases_total = PpvPurchase::where('moderator_id', $cpp_user_id)
-                ->where('created_at', '>=', $filter_date)
-                ->where('status', 'captured')
-                ->when($source === 'video', function ($query) use ($source_id) {
-                    return $query->where('video_id', $source_id);
-                })
-                ->when($source === 'livestream', function ($query) use ($source_id) {
-                    return $query->where('live_id', $source_id);
-                })
-                ->when($source === 'audio', function ($query) use ($source_id) {
-                    return $query->where('audio_id', $source_id);
-                })
-                ->when($source === 'series', function ($query) use ($source_id) {
-                    return $query->where('series_id', $source_id);
-                })
-                ->when($source === 'series_season', function ($query) use ($source_id) {
-                    return $query->where('season_id', $source_id);
-                })
-                ->get();
+            $ppv_purchases_total = (clone $ppv_base)->get();
 
             $ppv_purchases_count = [
                 'ppv_purchases_today_count' => $ppv_purchases_today->count(),
@@ -1214,37 +1170,70 @@ class ProducerController extends Controller
 
             switch ($source) {
                 case 'video':
-                    $stats_sources = Video::where('user_id', $cpp_user_id)
-                        ->where('uploaded_by', 'CPP')->where('id', $source_id)
+                    $stats_sources = Video::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                        })
+                        ->where('id', $source_id)
                         ->orderBy('created_at', 'DESC')->first();
+                    $producer_share_percentage_gross = $stats_sources && isset($stats_sources->CPP_commission_percentage)
+                        ? (float) $stats_sources->CPP_commission_percentage
+                        : $producer_share_percentage_gross;
                     break;
 
                 case 'livestream':
-                    $stats_sources = LiveStream::where('user_id', $cpp_user_id)
+                    $stats_sources = LiveStream::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id);
+                        })
                         ->where('id', $source_id)
                         ->orderBy('created_at', 'DESC')->first();
                     break;
 
                 case 'series':
-                    $stats_sources = Series::where('user_id', $cpp_user_id)
-                        ->where('uploaded_by', 'CPP')->where('id', $source_id)->orderBy('created_at', 'DESC')->get()
-                        ->map(function ($item) {
-                            $item['access'] = SeriesSeason::where('uploaded_by', 'CPP')->where('series_id', $item->id)->where('access', 'ppv')->pluck('access')->first();
+                    $stats_sources = Series::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                        })
+                        ->where('id', $source_id)
+                        ->orderBy('created_at', 'DESC')->get()
+                        ->map(function ($item) use ($isAdminProducer) {
+                            $seasonQuery = SeriesSeason::query()->where('series_id', $item->id);
+                            if (!$isAdminProducer) {
+                                $seasonQuery->where('uploaded_by', 'CPP');
+                            }
+                            $item['access'] = $seasonQuery->where('access', 'ppv')->pluck('access')->first();
                             return $item;
                         })
                         ->first();
+                    if ($stats_sources && isset($stats_sources->CPP_commission_percentage)) {
+                        $producer_share_percentage_gross = (float) $stats_sources->CPP_commission_percentage;
+                    } else {
+                        $season_pct = SeriesSeason::where('series_id', $source_id)->pluck('CPP_commission_percentage')->first();
+                        if (!empty($season_pct)) {
+                            $producer_share_percentage_gross = (float) $season_pct;
+                        }
+                    }
                     break;
 
                 case 'series_season':
-                    $stats_sources = SeriesSeason::where('series_id', $cpp_user_id)
-                        ->where('uploaded_by', 'CPP')->where('id', $source_id)
+                    $stats_sources = SeriesSeason::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                        })
+                        ->where('id', $source_id)
                         ->orderBy('created_at', 'DESC')->first();
-
+                    if ($stats_sources && isset($stats_sources->CPP_commission_percentage)) {
+                        $producer_share_percentage_gross = (float) $stats_sources->CPP_commission_percentage;
+                    }
                     break;
 
                 case 'audio':
-                    $stats_sources = Audio::where('user_id', $cpp_user_id)
-                        ->where('uploaded_by', 'CPP')->where('id', $source_id)
+                    $stats_sources = Audio::query()
+                        ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                            return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                        })
+                        ->where('id', $source_id)
                         ->orderBy('created_at', 'DESC')->first();
                     break;
 
@@ -1254,16 +1243,40 @@ class ProducerController extends Controller
             }
 
             $sources_data = [
-                'livestream' => LiveStream::where('user_id', $cpp_user_id)->orderBy('created_at', 'DESC')->get(),
-                'video' => Video::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy("created_at", "DESC")->get(),
-                'series' => Series::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->orderBy('created_at', 'DESC')->get(),
-                'series_season' => SeriesSeason::where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
-                'audios' => Audio::where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP')->get(),
+                'livestream' => LiveStream::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id);
+                    })
+                    ->where('access', 'ppv')
+                    ->orderBy('created_at', 'DESC')->get(),
+                'video' => Video::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                    })
+                    ->orderBy('created_at', 'DESC')->get(),
+                'series' => Series::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                    })
+                    ->orderBy('created_at', 'DESC')->get(),
+                'series_season' => SeriesSeason::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('series_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                    })
+                    ->orderBy('created_at', 'DESC')->get(),
+                'audios' => Audio::query()
+                    ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                        return $q->where('user_id', $cpp_user_id)->where('uploaded_by', 'CPP');
+                    })
+                    ->orderBy('created_at', 'DESC')->get(),
             ];
 
             // Build 15-day chart data for PPV purchases limited to the selected source
             $ppvChartBase = PpvPurchase::query()
-                ->where('moderator_id', $cpp_user_id)
+                ->when(!$isAdminProducer, function($q) use ($cpp_user_id){
+                    return $q->where('moderator_id', $cpp_user_id);
+                })
+                ->whereNull('live_id')
                 ->where('created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
                 ->where(function ($query) {
                     $query->where('status', 'captured')->orWhere('status', '1');
