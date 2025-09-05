@@ -1487,6 +1487,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/assign_videos/channel_partner', 'AdminVideosController@indexChannelPartner');
     Route::post('/move/channel-partner', 'AdminVideosController@MoveChannelPartner');
 
+    // Livestream Move to partner
+    Route::get('/assign_livestreams/partner', 'AdminLiveStreamController@indexCPPPartner');
+    Route::post('/move/livestream-cpp-partner', 'AdminLiveStreamController@MoveCPPPartner');
+
     // Series Move to partner
 
     Route::get('/assign_Series/partner', 'AdminSeriesController@indexCPPPartner');

@@ -59,6 +59,50 @@ class AdminLiveStreamController extends Controller
         $this->userIp = $geoip->getip();
     }
 
+    // ===== Assign Livestreams to Partner (CPP) =====
+    public function indexCPPPartner(Request $request)
+    {
+        try {
+            $ModeratorsUser = ModeratorsUser::get();
+
+            $livestreams = LiveStream::where(function($q){
+                    $q->where("uploaded_by", "!=", "CPP")
+                      ->orWhereNull("uploaded_by");
+                })
+                ->where('access', 'ppv')
+                ->orderBy('id', 'desc')
+                ->get();
+
+            $data = [
+                'setting' => Setting::first(),
+                'ModeratorsUser' => $ModeratorsUser,
+                'livestreams' => $livestreams,
+            ];
+
+            return view('admin.livestream.move_livestreams.move_cpp_index', $data);
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+    }
+
+    public function MoveCPPPartner(Request $request)
+    {
+        $data = $request->all();
+
+        $live_id = $data['livestream_id'] ?? null;
+        $cpp_id = $data['cpp_users'] ?? null;
+
+        $live = LiveStream::findOrFail($live_id);
+        $live->user_id = $cpp_id;
+        $live->uploaded_by = 'CPP';
+        if ($request->filled('CPP_commission_percentage')) {
+            $live->CPP_commission_percentage = $request->CPP_commission_percentage;
+        }
+        $live->save();
+
+        return \Redirect::back()->with('message', 'Livestream moved to selected partner');
+    }
+
     public function index()
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
