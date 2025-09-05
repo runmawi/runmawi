@@ -937,28 +937,28 @@ class ModeratorsUserController extends Controller
     {
 
         if( $request->sourceName == "videos"  ){
-
-            $query = Video::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
-            ->where('id', $request->sourceID)->first();
+            $query = Video::where('user_id', $request->moderator_id)
+                ->where('id', $request->sourceID)
+                ->first();
         }
 
         if( $request->sourceName == "livestream"  ){
-
-            $query = LiveStream::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
-                ->where('id', $request->sourceID)->first();
+            $query = LiveStream::where('user_id', $request->moderator_id)
+                ->where('id', $request->sourceID)
+                ->first();
         }
 
         if( $request->sourceName == "series" ){
-
-            $query = Series::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
-                ->where('id', $request->sourceID)->first();
+            $query = Series::where('user_id', $request->moderator_id)
+                ->where('id', $request->sourceID)
+                ->first();
         }
 
         if ($query) {
             return response()->json([
                 'success' => true,
                 'sourceName' => $request->sourceName ,
-                'commission' => $query->CPP_commission_percentage, 
+                'commission' => $query->CPP_commission_percentage ?? 0,
             ]);
         }
 
