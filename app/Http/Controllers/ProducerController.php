@@ -908,8 +908,9 @@ class ProducerController extends Controller
                 $runmawi_share_net_total = max($net_total - $producer_share_net_total, 0);
                 $transaction_fees_total = 0.0;
 
-                $effective_producer_pct = $net_total > 0 ? round(($producer_share_net_total / $net_total) * 100, 2) : 0.0;
-                $effective_admin_pct = $net_total > 0 ? round(($runmawi_share_net_total / $net_total) * 100, 2) : 0.0;
+                // Show the exact configured percentage for livestreams
+                $effective_producer_pct = round($producer_pct * 100.0, 2);
+                $effective_admin_pct = round(100.0 - $effective_producer_pct, 2);
 
                 $ppv_purchases_amount['gross_total'] = $gross_total;
                 $ppv_purchases_amount['gst_total'] = $gst_total;
@@ -1121,25 +1122,6 @@ class ProducerController extends Controller
             $gst_total = round($gross_total * 0.18, 2);
             $net_total = max($gross_total - $gst_total, 0);
 
-            // Compute shares DIRECTLY from content percentage for accuracy
-            $pct = (float) ($producer_share_percentage_gross ?? 0);
-            $producer_share_net_total = round($net_total * ($pct / 100.0), 2);
-            $runmawi_share_net_total = max($net_total - $producer_share_net_total, 0);
-            $transaction_fees_total = 0.0;
-
-            // Effective pcts shown in the UI should equal the configured percentages
-            $effective_producer_pct = round($pct, 2);
-            $effective_admin_pct = round(100 - $pct, 2);
-
-            $ppv_purchases_amount['gross_total'] = $gross_total;
-            $ppv_purchases_amount['gst_total'] = $gst_total;
-            $ppv_purchases_amount['net_total'] = $net_total;
-            $ppv_purchases_amount['producer_share_net_total'] = $producer_share_net_total;
-            $ppv_purchases_amount['runmawi_share_net_total'] = $runmawi_share_net_total;
-            $ppv_purchases_amount['transaction_fees_total'] = $transaction_fees_total;
-            $ppv_purchases_amount['effective_producer_pct'] = $effective_producer_pct;
-            $ppv_purchases_amount['effective_admin_pct'] = $effective_admin_pct;
-
             switch ($source) {
                 case 'video':
                     $stats_sources = Video::query()
@@ -1160,6 +1142,9 @@ class ProducerController extends Controller
                         })
                         ->where('id', $source_id)
                         ->orderBy('created_at', 'DESC')->first();
+                    $producer_share_percentage_gross = $stats_sources && isset($stats_sources->CPP_commission_percentage)
+                        ? (float) $stats_sources->CPP_commission_percentage
+                        : $producer_share_percentage_gross;
                     break;
 
                 case 'series':
@@ -1213,6 +1198,25 @@ class ProducerController extends Controller
                     $stats_sources = null;
                     break;
             }
+
+            // Compute shares DIRECTLY from content percentage for accuracy
+            $pct = (float) ($producer_share_percentage_gross ?? 0);
+            $producer_share_net_total = round($net_total * ($pct / 100.0), 2);
+            $runmawi_share_net_total = max($net_total - $producer_share_net_total, 0);
+            $transaction_fees_total = 0.0;
+
+            // Effective pcts shown in the UI should equal the configured percentages
+            $effective_producer_pct = round($pct, 2);
+            $effective_admin_pct = round(100 - $pct, 2);
+
+            $ppv_purchases_amount['gross_total'] = $gross_total;
+            $ppv_purchases_amount['gst_total'] = $gst_total;
+            $ppv_purchases_amount['net_total'] = $net_total;
+            $ppv_purchases_amount['producer_share_net_total'] = $producer_share_net_total;
+            $ppv_purchases_amount['runmawi_share_net_total'] = $runmawi_share_net_total;
+            $ppv_purchases_amount['transaction_fees_total'] = $transaction_fees_total;
+            $ppv_purchases_amount['effective_producer_pct'] = $effective_producer_pct;
+            $ppv_purchases_amount['effective_admin_pct'] = $effective_admin_pct;
 
             $sources_data = [
                 'livestream' => LiveStream::query()
