@@ -230,7 +230,7 @@ class ModeratorsUserController extends Controller
                     if ($picture != "" && $picture != null) {
                         $file_old = $path . $picture;
                         if (file_exists($file_old)) {
-                            unemail($file_old);
+                            unlink($file_old);
                         }
                     }
                     //upload new file
@@ -667,17 +667,17 @@ class ModeratorsUserController extends Controller
                     $moderatorspermission = ModeratorsPermission::all();
                     $moderatorsuser = ModeratorsUser::all();
 
-                    $videos = Video::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                    $videos = Video::where('user_id',$id)->get()->map(function($item){
                         $item['source'] = "Videos";
                         return $item;
                     });
 
-                    $livestream = LiveStream::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                    $livestream = LiveStream::where('user_id',$id)->get()->map(function($item){
                         $item['source'] = "Livestream";
                         return $item;
                     });
 
-                    $series = Series::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                    $series = Series::where('user_id',$id)->get()->map(function($item){
                         $item['source'] = "Series";
                         return $item;
                     });
@@ -839,7 +839,7 @@ class ModeratorsUserController extends Controller
                     if ($picture != "" && $picture != null) {
                         $file_old = $path . $picture;
                         if (file_exists($file_old)) {
-                            unemail($file_old);
+                            unlink($file_old);
                         }
                     }
                     //upload new file
@@ -850,14 +850,12 @@ class ModeratorsUserController extends Controller
                 }
 
                 $moderatorsuser->save();
-                $user_id = $id;
-                $moderatorsuser->save();
                 $user_id = $moderatorsuser->id;
 
                 $userrolepermissiom = UserAccess::where("user_id","=",$id)->get();
                 $data_delete = UserAccess::where("user_id", "=", $id)->delete();
 
-                foreach ($userrolepermissioms as $key => $value) {
+                foreach ($userrolepermissiom as $key => $value) {
                     $userrolepermissiom = new UserAccess();
                     $userrolepermissiom->user_id = $user_id;
                     $userrolepermissiom->role_id = $request->user_role;
@@ -866,19 +864,19 @@ class ModeratorsUserController extends Controller
                 }
 
                 // Commission Percentage
-                $videos = Video::where('user_id', $id)->where('uploaded_by', 'CPP')->where('id', $request->video_id)->first();
+                $videos = Video::where('user_id', $id)->where('id', $request->video_id)->first();
                 
                 if (!is_null($videos)) {
                     $videos->update(['CPP_commission_percentage' => $request->videos_commission]);
                 }
 
-                $livestream = LiveStream::where('user_id',$id)->where('uploaded_by','CPP')->where('id',$request->livestream_id)->first();
+                $livestream = LiveStream::where('user_id',$id)->where('id',$request->livestream_id)->first();
 
                 if( !is_null($livestream)){
                     $livestream->update(['CPP_commission_percentage' => $request->live_commission]);
                 }
 
-                $series = Series::where('user_id',$id)->where('uploaded_by','CPP')->where('id',$request->series_id)->first();
+                $series = Series::where('user_id',$id)->where('id',$request->series_id)->first();
 
                 if( !is_null($series)){
                     $series->update(['CPP_commission_percentage' => $request->series_commission]);
@@ -2146,17 +2144,18 @@ class ModeratorsUserController extends Controller
         /* logo upload */
 
         if ($logo != "") {
-            //code for remove old file
-            if ($logo != "" && $logo != null) {
-                $file_old = $path . $logo;
+            // remove old banner file based on current page value
+            if (!empty($page->banner)) {
+                $file_old = $path . $page->banner;
                 if (file_exists($file_old)) {
                     unlink($file_old);
                 }
             }
-            //upload new file
+            // upload new file
             $file = $logo;
-            $data["banner"] = $file->getClientOriginalName();
-            $file->move($path, $data["banner"]);
+            $uploadedBanner = $file->getClientOriginalName();
+            $file->move($path, $uploadedBanner);
+            $data["banner"] = $uploadedBanner;
         }
         $page = new Page();
 
@@ -3861,28 +3860,23 @@ class ModeratorsUserController extends Controller
         $pages = json_decode($data["pages"]);
 
         $id = $pages->id;
-        // $page = Page::findOrFail($id);
-        // print_r($pages);
-        // exit();
+        $page = Page::findOrFail($id);
 
         $path = public_path() . "/uploads/settings/";
+        $logo = $request["banner"] ?? null;
 
-        $logo = $request["banner"];
-
-        /* logo upload */
-
-        if ($logo != "") {
-            //code for remove old file
-            if ($logo != "" && $logo != null) {
-                $file_old = $path . $logo;
+        // Banner upload (optional)
+        if (!empty($logo)) {
+            if (!empty($page->banner)) {
+                $file_old = $path . $page->banner;
                 if (file_exists($file_old)) {
                     unlink($file_old);
                 }
             }
-            //upload new file
             $file = $logo;
-            $data["banner"] = $file->getClientOriginalName();
-            $file->move($path, $data["banner"]);
+            $uploadedBanner = $file->getClientOriginalName();
+            $file->move($path, $uploadedBanner);
+            $page->banner = $uploadedBanner;
         }
 
         if (!isset($pages->active) || $pages->active == "") {
@@ -3893,8 +3887,7 @@ class ModeratorsUserController extends Controller
         $page->body = $pages->body;
         $page->active = $pages->active;
         $page->user_id = $pages->user_id;
-        $page->banner = $file->getClientOriginalName();
-        $page->update($data);
+        $page->save();
 
         return true;
     }
@@ -4246,46 +4239,48 @@ class ModeratorsUserController extends Controller
         $input["email"] = $request["email"];
 
         $path = public_path() . "/uploads/avatars/";
-        $logo = $request["avatar"];
+        $logo = $request["avatar"] ?? null;
 
-        if ($logo != "") {
-            //code for remove old file
-            if ($logo != "" && $logo != null) {
-                $file_old = $path . $logo;
+        if (!empty($logo)) {
+            // remove old avatar based on current user value
+            if (!empty($user->avatar)) {
+                $file_old = $path . $user->avatar;
                 if (file_exists($file_old)) {
                     unlink($file_old);
                 }
             }
-            //upload new file
+            // upload new file
             $file = $logo;
             $input["avatar"] = $file->getClientOriginalName();
             $file->move($path, $input["avatar"]);
         }
 
-        if ($rolerole == "subadmin") {
+        // role and stripe flags
+        $sub_admin = 0;
+        $stripe_active = 0;
+        if ($role === "subadmin") {
             $role = "admin";
             $sub_admin = 1;
             $stripe_active = 1;
-        } else {
-            $role = $role;
         }
 
         $terms = 1;
-        $stripe_active = 0;
 
         if (empty($user_store->passwords)) {
-            $input["passwords"] = $user->password;
+            $input["passwords"] = $user->password; // already hashed
         } else {
-            $input["passwords"] = $user_store->passwords;
+            $input["passwords"] = Hash::make($user_store->passwords);
         }
 
         $user_update = User::find($id);
-        $user_update->email = $user_update->email;
-        $user_update->password = $user_update->password;
-        $user_update->role = $user_update->role;
-        $user_update->terms = $user_update->terms;
+        $user_update->email = $email ?? $user_update->email;
+        $user_update->password = $input["passwords"] ?? $user_update->password;
+        $user_update->role = $role ?? $user_update->role;
+        $user_update->terms = $terms;
         $user_update->stripe_active = $stripe_active;
-        $user_update->username = $user_update->username;
+        if (!empty($input["avatar"])) {
+            $user_update->avatar = $input["avatar"];
+        }
         $user_update->save();
 
         return true;
@@ -7365,7 +7360,7 @@ class ModeratorsUserController extends Controller
             if ($banner != "" && $banner != null) {
                 $file_old = $path . $banner;
                 if (file_exists($file_old)) {
-                    unemail($file_old);
+                    unlink($file_old);
                 }
             }
             //upload new file
@@ -7399,7 +7394,7 @@ class ModeratorsUserController extends Controller
             if ($picture != "" && $picture != null) {
                 $file_old = $path . $picture;
                 if (file_exists($file_old)) {
-                    unemail($file_old);
+                    unlink($file_old);
                 }
             }
             //upload new file
@@ -7432,7 +7427,7 @@ class ModeratorsUserController extends Controller
             if ($cancelled_cheque != "" && $cancelled_cheque != null) {
                 $file_old = $path . $cancelled_cheque;
                 if (file_exists($file_old)) {
-                    unemail($file_old);
+                    unlink($file_old);
                 }
             }
             //upload new file
