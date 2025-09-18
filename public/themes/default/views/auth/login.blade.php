@@ -180,7 +180,7 @@
             outline: none;
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.9);
-            color: #333;
+            color: #ecececff;
         }
 
         .otp-input-fields input:focus {
