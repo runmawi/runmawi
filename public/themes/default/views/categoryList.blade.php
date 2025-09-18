@@ -1,101 +1,77 @@
 @php
     include(public_path('themes/default/views/header.php'));
 @endphp
+    
+<section id="iq-favorites" style="display: grid; grid-template-rows: 1fr auto; " >
+    <div class="container-fluid" style=" overflow-y: auto; !important"  >
+        <div class="row">
+            <div class="col-sm-12 page-height">
+                <div class="iq-main-header align-items-center justify-content-between py-3">
+                    <h4 class="vid-title">{{ __("Category List") }}</h4>                     
+                </div>
+                @if (($category_list)->isNotEmpty())
+                    <div class="favorites-contens">
+                        <ul class="category-page list-inline row p-0 mb-0">
+                        @if(isset($category_list)) 
+                            @forelse($category_list as $category_lists)
+                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
 
-<section id="iq-favorites" class="py-4">
-    <div class="container-fluid px-3 px-md-4">
-        <!-- Header -->
-        <div class="iq-main-header d-flex align-items-center justify-content-between py-3 mb-4">
-            <h2 class="vid-title m-0 h4">{{ __("Category List") }}</h2>
-        </div>
+                                    <div class="block-images position-relative">
+                                        <div class="border-bg">
+                                        <div class="img-box">
+                                            <a class="playTrailer" aria-label="{{ $category_lists->name }}" href="{{ URL::to('category').'/'.$category_lists->slug   }}">
+                                                    <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $category_lists->image ? URL::to('public/uploads/videocategory/' . $category_lists->image) : $default_vertical_image_url }}" alt="{{ $category_lists->name }}">
+                                            </a>
+                                        </div>
+                                        </div>
 
-        <!-- Category Grid -->
-        @if($category_list->isNotEmpty())
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
-                @foreach($category_list as $category)
-                    <div class="col">
-                        <div class="category-card h-100 d-flex flex-column rounded-3 overflow-hidden shadow-sm bg-white transition-all hover:shadow-lg hover:scale-[1.02]">
-                            <!-- Image -->
-                            <div class="position-relative">
-                                <a href="{{ URL::to('category') . '/' . $category->slug }}" class="d-block" aria-label="{{ $category->name }}">
-                                    <img 
-                                        src="{{ $category->image ? URL::to('public/uploads/videocategory/' . $category->image) : $default_vertical_image_url }}" 
-                                        alt="{{ $category->name }}" 
-                                        class="w-100 object-fit-cover" 
-                                        style="aspect-ratio: 16/9; max-height: 200px;"
-                                    >
-                                    <div class="overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-black bg-opacity-25 opacity-0 hover:opacity-100 transition-opacity">
-                                        <i class="fa fa-play text-white fs-3"></i>
-                                    </div>
-                                </a>
-                            </div>
+                                        <div class="block-description">
+                                        <a aria-label="{{ $category_lists->name }}" href="{{ URL::to('category').'/'.$category_lists->slug   }}">
+                                            <div class="hover-buttons text-white">
+                                                <a aria-label="{{ $category_lists->name }}" href="{{ URL::to('category').'/'.$category_lists->slug   }}">
+                                                        <p class="epi-name text-left mt-2 m-0">
+                                                            {{ Str::limit($category_lists->name, 18) }}
+                                                        </p>
 
-                            <!-- Content -->
-                            <div class="p-3 d-flex flex-column flex-grow-1">
-                                <a href="{{ URL::to('category') . '/' . $category->slug }}" class="text-decoration-none text-dark">
-                                    <h5 class="fw-bold mb-2 text-truncate">{{ Str::limit($category->name, 30) }}</h5>
-                                    <p class="text-muted small mb-3 flex-grow-1">
-                                        {{ strlen($category->description) > 100 ? substr(strip_tags(html_entity_decode($category->description)), 0, 100) . '...' : strip_tags($category->description) }}
-                                    </p>
-                                </a>
+                                                    <p class="desc-name text-left m-0 mt-1">
+                                                        {{ strlen($category_lists->description) > 75 ? substr(html_entity_decode(strip_tags($category_lists->description)), 0, 75) . '...' : strip_tags($category_lists->description) }}
+                                                    </p>
 
-                                <!-- CTA Button -->
-                                <a href="{{ URL::to('category') . '/' . $category->slug }}" 
-                                   class="btn btn-outline-primary btn-sm mt-auto w-100 fw-medium rounded-pill"
-                                   aria-label="Visit {{ $category->name }}">
-                                    <i class="fa fa-play me-1"></i> {{ __('Visit Category') }}
-                                </a>
-                            </div>
+                                                </a>
+                                                <a class="epi-name mt-2 mb-0 btn" aria-label="{{ $category_lists->name }}" href="{{ URL::to('category').'/'.$category_lists->slug   }}">
+                                                    <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Visit Category') }}
+                                                </a>
+                                            </div>
+                                        </a>
+                                        </div>
+                                </div>
+
+                                </li>
+                                @empty
+                                <div class="col-md-12 text-center mt-4"
+                                    style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                                    <p>
+                                    <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                                </div>
+                            @endforelse
+                        @endif
+                        </ul>
+                        <div class="col-md-12 pagination justify-content-end">
+                            {!! $category_list->links() !!}
                         </div>
                     </div>
-                @endforeach
+                @else
+                    <div class="col-md-12 text-center mt-4"
+                        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                        <p>
+                        <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                    </div>
+                @endif
             </div>
-
-            <!-- Pagination -->
-            <div class="mt-5 d-flex justify-content-center">
-                {!! $category_list->links() !!}
-            </div>
-
-        @else
-            <!-- Empty State -->
-            <div class="text-center py-5 my-5">
-                <img src="{{ URL::to('/assets/img/watch.png') }}" alt="No videos" class="img-fluid mb-4" style="max-height: 300px; opacity: 0.7;">
-                <h3 class="text-muted">{{ __('No Categories Available') }}</h3>
-                <p class="text-muted mt-2">{{ __('Check back later for new categories.') }}</p>
-            </div>
-        @endif
+        </div>
     </div>
 </section>
 
-<style>
-    .category-card {
-    transition: all 0.3s ease;
-}
-.category-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-.overlay {
-    transition: opacity 0.3s ease;
-}
-.hover\\:opacity-100:hover {
-    opacity: 1 !important;
-}
-.hover\\:shadow-lg:hover {
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
-}
-.transition-all {
-    transition: all 0.3s ease;
-}
-.object-fit-cover {
-    object-fit: cover;
-}
-.text-truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-</style>
 @php
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp
