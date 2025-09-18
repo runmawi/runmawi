@@ -549,9 +549,9 @@
                                                            placeholder="{{ __('Mobile Number') }}" autofocus required 
                                                            pattern="\d*" maxlength="15" inputmode="numeric">
                                                     
-                                                    <a href="{{ route('login') }}" class="refresh-btn">
+                                                    <!-- <a href="{{ route('login') }}" class="refresh-btn">
                                                         <img src="{{ URL::to('public/img/refresh.svg') }}" alt="Refresh" width="24">
-                                                    </a>
+                                                    </a> -->
                                                 </div>
 
                                                 <div class="status-message" id="mobileStatus" style="display: none;"></div>
