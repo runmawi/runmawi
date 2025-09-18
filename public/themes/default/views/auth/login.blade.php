@@ -86,7 +86,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
         </script>
-                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
         </script>
 
         <style>
@@ -104,28 +104,13 @@
             width: 100%;
         }
         
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        
         body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             margin: 0;
             padding: 0;
+            font-family: 'Arial', sans-serif;
         }
 
         .page-wrapper {
@@ -143,7 +128,7 @@
             position: relative;
             margin: 0;
             flex: 1;
-            min-height: 0; /* Allows content to shrink below its minimum height */
+            min-height: 0;
         }
 
         .footer {
@@ -157,7 +142,6 @@
             margin-top: auto;
         }
         
-        /* Ensure container-fluid in footer has proper padding */
         .footer .container-fluid {
             padding-left: 15px;
             padding-right: 15px;
@@ -165,100 +149,324 @@
             max-width: 100%;
         }
         
-        /* Ensure content doesn't overflow */
         .sign-in-page .card {
             max-width: 100%;
             width: 100%;
         }
 
+        /* Enhanced OTP Input Styling */
+        .otp-container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
         .otp-input-fields {
-            margin: auto;
-            max-width: 400px;
-            width: auto;
             display: flex;
             justify-content: center;
-            gap: 10px;
-            padding: 20px;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
 
-            input {
-                height: 40px;
-                width: 40px;
-                border-radius: 4px;
-                border: 1px solid #2f8f1f;
-                text-align: center;
-                outline: none;
-                font-size: 16px;
+        .otp-input-fields input {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            outline: none;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
 
-                &::-webkit-outer-spin-button,
-                &::-webkit-inner-spin-button {
-                    -webkit-appearance: none;
-                    margin: 0;
-                }
+        .otp-input-fields input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            background: #fff;
+        }
 
-                /* Firefox */
-                &[type=number] {
-                    -moz-appearance: textfield;
-                }
+        .otp-input-fields input:valid {
+            border-color: #28a745;
+        }
+
+        .otp-input-fields input::-webkit-outer-spin-button,
+        .otp-input-fields input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .otp-input-fields input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* TV/Large Screen Optimizations */
+        @media (min-width: 1200px) {
+            .otp-input-fields input {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+                margin: 0 5px;
+            }
+            
+            .sign-user_card {
+                min-width: 600px;
             }
         }
 
-            .reveal{
-                margin-left: -57px;
-                height: 45px !important;
-                background: #ED553B !important;
-                color: #fff !important;
-                position: absolute;
-                right: 0px;
-                border-radius: 0!important;
-                top: -61px;
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .otp-input-fields {
+                gap: 8px;
             }
-            .sign-in-page .btn{
-                border-radius: 0!important;
+            
+            .otp-input-fields input {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
             }
-            h3 {font-size: 30px!important;}
-            .from-control::placeholder{
-                color: #7b7b7b!important;
-            }
+        }
 
-            .links{
-                color: #fff;
-            }
+        /* Form Styling */
+        .mobile-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-            .nv{
+        .mobile-input-group .form-control {
+            border-radius: 6px;
+            border: 2px solid #ddd;
+            padding: 12px 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-input-group .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .country-select {
+            flex: 0 0 120px;
+        }
+
+        .mobile-input {
+            flex: 1;
+        }
+
+        .refresh-btn {
+            flex: 0 0 50px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #e9ecef;
+            border-color: #007bff;
+        }
+
+        /* Status Messages */
+        .status-message {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: rgba(40, 167, 69, 0.1);
+            color: #155724;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .status-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        /* Button Enhancements */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            border-radius: 6px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary-custom:hover:not(:disabled) {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-primary-custom:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .step {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+            color: #fff;
+            position: relative;
+            padding: 20px !important;
+        }
+
+        .step.active {
+            background: #007bff;
+        }
+
+        .step.completed {
+            background: #28a745;
+        }
+
+        .step.inactive {
+            background: #6c757d;
+        }
+
+
+        .step:last-child::after {
+            display: none;
+        }
+
+        /* Animation for form transitions */
+        .form-step {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+        }
+
+        .form-step.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Other existing styles */
+        .reveal{
+            margin-left: -57px;
+            height: 45px !important;
+            background: #ED553B !important;
+            color: #fff !important;
+            position: absolute;
+            right: 0px;
+            border-radius: 0!important;
+            top: -61px;
+        }
+        
+        .sign-in-page .btn{
+            border-radius: 6px!important;
+        }
+        
+        h3 {font-size: 30px!important;}
+        
+        .from-control::placeholder{
+            color: #7b7b7b!important;
+        }
+
+        .links{
+            color: #fff;
+        }
+
+        .nv{
             font-size: 14px;
             color: #fff;
             margin-top: 25px;
-            }
-            .km{
+        }
+        
+        .km{
             text-align:center;
             font-size: 75px;
             font-weight: 900;
-            }
-            .signcont {
-            }
-            a.f-link {
+        }
+        
+        a.f-link {
             margin-bottom: 1rem;
             font-size: 14px;
-            }
-            .d-inline-block {
+        }
+        
+        .d-inline-block {
             display: block !important;
-            }
-            i.fa.fa-google-plus {
+        }
+        
+        i.fa.fa-google-plus {
             padding: 10px !important;
-            }
-            .demo_cred {
+        }
+        
+        .demo_cred {
             background: #5c5c5c69;
             padding: 15px;
             border-radius: 15px;
             border: 2px dashed #51bce8;
             text-align: left;
-            }  
-            footer.py-4.mt-5{
-                margin-top: 0 !important;
-            } 
-            .sign-in-page{background: #000;}
-            .btn.disabled, .btn:disabled { cursor: not-allowed;}
-            
+        }  
+        
+        footer.py-4.mt-5{
+            margin-top: 0 !important;
+        } 
+        
+        .sign-in-page{background: #000;}
+        
+        .btn.disabled, .btn:disabled { 
+            cursor: not-allowed;
+        }
+
+        /* Countdown Timer */
+        .countdown-timer {
+            color: #007bff;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .resend-link {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .resend-link:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .resend-link.disabled {
+            color: #6c757d;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
         </style>
     </head>
 
@@ -275,206 +483,235 @@
             @else
                 <section class="sign-in-page bg-set">
             @endif
+        
         <div class="container">
-            <div class="row mb-4  align-items-center height-self-center">
-                <div class="col-lg-7  col-12 mb-4">
+            <div class="row mb-4 align-items-center height-self-center">
+                <div class="col-lg-7 col-12 mb-4">
                     <h1 class="km"><?php echo $settings->login_text; ?></h1>
                 </div>
                 <div class="col-lg-5 col-12 col-md-12 align-self-center">
-                    <div class="sign-user_card ">                    
-                    <div class="sign-in-page-data">
-                        <div class="sign-in-from  m-auto" align="center">
-                            <div class="row justify-content-center">
-                                <div class="col-md-12">
+                    <div class="sign-user_card">                    
+                        <div class="sign-in-page-data">
+                            <div class="sign-in-from m-auto" align="center">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12">
 
-                                <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
-                                        <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>"  ></div></div>
-                                    <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
-                                        <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>"  ></div></div>
-                                    <?php }else { ?> 
-                                        <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  ></div></div>
-                                    <?php } ?>
+                                        <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                            <img alt="apps-logo" class="apps" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo ; ?>">
+                                        <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                                            <img alt="apps-logo" class="apps" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo ; ?>">
+                                        <?php }else { ?> 
+                                            <img alt="apps-logo" class="apps" src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>">
+                                        <?php } ?>
 
-                            <?php if($settings->demo_mode == 1) { ?>
-                                <div class="demo_cred">
-                                    <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">{{ __('Demo Login') }}</p>
-                                    <p class="links"><strong>{{ __('Email') }}</strong>: admin@admin.com</p>
-                                    <p class="links mb-0"><strong>{{ __('Password') }}</strong>: Webnexs123!@#</p>
-                                </div>
-                            <?php } else  { ?>
-                            <?php } ?>
-
-                                @if (Session::has('message'))
-                                    <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
-                                @endif
-                                
-                                @if(count($errors) > 0)
-                                    @foreach( $errors->all() as $message )
-                                        <div class="alert alert-danger display-hide" id="successMessage" >
-                                            <button id="successMessage" class="close" data-close="alert"></button>
-                                            <span>{{ $message }}</span>
-                                        </div>
-                                    @endforeach
-                                @endif
-
-                                @if (@$AdminOTPCredentials->status == 1)
-
-                                    <form id="otpForm" class="otp-form mt-4" method="get">
-                                        <div class="row d-flex">
-                                            <div class="col-md-4 col-4 form-group m-0">  {{-- Country Code --}}
-                                                <select class="form-control text-center mobile_validation" id="ccode" name="ccode" required>
-                                                    @foreach($country_json_data as $code)
-                                                        <option value="{{  $code['dial_code'] }}" style="background-color:rgba(0,0,0,0.5)!important;" {{ $code['name'] == "India" ? 'selected' : ''}} > {{ "{$code['code']} ({$code['dial_code']})" }}</option>
-                                                    @endforeach
-                                                 </select> 
-                                            </div>
-
-                                            <div class="col-md-7 col-7 form-group m-0">  {{-- Mobile No --}}
-                                                <input id="mobile" type="text" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Mobile Number') }}" autofocus required pattern="\d*" maxlength="15" inputmode="numeric">
-                                            </div>
-                                            <div class="col-md-1 p-2">  {{-- Refresh--}}
-                                                <a href="{{ route('login') }}">
-                                                    <img src="{{ URL::to('public/img/refresh.svg') }}" alt="">
-                                                </a>
-                                            </div>
-                                        </div>
-
-
-                                            {{-- Mobile Exist Status --}}
-                                        <span class="mob_exist_status"></span> 
-                                        
-                                        <div class="mt-3" align="left"  >
-                                            <input type="checkbox" checked style="pointer-events: none;">
-                                            <label class="form-check-label text-white" for="remember">{{ __('Send OTP to Mobile') }}</label>
-                                        </div>  
-
-                                            <div class="otp-div">
-                                                <div class="otp-input-fields row">
-                                                    <input type="number" class="otp__digit otp__field__1" placeholder="-"  name="otp_1">
-                                                    <input type="number" class="otp__digit otp__field__2"  placeholder="-" name="otp_2">
-                                                    <input type="number" class="otp__digit otp__field__3"  placeholder="-" name="otp_3">
-                                                    <input type="number" class="otp__digit otp__field__4"  placeholder="-" name="otp_4">
-                                                    <p class="info otp_send_message"> </p>
-                                                </div>
-            
-                                                <div class="text-center p-1">
-                                                    <button type="submit" class="btn btn-hover w-100" id="verify-button" style="line-height:20px" disabled >{{ __('Verify OTP') }}</button>
-                                                </div>
-
-                                                <div class="justify-content-end links text-right mt-2">
-                                                    <a href="#"  id="resend_otp_button">{{ __('Resend OTP') }}</a>
-                                                </div>
-                                            </div>
-                                    </form>
-                                    @if (@$AdminOTPCredentials->status == 0)
-                                        <div class="d-flex justify-content-end links">
-                                            <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
-                                        </div>
-                                    @endif
-
-
-                                    <button type="submit" class="btn btn-hover ab send_otp_button" id="send_otp_button" onclick=sendOtp() style="width:100%;color:#fff!important;" >{{ __('SEND OTP') }}</button>
-                                @else
-                                    <form method="POST" id="email-login-form" action="{{ route('login') }}" class="mt-4">
-                                        @csrf
-
-                                        <input type="hidden" name="previous" value="{{ url()->previous() }}">
-                            
-                                        <div class="form-group">  {{-- E-Mail --}}
-                                            <input id="email" type="email" class="form-control login-inputs-data @error('email') is-invalid @enderror" name="email" placeholder="{{ __('Enter Your E-Mail') }}" value="{{ old('email') }}" autocomplete="email" autofocus>
-                                        </div>
-                                
-                                        <div class="form-group mt-4">  {{-- Password --}}                            
-                                            <input id="password" type="password" class="form-control login-inputs-data @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" autocomplete="current-password">
-                                        </div>
-                                        
-                                        <div class="position-relative"> {{-- eyeSlash --}}        
-                                            <span class="input-group-btn" id="eyeSlash">
-                                                <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                            </span>
-
-                                            <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                                <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                            </span>
-                                        </div>
-                                
-                                        <div class="d-flex justify-content-end links"> {{-- Reset_Password --}}     
-                                            <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
-                                        </div>
-
-                                         {{-- reCAPTCHA --}}
-                                        @if(get_enable_captcha() == 1)   
-                                            <div class="form-group text-left mt-4">
-                                                {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
-                                                {!! NoCaptcha::display() !!}
-                                            </div>
-                                        @endif
-
-                                        <div class="sign-info">
-                                            <button type="submit"id="email-login-button" class="btn btn-hover ab" style="width:100%;color:#fff!important;" disabled >{{ __('SIGN IN') }}</button>             
-                                        </div>
-                                @endif
-                            
-                        </form>
-
-                        @if (@$AdminOTPCredentials->status == 0)
-                            <div class="mt-3" align="left" style="" >
-                                <input class="" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                <label class="form-check-label text-white" for="remember">
-                                    {{ __('Keep me signed in') }}
-                                </label>
-                            </div>  
-                        @endif
-
-                                <hr style="color:#1e1e1e;">
-                                
-                                <div class="soc mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <?php if(@$system_settings != null && @$system_settings->facebook == 1 || @$system_settings->google == 1){ ?>
-                                            <div>
-                                                <p class="links">{{ __('Login with using').':' }}</p>
+                                        <?php if($settings->demo_mode == 1) { ?>
+                                            <div class="demo_cred">
+                                                <p class="links" style="font-weight: 600; border-bottom: 2px dashed #fff;">{{ __('Demo Login') }}</p>
+                                                <p class="links"><strong>{{ __('Email') }}</strong>: admin@admin.com</p>
+                                                <p class="links mb-0"><strong>{{ __('Password') }}</strong>: Webnexs123!@#</p>
                                             </div>
                                         <?php } ?>
-                                    <?php if(@$system_settings != null && @$system_settings->facebook == 1){ ?>
-                                        <div>
-                                            <a href="{{ url('/auth/redirect/facebook') }}" class="" >
-                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
-                                        </div>
-                                    <?php } ?>
-                                    
-                                        <?php if(@$system_settings != null && @$system_settings->google == 1 ){ ?>
-                                            <div>
-                                                <a href="{{ url('/auth/redirect/google') }}" class="" >
-                                                    <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.webp'; ?>" width="30" style="margin-bottom:1rem;">
-                                                </a>
+
+                                        @if (Session::has('message'))
+                                            <div id="successMessage" class="alert alert-success">{{ Session::get('message') }}</div>
+                                        @endif
+                                        
+                                        @if(count($errors) > 0)
+                                            @foreach( $errors->all() as $message )
+                                                <div class="alert alert-danger display-hide" id="successMessage">
+                                                    <button id="successMessage" class="close" data-close="alert"></button>
+                                                    <span>{{ $message }}</span>
+                                                </div>
+                                            @endforeach
+                                        @endif
+
+                                        @if (@$AdminOTPCredentials->status == 1)
+                                            <!-- Step Indicator -->
+                                            <div class="step-indicator">
+                                                <div class="step active" id="step1">1</div>
+                                                <div class="step inactive" id="step2">2</div>
                                             </div>
-                                        <?php  } ?>
+
+                                            <!-- Mobile Number Form -->
+                                            <form id="mobileForm" class="form-step active mt-4">
+                                                <h5 class="text-white mb-3">{{ __('Enter Your Mobile Number') }}</h5>
+                                                
+                                                <div class="mobile-input-group">
+                                                    <select class="form-control country-select" id="ccode" name="ccode" required>
+                                                        @foreach($country_json_data as $code)
+                                                            <option value="{{ $code['dial_code'] }}" {{ $code['name'] == "India" ? 'selected' : ''}}>
+                                                                {{ $code['code'] }} ({{ $code['dial_code'] }})
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    
+                                                    <input id="mobile" type="tel" class="form-control mobile-input" name="mobile" 
+                                                           placeholder="{{ __('Mobile Number') }}" autofocus required 
+                                                           pattern="\d*" maxlength="15" inputmode="numeric">
+                                                    
+                                                    <a href="{{ route('login') }}" class="refresh-btn">
+                                                        <img src="{{ URL::to('public/img/refresh.svg') }}" alt="Refresh" width="24">
+                                                    </a>
+                                                </div>
+
+                                                <div class="status-message" id="mobileStatus" style="display: none;"></div>
+                                                
+                                                <div class="mt-3" style="text-align: left;">
+                                                    <input type="checkbox" checked style="pointer-events: none;">
+                                                    <label class="form-check-label text-white" for="remember">{{ __('Send OTP to Mobile') }}</label>
+                                                </div>  
+
+                                                <div class="text-center mt-3">
+                                                    <button type="button" class="btn btn-primary-custom w-100" id="sendOtpBtn">
+                                                        {{ __('SEND OTP') }}
+                                                    </button>
+                                                </div>
+                                            </form>
+
+                                            <!-- OTP Verification Form -->
+                                            <form id="otpForm" class="form-step mt-4" style="display: none;">
+                                                <h5 class="text-white mb-3">{{ __('Enter Verification Code') }}</h5>
+                                                <p class="text-white-50 mb-4">{{ __('We sent a 4-digit code to your mobile number') }}</p>
+                                                
+                                                <div class="otp-container">
+                                                    <div class="otp-input-fields">
+                                                        <input type="text" class="otp__digit" id="otp1" name="otp_1" maxlength="1" pattern="\d" inputmode="numeric">
+                                                        <input type="text" class="otp__digit" id="otp2" name="otp_2" maxlength="1" pattern="\d" inputmode="numeric">
+                                                        <input type="text" class="otp__digit" id="otp3" name="otp_3" maxlength="1" pattern="\d" inputmode="numeric">
+                                                        <input type="text" class="otp__digit" id="otp4" name="otp_4" maxlength="1" pattern="\d" inputmode="numeric">
+                                                    </div>
+                                                    
+                                                    <div class="status-message" id="otpStatus" style="display: none;"></div>
+                                                    
+                                                    <div class="text-center">
+                                                        <button type="button" class="btn btn-primary-custom w-100" id="verifyOtpBtn" disabled>
+                                                            {{ __('Verify OTP') }}
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="text-center mt-3">
+                                                        <span class="text-white-50">{{ __("Didn't receive code?") }}</span>
+                                                        <a href="#" class="resend-link" id="resendOtpBtn">{{ __('Resend OTP') }}</a>
+                                                        <span class="countdown-timer" id="countdownTimer" style="display: none;"></span>
+                                                    </div>
+
+                                                    <div class="text-center mt-2">
+                                                        <button type="button" class="btn btn-link text-white" id="backToMobileBtn">
+                                                            {{ __('← Change Mobile Number') }}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        @else
+                                            <!-- Email Login Form -->
+                                            <form method="POST" id="email-login-form" action="{{ route('login') }}" class="mt-4">
+                                                @csrf
+
+                                                <input type="hidden" name="previous" value="{{ url()->previous() }}">
+                                    
+                                                <div class="form-group">
+                                                    <input id="email" type="email" class="form-control login-inputs-data @error('email') is-invalid @enderror" 
+                                                           name="email" placeholder="{{ __('Enter Your E-Mail') }}" value="{{ old('email') }}" 
+                                                           autocomplete="email" autofocus>
+                                                </div>
+                                        
+                                                <div class="form-group mt-4">                            
+                                                    <input id="password" type="password" class="form-control login-inputs-data @error('password') is-invalid @enderror" 
+                                                           placeholder="{{ __('Password') }}" name="password" autocomplete="current-password">
+                                                </div>
+                                                
+                                                <div class="position-relative">        
+                                                    <span class="input-group-btn" id="eyeSlash">
+                                                        <button class="btn btn-default reveal" onclick="visibility1()" type="button">
+                                                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                                        </button>
+                                                    </span>
+
+                                                    <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                                        <button class="btn btn-default reveal" onclick="visibility1()" type="button">
+                                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                        
+                                                <div class="d-flex justify-content-end links">     
+                                                    <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
+                                                </div>
+
+                                                @if(get_enable_captcha() == 1)   
+                                                    <div class="form-group text-left mt-4">
+                                                        {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
+                                                        {!! NoCaptcha::display() !!}
+                                                    </div>
+                                                @endif
+
+                                                <div class="sign-info">
+                                                    <button type="submit" id="email-login-button" class="btn btn-hover ab" style="width:100%;color:#fff!important;" disabled>
+                                                        {{ __('SIGN IN') }}
+                                                    </button>             
+                                                </div>
+                                            </form>
+
+                                            <div class="mt-3" style="text-align: left;">
+                                                <input class="" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                <label class="form-check-label text-white" for="remember">
+                                                    {{ __('Keep me signed in') }}
+                                                </label>
+                                            </div>  
+                                        @endif
+
+                                        <hr style="color:#1e1e1e;">
+                                        
+                                        <div class="soc mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <?php if(@$system_settings != null && @$system_settings->facebook == 1 || @$system_settings->google == 1){ ?>
+                                                    <div>
+                                                        <p class="links">{{ __('Login with using').':' }}</p>
+                                                    </div>
+                                                <?php } ?>
+                                                
+                                                <?php if(@$system_settings != null && @$system_settings->facebook == 1){ ?>
+                                                    <div>
+                                                        <a href="{{ url('/auth/redirect/facebook') }}" class="">
+                                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;">
+                                                        </a>
+                                                    </div>
+                                                <?php } ?>
+                                                
+                                                <?php if(@$system_settings != null && @$system_settings->google == 1 ){ ?>
+                                                    <div>
+                                                        <a href="{{ url('/auth/redirect/google') }}" class="">
+                                                            <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.webp'; ?>" width="30" style="margin-bottom:1rem;">
+                                                        </a>
+                                                    </div>
+                                                <?php  } ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-left links">
+                                            {{ __("Don't have an account?") }} 
+                                            <a href="{{ route('signup') }}" class="text-primary ml-2" style="font-weight: 600">{{ __('Sign Up Here!') }}</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </form>
-                            <div class="">
-                        <div class="text -left links">
-                        {{ __("Don't have an account?") }} <a href="{{ route('signup') }}" class="text-primary ml-2" style="font-weight: 600">{{ __('Sign Up Here!') }}</a>
+                            </div>
                         </div>
-                        
-                    </div>
-                        </div>
-                    </div>
-                    
                     </div>
                 </div>
             </div>
         </div>
-                </section>
+        </section>
 
-                <!-- Footer -->
-                <footer class="footer">
-                    @php
-                        include(public_path('themes/default/views/footer.blade.php'));
-                    @endphp
-                </footer>
+        <!-- Footer -->
+        <footer class="footer">
+            @php
+                include(public_path('themes/default/views/footer.blade.php'));
+            @endphp
+        </footer>
         </div>
-            <style>
+
+        <style>
             .overlay {
                 position: fixed;
                 top: 0;
@@ -489,266 +726,353 @@
                 z-index: 2;
             }
         </style>
+
         <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>     
+        <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>     
 
-<script>
-    $(globalThis).load(function() {
-        var email = $('#email').val().trim();
-        var password = $('#password').val().trim();
-        // alert(email);
-
-        var loginButton = $('#email-login-button');
-
-        if (email && password) {
-            loginButton.prop("disabled", false);
-        } else {
-            loginButton.prop("disabled", true);
-        }
-    });
-</script>
-
-<script>
-    $(document).ready(function(){
-        var theme_change = "{{ $theme_mode }}";
-        var bg_img_check = "{{ $login_bgimg ? 'true' : 'false' }}";
-        console.log('theme_change ' + theme_change);
-        
-        if(theme_change === 'dark' && bg_img_check === 'false'){
-            $(".bg-set").css("background", "#000");
-            $(".km").css("color", "#fff");
-        }
-        else if(theme_change === 'light' && bg_img_check === 'false'){
-            $(".bg-set").css("background", "#fff");
-            $(".km").css("color", "#000");
-        }
-    });
-</script>
         <script>
+            $(document).ready(function() {
+                // Theme handling
+                var theme_change = "{{ $theme_mode }}";
+                var bg_img_check = "{{ $login_bgimg ? 'true' : 'false' }}";
+                
+                if(theme_change === 'dark' && bg_img_check === 'false'){
+                    $(".bg-set").css("background", "#000");
+                    $(".km").css("color", "#fff");
+                } else if(theme_change === 'light' && bg_img_check === 'false'){
+                    $(".bg-set").css("background", "#fff");
+                    $(".km").css("color", "#000");
+                }
 
-            $(document).ready(function(){
+                // Hide success messages after 5 seconds
                 setTimeout(function() {
                     $('#successMessage').fadeOut('fast');
                 }, 5000);
 
-                $("#show_hide_password a").on('click', function(event) {
-                    event.preventDefault();
-                    if($('#show_hide_password input').attr("type") == "text"){
-                        $('#show_hide_password input').attr('type', 'password');
-                        $('#show_hide_password i').addClass( "fa-eye-slash" );
-                        $('#show_hide_password i').removeClass( "fa-eye" );
-                    }else if($('#show_hide_password input').attr("type") == "password"){
-                        $('#show_hide_password input').attr('type', 'text');
-                        $('#show_hide_password i').removeClass( "fa-eye-slash" );
-                        $('#show_hide_password i').addClass( "fa-eye" );
-                    }
-                });
-            });
+                // Enhanced OTP Input Handling
+                const otpInputs = document.querySelectorAll('.otp__digit');
+                let countdownInterval;
+                let resendTimeout;
 
-            var onloadCallback = function(){ }
-
-            function visibility1() {
-                var x = document.getElementById('password');
-                if (x.type === 'password') {
-                    x.type = "text";
-                    $('#eyeShow').show();
-                    $('#eyeSlash').hide();
-                }else {
-                    x.type = "password";
-                    $('#eyeShow').hide();
-                    $('#eyeSlash').show();
-                }
-            }
-
-            // Mobile Exist Check 
-
-            $(document).ready(function() {
-
-                // $(".mobile_validation").on("input", function() {
-
-                //     let mobileNumber = $('#mobile').val();
-                //     let ccode = $('#ccode').val();
-                    
-                //     $('.mob_exist_status').text("");
-
-                //     if( mobileNumber !== "" ){
-
-                //         $.ajax({
-                //             url: "{{ route('auth.otp.check-mobile-exist') }}",
-                //             type: "get",
-                //             data: {
-                //                 mobile: mobileNumber,
-                //                 ccode: ccode
-                //             },
-                //             dataType: "json",
-
-                //             success: function(response) {
-                //                 if (response.exists) {
-                //                     document.getElementById("send_otp_button").removeAttribute("disabled");
-                //                     $('.mob_exist_status').text("Mobile Number exists!").css('color', 'green');;
-
-                //                 } else {
-                //                     document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
-                //                     $('.mob_exist_status').text("Mobile Number not exists !").css('color', 'red');
-                //                 }
-                //             },
-                //             error: function(error) {
-                //                 console.error('AJAX error:', error);
-                //             }
-                //         });
-                //     }
-                // });
-
-                $('.otp-div').hide();
-
-                $('#resend_otp_button').click(function() {
-                    sendOtp();
-                });
-
-                $('#mobile, #ccode').keypress(function(e) {
-                    if (e.which == 13) { 
-                        e.preventDefault();
-                        sendOtp();
-                    }
-                });
-            });
-
-            function sendOtp() {
-                $('#mobile').attr('readonly', true);
-                $('#ccode').attr('disabled', true);
-
-                let mobileNumber = $('#mobile').val();
-                let ccode = $('#ccode').val();
-                $('.mob_exist_status').text("");
-
-                $.ajax({
-                    url: "{{ route('auth.otp.sending-otp') }}",
-                    type: "get",
-                    data: {
-                        mobile: mobileNumber,
-                        ccode: ccode
-                    },
-                    dataType: "json",
-                    success: function(response) {
-                        if (response.exists) {
-                            $('.otp-div').show();
-                            $('#send_otp_button').hide();
-                            $('.mob_exist_status').text(response.message_note).css('color', 'green');
-                        } else {
-                            if (response.error_note == "Invalid User") {
-                                $('#mobile').attr('readonly', false);
-                                $('#ccode').attr('disabled', false);
+                // Initialize OTP inputs
+                otpInputs.forEach((input, index) => {
+                    input.addEventListener('input', function(e) {
+                        // Only allow digits
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                        
+                        if (this.value.length === 1) {
+                            // Move to next input
+                            if (index < otpInputs.length - 1) {
+                                otpInputs[index + 1].focus();
                             }
-                            $('.mob_exist_status').text(response.message_note).css('color', 'red');
                         }
-                    },
-                    error: function(error) {
-                        console.error('AJAX error:', error);
+                        
+                        checkOTPComplete();
+                    });
+
+                    input.addEventListener('keydown', function(e) {
+                        // Handle backspace
+                        if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                            otpInputs[index - 1].focus();
+                        }
+                        
+                        // Handle arrow keys for TV navigation
+                        if (e.key === 'ArrowLeft' && index > 0) {
+                            e.preventDefault();
+                            otpInputs[index - 1].focus();
+                        }
+                        
+                        if (e.key === 'ArrowRight' && index < otpInputs.length - 1) {
+                            e.preventDefault();
+                            otpInputs[index + 1].focus();
+                        }
+
+                        // Handle paste
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            if ($('#verifyOtpBtn').is(':enabled')) {
+                                $('#verifyOtpBtn').click();
+                            }
+                        }
+                    });
+
+                    // Handle paste event
+                    input.addEventListener('paste', function(e) {
+                        e.preventDefault();
+                        const paste = (e.clipboardData || window.clipboardData).getData('text');
+                        const digits = paste.replace(/[^0-9]/g, '').slice(0, 4);
+                        
+                        for (let i = 0; i < digits.length && i < otpInputs.length; i++) {
+                            otpInputs[i].value = digits[i];
+                        }
+                        
+                        // Focus on next empty input or last filled input
+                        const nextEmptyIndex = Array.from(otpInputs).findIndex(inp => inp.value === '');
+                        if (nextEmptyIndex !== -1) {
+                            otpInputs[nextEmptyIndex].focus();
+                        } else {
+                            otpInputs[otpInputs.length - 1].focus();
+                        }
+                        
+                        checkOTPComplete();
+                    });
+                });
+
+                function checkOTPComplete() {
+                    const allFilled = Array.from(otpInputs).every(input => input.value.length === 1);
+                    $('#verifyOtpBtn').prop('disabled', !allFilled);
+                }
+
+                function clearOTP() {
+                    otpInputs.forEach(input => input.value = '');
+                    otpInputs[0].focus();
+                    $('#verifyOtpBtn').prop('disabled', true);
+                }
+
+                function showMessage(elementId, message, type) {
+                    const element = $(elementId);
+                    element.removeClass('status-success status-error');
+                    element.addClass(type === 'success' ? 'status-success' : 'status-error');
+                    element.text(message).show();
+                }
+
+                function hideMessage(elementId) {
+                    $(elementId).hide();
+                }
+
+                function startCountdown(seconds) {
+                    let timeLeft = seconds;
+                    $('#resendOtpBtn').addClass('disabled');
+                    $('#countdownTimer').show().text(`(${timeLeft}s)`);
+                    
+                    countdownInterval = setInterval(() => {
+                        timeLeft--;
+                        $('#countdownTimer').text(`(${timeLeft}s)`);
+                        
+                        if (timeLeft <= 0) {
+                            clearInterval(countdownInterval);
+                            $('#resendOtpBtn').removeClass('disabled');
+                            $('#countdownTimer').hide();
+                        }
+                    }, 1000);
+                }
+
+                function switchToOTPStep() {
+                    $('#step1').removeClass('active').addClass('completed');
+                    $('#step2').removeClass('inactive').addClass('active');
+                    $('#mobileForm').removeClass('active').hide();
+                    $('#otpForm').addClass('active').show();
+                    $('#mobile, #ccode').prop('readonly', true);
+                    clearOTP();
+                    startCountdown(60); // 60 second countdown
+                }
+
+                function switchToMobileStep() {
+                    $('#step1').removeClass('completed').addClass('active');
+                    $('#step2').removeClass('active').addClass('inactive');
+                    $('#otpForm').removeClass('active').hide();
+                    $('#mobileForm').addClass('active').show();
+                    $('#mobile, #ccode').prop('readonly', false);
+                    hideMessage('#otpStatus');
+                    hideMessage('#mobileStatus');
+                    clearInterval(countdownInterval);
+                    $('#countdownTimer').hide();
+                    $('#resendOtpBtn').removeClass('disabled');
+                }
+
+                // Mobile validation and OTP sending
+                function validateMobile() {
+                    const mobile = $('#mobile').val().trim();
+                    const ccode = $('#ccode').val();
+                    
+                    if (mobile.length < 10 && mobile.length > 1) {
+                        showMessage('#mobileStatus', 'Please enter a valid mobile number', 'error');
+                        $('#sendOtpBtn').prop('disabled', true);
+                        return false;
+                    }
+                    
+                    hideMessage('#mobileStatus');
+                    $('#sendOtpBtn').prop('disabled', false);
+                    return true;
+                }
+
+                // Event handlers
+                $('#mobile, #ccode').on('input change', function() {
+                    validateMobile();
+                });
+
+                $('#mobile').on('keypress', function(e) {
+                    // Only allow digits
+                    if (!/[0-9]/.test(String.fromCharCode(e.which))) {
+                        e.preventDefault();
+                    }
+                    
+                    if (e.which === 13) { // Enter key
+                        e.preventDefault();
+                        if (!$('#sendOtpBtn').is(':disabled')) {
+                            $('#sendOtpBtn').click();
+                        }
                     }
                 });
-            }
 
-                
-        var otp_inputs = document.querySelectorAll(".otp__digit")
-        var mykey = "0123456789".split("")
-        otp_inputs.forEach((_) => {
-            _.addEventListener("keyup", handle_next_input)
-        })
+                $('#sendOtpBtn').on('click', function() {
+                    if (!validateMobile()) return;
+                    
+                    const mobile = $('#mobile').val().trim();
+                    const ccode = $('#ccode').val();
+                    
+                    $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Sending...');
+                    hideMessage('#mobileStatus');
 
-        function handle_next_input(event) {
-            let current = event.target
-            let index = parseInt(current.classList[1].split("__")[2])
-            current.value = event.key
+                    $.ajax({
+                        url: "{{ route('auth.otp.sending-otp') }}",
+                        type: "GET",
+                        data: { mobile: mobile, ccode: ccode },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.exists) {
+                                showMessage('#mobileStatus', response.message_note || 'OTP sent successfully!', 'success');
+                                setTimeout(() => switchToOTPStep(), 1000);
+                            } else {
+                                showMessage('#mobileStatus', response.message_note || 'Failed to send OTP', 'error');
+                                $('#sendOtpBtn').prop('disabled', false).text('{{ __("SEND OTP") }}');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX error:', error);
+                            showMessage('#mobileStatus', 'Network error. Please try again.', 'error');
+                            $('#sendOtpBtn').prop('disabled', false).text('{{ __("SEND OTP") }}');
+                        }
+                    });
+                });
 
-            if (event.keyCode == 8 && index > 1) {
-                current.previousElementSibling.focus()
-            }
-            if (index < 4 && mykey.indexOf("" + event.key + "") != -1) {
-                var next = current.nextElementSibling;
-                next.focus()
-            }
-            var _finalKey = ""
-            for (let {
-                    value
-                }
-                of otp_inputs) {
-                _finalKey += value
-            }
-
-            if (_finalKey.length == 4) {
-                document.getElementById("verify-button").removeAttribute("disabled");
-            } else {
-                document.getElementById("verify-button").setAttribute("disabled", "disabled");
-            }
-        }
-
-        $("#verify-button").click(function(e){
-            e.preventDefault();
-            let form = $('.otp-form')[0];
-            let data = new FormData(form);
-            $('.otp_send_message,.mob_exist_status').text( " " );
-            
-            $.ajax({
-                url: "{{ route('auth.otp.otp_verification') }}",
-                type: "get",
-                data : data,
-                data: $('.otp-form').serialize(),
-                dataType:"JSON",
-                
-                success: function(response) {
-
-                    if( response.status == true ){
-
-                        globalThis.location.href = response.redirection_url;
-
-                    }else if ( response.status == false ) {
-
-                        $('.otp__digit').val("");
-                        $('.otp_send_message').text( response.message_note ).css('color', 'red');
-                        document.getElementById("verify-button").setAttribute("disabled", "disabled");
+                $('#verifyOtpBtn').on('click', function() {
+                    const otpValues = Array.from(otpInputs).map(input => input.value).join('');
+                    
+                    if (otpValues.length !== 4) {
+                        showMessage('#otpStatus', 'Please enter complete OTP', 'error');
+                        return;
                     }
-                },
+
+                    $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Verifying...');
+                    hideMessage('#otpStatus');
+
+                    const formData = {
+                        otp_1: otpInputs[0].value,
+                        otp_2: otpInputs[1].value,
+                        otp_3: otpInputs[2].value,
+                        otp_4: otpInputs[3].value,
+                        mobile: $('#mobile').val(),
+                        ccode: $('#ccode').val()
+                    };
+
+                    $.ajax({
+                        url: "{{ route('auth.otp.otp_verification') }}",
+                        type: "GET",
+                        data: formData,
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status === true) {
+                                showMessage('#otpStatus', 'OTP verified successfully!', 'success');
+                                setTimeout(() => {
+                                    window.location.href = "/home";
+                                }, 1500);
+                            } else {
+                                showMessage('#otpStatus', response.message_note || 'Invalid OTP', 'error');
+                                clearOTP();
+                                $('#verifyOtpBtn').text('{{ __("Verify OTP") }}');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX error:', error);
+                            showMessage('#otpStatus', 'Verification failed. Please try again.', 'error');
+                            clearOTP();
+                            $('#verifyOtpBtn').text('{{ __("Verify OTP") }}');
+                        }
+                    });
+                });
+
+                $('#resendOtpBtn').on('click', function(e) {
+                    e.preventDefault();
+                    if ($(this).hasClass('disabled')) return;
+                    
+                    const mobile = $('#mobile').val().trim();
+                    const ccode = $('#ccode').val();
+                    
+                    hideMessage('#otpStatus');
+                    
+                    $.ajax({
+                        url: "{{ route('auth.otp.sending-otp') }}",
+                        type: "GET",
+                        data: { mobile: mobile, ccode: ccode },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.exists) {
+                                showMessage('#otpStatus', 'OTP resent successfully!', 'success');
+                                clearOTP();
+                                startCountdown(60);
+                            } else {
+                                showMessage('#otpStatus', response.message_note || 'Failed to resend OTP', 'error');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX error:', error);
+                            showMessage('#otpStatus', 'Failed to resend OTP. Please try again.', 'error');
+                        }
+                    });
+                });
+
+                $('#backToMobileBtn').on('click', function() {
+                    switchToMobileStep();
+                });
+
+                // Email login form validation
+                $(".login-inputs-data").on("input", function() {
+                    const email = $('#email').val().trim();
+                    const password = $('#password').val().trim();
+                    $('#email-login-button').prop("disabled", !(email && password));
+                });
+
+                $("#email-login-button").on('click', function(e) { 
+                    e.preventDefault();
+                    $(this).prop("disabled", true); 
+                    $("#email-login-form").submit(); 
+                });
+
+                // Password visibility toggle
+                window.visibility1 = function() {
+                    var x = document.getElementById('password');
+                    if (x.type === 'password') {
+                        x.type = "text";
+                        $('#eyeShow').show();
+                        $('#eyeSlash').hide();
+                    } else {
+                        x.type = "password";
+                        $('#eyeShow').hide();
+                        $('#eyeSlash').show();
+                    }
+                };
+
+                // reCAPTCHA callback
+                window.onloadCallback = function() {};
+
+                // Initialize mobile validation on page load
+                validateMobile();
             });
-        });
-
-        $(document).ready(function() {
-            $(".login-inputs-data").on("input", function() {
-
-                const email = $('#email').val().trim();
-                const password = $('#password').val().trim();
-
-                const loginButton = $('#email-login-button');
-
-                if (email && password) {
-                    loginButton.prop("disabled", false);
-                } else {
-                    loginButton.prop("disabled", true);
-                }
-            });
-
-            $("#email-login-button").click(function(){ 
-                event.preventDefault();
-                $(this).prop("disabled", true); 
-
-                $("#email-login-form").submit(); 
-            });
-        });
-
         </script>
 
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="assets/js/jquery-3.4.1.min.js"><\/script>')</script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/slick.min.js"></script>
+        <script src="assets/js/owl.carousel.min.js"></script>
+        <script src="assets/js/select2.min.js"></script>
+        <script src="assets/js/jquery.magnific-popup.min.js"></script>
+        <script src="assets/js/slick-animation.min.js"></script>
+        <script src="assets/js/custom.js"></script>
+        <script src="assets/js/jquery.lazy.min.js"></script>
+
     </body>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="assets/js/jquery-3.4.1.min.js"><\/script>')</script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/slick.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/select2.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/slick-animation.min.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <script src="assets/js/jquery.lazy.min.js"></script>
-
 </html>
