@@ -309,7 +309,7 @@ class StripePaymentController extends Controller
         try {
 
             if( Auth::guest()){
-                return redirect('login');
+                return redirect('/');
             }
 
             $default_Currency = CurrencySetting::first();
@@ -554,7 +554,7 @@ class StripePaymentController extends Controller
         try {
 
             if( Auth::guest()){
-                return redirect('login');
+                return redirect('/');
             }
 
             $default_Currency = CurrencySetting::first();
@@ -773,7 +773,7 @@ class StripePaymentController extends Controller
         try {
             
             if( Auth::guest()){
-                return redirect('login');
+                return redirect('/');
             }
 
             $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
@@ -999,7 +999,7 @@ class StripePaymentController extends Controller
         try {
 
             if( Auth::guest()){
-                return redirect('login');
+                return redirect('/');
             }
 
             $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
@@ -1213,7 +1213,7 @@ class StripePaymentController extends Controller
         try {
 
             if( Auth::guest()){
-                return redirect('login');
+                return redirect('/');
             }
             
             $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
@@ -1442,7 +1442,7 @@ class StripePaymentController extends Controller
             try {
                 
                 if( Auth::guest()){
-                    return redirect('login');
+                    return redirect('/');
                 }
 
                 $default_Currency = CurrencySetting::first();
