@@ -62,7 +62,7 @@ class AdminDashboardController extends Controller
 
         if (!Auth::check()) {
             // User is not authenticated
-            return redirect('/login');
+            return redirect('/');
         }
 
         if (Auth::user()->role != 'admin') {
