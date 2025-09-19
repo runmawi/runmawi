@@ -56,12 +56,11 @@ class AdminDashboardController extends Controller
 
     public function Index()
     {
-        if (!Auth::guest() && Auth::user()->package == 'Channel' || Auth::user()->package == 'CPP') {
-            return redirect('/admin/restrict');
-        }
+        // if (!Auth::guest() && Auth::user()->package == 'Channel' || Auth::user()->package == 'CPP') {
+        //     return redirect('/admin/restrict');
+        // }
 
         if (!Auth::check()) {
-            // User is not authenticated
             return redirect('/');
         }
 
