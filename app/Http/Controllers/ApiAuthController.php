@@ -1230,13 +1230,13 @@ class ApiAuthController extends Controller
       $adddevice->save();
 
       // Only for Play Store Testing 
-      if ((Auth::user()->free_otp_status == 1) || (Auth::user()->role == "admin")) {
+      // if ((Auth::user()->free_otp_status == 1) || (Auth::user()->role == "admin")) {
 
-        user::find(Auth::user()->id)->update(["otp" => "1234", "password" => Hash::make("1234"),]);
+      //   user::find(Auth::user()->id)->update(["otp" => "1234", "password" => Hash::make("1234"),]);
 
-      } else {
-        user::find(Auth::user()->id)->update(['otp' => null, 'otp_request_id' => null, 'otp_through' => null]);
-      }
+      // } else {
+      //   user::find(Auth::user()->id)->update(['otp' => null, 'otp_request_id' => null, 'otp_through' => null]);
+      // }
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create(['user_id' => Auth::user()->id]);
@@ -4193,8 +4193,8 @@ class ApiAuthController extends Controller
       $activation_code = $request->post('activation_code');
       $ccode = $request->post('ccode');
       $mobile = $request->post('mobile');
-      // $user = User::where('mobile', "=", $mobile)->update(['otp' => "1234"]);
-      $user = User::where('mobile', $mobile)->first();
+      $user = User::where('mobile', "=", $mobile)->update(['otp' => "1234"]);
+      // $user = User::where('mobile', $mobile)->first();
       $fetch_user = User::where('mobile', "=", $mobile)->first();
       // $user = User::where('activation_code', '=', $activation_code)->first();
       // $fetch_user = User::where('activation_code', '=', $activation_code)->first();
