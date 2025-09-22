@@ -1,7 +1,7 @@
 @php
     include(public_path('themes/default/views/header.php'));
 @endphp
-    
+
 <section id="iq-favorites" class="category-list-section">
     <div class="container-fluid">
         <div class="row">
@@ -9,43 +9,41 @@
                 <div class="iq-main-header align-items-center justify-content-between py-3">
                     <h4 class="vid-title">{{ __("Category List") }}</h4>                     
                 </div>
-                
-                @if (($category_list)->isNotEmpty())
+
+                @if ($category_list->isNotEmpty())
                     <div class="favorites-contens">
                         <ul class="list-inline row p-0 mb-0">
-                            @forelse($category_list as $category_lists)
-                                <li class="slide-item col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xs-12">
+                            @foreach($category_list as $category_lists)
+                                <li class="slide-item col-sm-6 col-md-4 col-lg-3 col-xl-2 col-12 mb-4">
+                                    <a href="{{ url('category/'.$category_lists->slug) }}" class="text-decoration-none">
+                                        <div class="card category-card shadow rounded h-100" style="background-color: #f8f9fa; transition: transform 0.2s;">
+                                            <img 
+                                                src="{{ $category_lists->image ? URL::to('public/uploads/videocategory/' . $category_lists->image) : $default_vertical_image_url }}" 
+                                                alt="{{ $category_lists->name }}" 
+                                                class="card-img-top img-fluid" 
+                                                style="object-fit: cover; height: 200px; width: 100%;"
+                                            >
 
-                                    <div class="card category-card shadow rounded mb-4" style="height: 300px;">
-                                        <a href="{{ URL::to('category').'/'.$category_lists->slug   }}" class="card-link">
-                                            <img src="{{ $category_lists->image ? URL::to('public/uploads/videocategory/' . $category_lists->image) : $default_vertical_image_url }}" alt="{{ $category_lists->name }}" class="card-img-top img-fluid" style="object-fit: cover; height: 200px;">
-                                        </a>
+                                            <div class="card-body d-flex flex-column justify-content-between p-3" style="height: 150px;">
+                                                <h6 class="card-title text-truncate text-dark mb-2">
+                                                    {{ Str::limit($category_lists->name, 20) }}
+                                                </h6>
 
-                                        <div class="card-body p-3">
-                                            <h6 class="card-title text-truncate">{{ Str::limit($category_lists->name, 20) }}</h6>
-                                            
-                                            <p class="card-text text-truncate mb-1">
-                                                {{ strlen($category_lists->description) > 75 ? substr(html_entity_decode(strip_tags($category_lists->description)), 0, 75) . '...' : strip_tags($category_lists->description) }}
-                                            </p>
+                                                <p class="card-text text-truncate text-muted mb-2" style="font-size: 0.9rem;">
+                                                    {{ strlen($category_lists->description) > 75 ? substr(strip_tags(html_entity_decode($category_lists->description)), 0, 75) . '...' : strip_tags($category_lists->description) }}
+                                                </p>
 
-                                            <a href="{{ URL::to('category').'/'.$category_lists->slug   }}" class="btn btn-primary btn-sm mt-2">
-                                                {{ __('Visit Category') }}
-                                            </a>
+                                                <span class="btn btn-sm btn-primary mt-auto">{{ __('Visit Category') }}</span>
+                                            </div>
                                         </div>
-                                    </div>
-
+                                    </a>
                                 </li>
-                                @empty
-                                <div class="col-md-12 text-center mt-4"
-                                     style="background: url(<?= URL::to('/assets/img/watch.png') ?>); height: 500px; background-position: center; background-repeat: no-repeat; background-size: contain;">
-                                    <h3 class="text-center">{{ __('No Video Available') }}</h3>
-                                </div>
-                            @endforelse
+                            @endforeach
                         </ul>
                     </div>
                 @else
                     <div class="col-md-12 text-center mt-4"
-                         style="background: url(<?= URL::to('/assets/img/watch.png') ?>); height: 500px; background-position: center; background-repeat: no-repeat; background-size: contain;">
+                         style="background: url('{{ URL::to('/assets/img/watch.png') }}'); height: 500px; background-position: center; background-repeat: no-repeat; background-size: contain;">
                         <h3 class="text-center">{{ __('No Video Available') }}</h3>
                     </div>
                 @endif
