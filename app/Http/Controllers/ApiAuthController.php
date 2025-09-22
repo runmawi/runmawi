@@ -4193,8 +4193,8 @@ class ApiAuthController extends Controller
       $activation_code = $request->post('activation_code');
       $ccode = $request->post('ccode');
       $mobile = $request->post('mobile');
-      $user = User::where('mobile', "=", $mobile)->update(['otp' => "1234"]);
-      // $user = User::where('mobile', $mobile)->first();
+      // $user = User::where('mobile', "=", $mobile)->update(['otp' => "1234"]);
+      $user = User::where('mobile', $mobile)->first();
       $fetch_user = User::where('mobile', "=", $mobile)->first();
       // $user = User::where('activation_code', '=', $activation_code)->first();
       // $fetch_user = User::where('activation_code', '=', $activation_code)->first();
@@ -30604,7 +30604,7 @@ class ApiAuthController extends Controller
 
       if (!is_null($user) && ($user->role == "admin" || $user->free_otp_status == 1)) {
 
-        // $user = User::Where('id', $user_id)->where('mobile', $mobile)->update(["otp" => "1234", "password" => Hash::make("1234"),]);
+        $user = User::Where('id', $user_id)->where('mobile', $mobile)->update(["otp" => "1234", "password" => Hash::make("1234"),]);
 
         return response()->json([
           "status" => 'true',
