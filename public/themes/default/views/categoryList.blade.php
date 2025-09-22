@@ -16,8 +16,10 @@
                             @forelse($category_list as $category_lists)
                                 <li class="slide-item col-sm-3 col-md-2 col-lg-2 col-xl-2 col-xs-12">
 
-                                    <div class="card category-card shadow rounded mb-4">
-                                        <img src="{{ $category_lists->image ? URL::to('public/uploads/videocategory/' . $category_lists->image) : $default_vertical_image_url }}" alt="{{ $category_lists->name }}" class="card-img-top img-fluid" style="object-fit: cover; height: 200px;">
+                                    <div class="card category-card shadow rounded mb-4" style="height: 300px;">
+                                        <a href="{{ URL::to('category').'/'.$category_lists->slug   }}" class="card-link">
+                                            <img src="{{ $category_lists->image ? URL::to('public/uploads/videocategory/' . $category_lists->image) : $default_vertical_image_url }}" alt="{{ $category_lists->name }}" class="card-img-top img-fluid" style="object-fit: cover; height: 200px;">
+                                        </a>
 
                                         <div class="card-body p-3">
                                             <h6 class="card-title text-truncate">{{ Str::limit($category_lists->name, 20) }}</h6>
