@@ -160,22 +160,20 @@
 							</div>
 						</div>
 						
-						@if ( Auth::user()->role != "admin" )
-							<div class="col-sm-6 mt-2"> 
-								<div class="panel panel-primary" data-collapsed="0"> 
-									<div class="panel-heading"> 
-										<div class="panel-options"> 
-											<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
-										</div>
-									</div>
-
-									<div class="panel-body" style="display: block;"> 
-										<label class="mb-1">OTP </label>
-										<input type="text" class="form-control mb-3" name="otp" id="otp" value="<?php if(!empty($user->otp)): ?><?= $user->otp ?><?php endif; ?>" />
+						<div class="col-sm-6 mt-2"> 
+							<div class="panel panel-primary" data-collapsed="0"> 
+								<div class="panel-heading"> 
+									<div class="panel-options"> 
+										<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
 									</div>
 								</div>
+
+								<div class="panel-body" style="display: block;"> 
+									<label class="mb-1">OTP </label>
+									<input type="number" min="1000" max="9999" class="form-control mb-3" name="otp" id="otp" value="<?php if(!empty($user->otp)): ?><?= $user->otp ?><?php endif; ?>" />
+								</div>
 							</div>
-						@endif
+						</div>
 
 						<div class="col-md-3">
 							<label for="">User Active </label>
@@ -199,8 +197,6 @@
 							<label for="">Free OTP Status</label>
 							<div class="d-flex justify-content-around align-items-center" style="width:50%;">
 
-								<div style="color:red;">OFF</div>
-
 								<div class="mt-1">
 									<label class="switch">
 										<input type="checkbox" id="free_otp_status" name="free_otp_status" {{ $user->free_otp_status == 1 ? 'checked' : '' }}>
@@ -208,7 +204,6 @@
 									</label>
 								</div>
 
-								<div style="color:green;">ON</div>
 							</div>
 							<div class="make-switch" data-on="success" data-off="warning"></div>
 						</div>
