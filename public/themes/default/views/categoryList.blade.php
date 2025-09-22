@@ -16,7 +16,7 @@
                             @foreach($category_list as $category_lists)
                                 <li class="slide-item col-sm-6 col-md-4 col-lg-3 col-xl-2 col-12 mb-4">
                                     <a href="{{ url('category/'.$category_lists->slug) }}" class="text-decoration-none">
-                                        <div class="card category-card shadow rounded h-100" style="background-color: #f8f9fa; transition: transform 0.2s;">
+                                        <div class="card category-card shadow rounded h-100" style="background-color: #251731ff; transition: transform 0.2s;">
                                             <img 
                                                 src="{{ $category_lists->image ? URL::to('public/uploads/videocategory/' . $category_lists->image) : $default_vertical_image_url }}" 
                                                 alt="{{ $category_lists->name }}" 
