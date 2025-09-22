@@ -30604,7 +30604,8 @@ class ApiAuthController extends Controller
 
       if (!is_null($user) && ($user->role == "admin" || $user->free_otp_status == 1)) {
 
-        $user = User::Where('id', $user_id)->where('mobile', $mobile)->first();
+        $admin_user_otp = $user->otp ? $user->otp :"1234";
+        $user = User::Where('id', $user_id)->where('mobile', $mobile)->update(["otp" => $admin_user_otp, "password" => Hash::make($admin_user_otp),]);
 
         return response()->json([
           "status" => 'true',
