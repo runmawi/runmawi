@@ -81,23 +81,19 @@
 
 <!-- ✅ Razorpay Script -->
 <script>
-    // Show the custom alert
     function showCustomAlert(type, title, message, redirectUrl) {
         const container = document.getElementById("custom-alert-container");
 
-        // Build inner HTML first
         container.innerHTML = `
             <div class="custom-alert ${type}">
-                <h2 id="custom-alter-title">${title}</h2>
-                <p id="custom-alter-para">${message}</p>
-                <p id="custom-alter-para">Redirecting in 5 seconds...</p>
+                <h2 id="custom-alert-title">${title}</h2>
+                <p id="custom-alert-message">${message}</p>
+                <p>Redirecting in 5 seconds...</p>
             </div>
         `;
 
-        // Show the alert
         container.style.display = "flex";
 
-        // Redirect after 5 seconds
         setTimeout(() => {
             window.location.href = redirectUrl;
         }, 5000);
@@ -118,12 +114,33 @@
         },
         handler: function (response) {
             console.log("✅ Payment successful:", response);
-            showCustomAlert(
-                "success",
-                "Payment Successful",
-                "Thank you! Your subscription will be activated.",
-                "{{ url('/') }}" // Redirect to home on success
-            );
+
+            const data = {
+                subscription_id: "{{ $subscription_id }}",
+                payment_id: response.razorpay_payment_id,
+                _token: "{{ csrf_token() }}"
+            };
+
+            fetch("{{ route('razorpay.checkStatus') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": data._token
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.status === 'success') {
+                    showCustomAlert("success", "Payment Successful", res.message, "{{ url('/') }}");
+                } else {
+                    showCustomAlert("error", "Payment Error", res.message, "{{ url('/') }}");
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error verifying payment:", error);
+                showCustomAlert("error", "Server Error", "Something went wrong. Please contact support.", "{{ url('/') }}");
+            });
         },
         modal: {
             ondismiss: function () {
@@ -132,18 +149,18 @@
                     "error",
                     "Payment Cancelled",
                     "You closed the payment window before completing the process.",
-                    "{{ url('/') }}" // Redirect to home on cancel
+                    "{{ url('/') }}"
                 );
             }
         }
     };
 
-    // Open Razorpay popup on page load
     window.onload = function () {
         const rzp = new Razorpay(rzpOptions);
         rzp.open();
     };
 </script>
+
 
 @php
     include(public_path('themes/default/views/footer.blade.php'));

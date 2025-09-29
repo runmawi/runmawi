@@ -92,6 +92,8 @@ Route::get('/admin/flicknexs', 'AdminDashboardController@AdminFlicknexs');
 Route::get('/admin/upgrade/{plan_slug}', 'AdminDashboardController@AdminFlicknexsMonthly');
 Route::get('/admin/yearly/upgrade/{plan_slug}', 'AdminDashboardController@AdminFlicknexsYearly');
 
+Route::post('/checkrazorpaystatus', 'PaymentController@RzpCheckStatus')->name('razorpay.checkStatus');
+
 Route::get('/contact-us', 'ContactController@index');
 Route::post('/contact-us/store/', 'ContactController@Store');
 Route::get('admin/contact-us/', 'ContactController@ViewRequest');

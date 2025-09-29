@@ -2430,5 +2430,66 @@ class PaymentController extends Controller
       ]);
   }
 
+  public function RzpCheckStatus(Request $request)
+  {
+      $request->validate([
+          'subscription_id' => 'required|string',
+          'payment_id' => 'required|string',
+      ]);
+
+      try {
+        $PaymentSetting = PaymentSetting::where('payment_type', 'Razorpay')->first();
+
+        if (!$PaymentSetting) {
+            return redirect('/home')->with('error', 'Razorpay configuration missing.');
+        }
+
+        $razorpaykeyId = $PaymentSetting->live_mode == 0
+            ? $PaymentSetting->test_publishable_key
+            : $PaymentSetting->live_publishable_key;
+
+        $razorpaykeysecret = $PaymentSetting->live_mode == 0
+            ? $PaymentSetting->test_secret_key
+            : $PaymentSetting->live_secret_key;
+
+          $api = new Api($razorpaykeyId, $razorpaykeysecret);
+
+          $subscription = $api->subscription->fetch($request->subscription_id);
+
+          if (in_array($subscription->status, ['active', 'authenticated'])) {
+              $start = Carbon::createFromTimestamp($subscription->current_start);
+              $end = Carbon::createFromTimestamp($subscription->current_end);
+
+              $subscriber = Subscriber::where('gateway_subscription_id', $subscription->id)
+                  ->where('user_id', auth()->id())
+                  ->first();
+
+              if ($subscriber) {
+                  $subscriber->update([
+                      'payment_status' => 'active',
+                      'start_date' => $start,
+                      'end_date' => $end,
+                  ]);
+              }
+
+              return response()->json([
+                  'status' => 'success',
+                  'message' => 'Your subscription has been activated successfully.'
+              ]);
+          }
+
+          return response()->json([
+              'status' => 'error',
+              'message' => 'Subscription is not active. Please contact support.'
+          ]);
+
+      } catch (\Exception $e) {
+          return response()->json([
+              'status' => 'error',
+              'message' => 'An error occurred while verifying payment: ' . $e->getMessage()
+          ]);
+      }
+  }
+
 }
 
