@@ -384,8 +384,8 @@ class ChannelController extends Controller
 
     public function play_videos($slug)
     {
+        
         return $this->videos_details_jsplayer($slug);
-
         try {
 
             $settings = Setting::first();

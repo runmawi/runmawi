@@ -2339,6 +2339,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/check-email', 'MultiprofileController@checkEmail')->name('check.email');
     Route::post('/check-mobile', 'MultiprofileController@checkMobile')->name('check.mobile');
 
+    //Subscription
+    Route::get('/subscribe/razorpay/{id}', 'PaymentController@RazorPaySubscription')->name('subscribe.razorpay');
+
 
 });
 

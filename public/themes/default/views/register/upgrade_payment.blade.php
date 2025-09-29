@@ -2,1420 +2,1536 @@
 
 @php
     include public_path('themes/default/views/header.php');
-
-
-$PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
-
-$PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->paypal_live_mode : null;
-
-$paypal_signature = null;
-if (!is_null($PayPalpayment)) {
-    switch ($PayPalpayment->paypal_live_mode) {
-        case 0:
-            $paypalClientId = $PayPalpayment->test_paypal_signature;
-            break;
-
-        case 1:
-            $paypalClientId = $PayPalpayment->live_paypal_signature;
-            break;
-        default:
-            $paypalClientId = null;
-            break;
-    }
-}else{
+    
+    $PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->where('status', 1)->first();
+    $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->paypal_live_mode : null;
+    
     $paypalClientId = null;
-}
-
+    if (!is_null($PayPalpayment)) {
+        switch ($PayPalpayment->paypal_live_mode) {
+            case 0:
+                $paypalClientId = $PayPalpayment->test_paypal_signature;
+                break;
+            case 1:
+                $paypalClientId = $PayPalpayment->live_paypal_signature;
+                break;
+        }
+    }
 @endphp
-
 
 @section('content')
 
-
+@if($paypalClientId)
 <script src="https://www.paypal.com/sdk/js?client-id={{ $paypalClientId }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
-
-
-    <style>
-        .round {
-            /* background-color: #8a0303 !important; */
-            color: #fff !important;
-
-        }
-
-        #coupon_code_stripe {
-            background-color: #ddd;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        .collapsed {
-            font-size: 18px !important;
-        }
-
-        .columns {
-            float: left;
-            width: 25%;
-            padding: 8px;
-        }
-
-        .promo {
-            font-size: 18px;
-        }
-
-        .price {
-            list-style-type: none;
-
-            margin: 0;
-            padding: 0;
-            -webkit-transition: 0.3s;
-            transition: 0.3s;
-        }
-
-        .price:hover {
-            box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.2)
-        }
-
-        .price .header {
-            background-color: #111;
-            color: white;
-            font-size: 20px;
-        }
-
-        .price li {
-
-            padding: 20px;
-            text-align: center;
-        }
-
-        .price .grey {
-            background-color: #eee;
-            font-size: 20px;
-        }
-
-        .button {
-            background-color: #ccb209;
-            border: none;
-            color: white;
-            padding: 10px 25px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        .plan-block {
-            margin-top: 20px;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .columns {
-                width: 100%;
-            }
-        }
-
-        /* Style the tab */
-        .tab {
-            overflow: hidden;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        /* Style the buttons inside the tab */
-        .tab button {
-            background-color: inherit;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            font-size: 17px;
-        }
-
-        /* Change background color of buttons on hover */
-        .tab button:hover {
-            background-color: #111;
-        }
-
-        /* .toggle {
-            display: flex;
-            justify-content: space-between;
-            width: 43%;
-        } */
-
-        /* Create an active/current tablink class */
-        .tab button.active {
-            border-bottom: 2px solid #c3ab06;
-        }
-
-        /* Style the tab content */
-        .tabcontent {
-            display: none;
-            padding: 6px 12px;
-            border: none;
-            border-top: none;
-        }
-
-        .buttons-container {
-            width: 1% !important;
-            margin-left: 22% !important;
-        }
-
-        .hide-box {
-            display: none;
-        }
-
-        .plandetails {
-            margin-top: 70px !important;
-            min-height: 450px !important;
-        }
-
-        .btn-secondary {
-            background-color: #4895d1 !important;
-            border: none !important;
-        }
-
-
-        input[type=email],
-        input[type=number],
-        input[type=password],
-        input[type=phone],
-        input[type=text] {
-            display: block;
-            height: 54px;
-
-            font-size: 1em;
-            color: #000 !important;
-            background-color: #fff !important;
-            border: 1px solid #000;
-            border-radius: 2px;
-            padding: 0 0.5em;
-            -webkit-transition: .2s border ease-in-out;
-            transition: .2s border ease-in-out;
-        }
-
-        #ck-button {
-            margin: 4px;
-            border-radius: 4px;
-            overflow: auto;
-            float: left;
-        }
-
-        #ck-button label {
-            float: left;
-            width: 4.0em;
-        }
-
-        .min {
-            min-height: 100vh;
-        }
-
-        .sd {
-            color: #8A0303 !important;
-            font-weight: 500;
-            text-decoration: underline !important;
-        }
-
-        p {
-            font-size: 14px;
-        }
-
-        #ck-button label span {
-            text-align: center;
-            display: block;
-            color: #fff;
-            background-color: #3daae0;
-            border: 1px solid #3daae0;
-            padding: 0;
-        }
-
-        #ck-button label input {
-            position: absolute;
-        }
-
-        #ck-button input:checked+span {
-            background-color: #3daae0;
-            color: #fff;
-        }
-
-        .mobile-div {
-            margin-left: -2%;
-            margin-top: 1%;
-        }
-
-        .modal-header {
-            padding: 0px 15px;
-            border-bottom: 1px solid #e5e5e5 !important;
-            min-height: 16.42857143px;
-        }
-
-        #otp {
-            padding-left: 15px;
-            letter-spacing: 42px;
-            border: 0;
-            background-position: bottom;
-            background-size: 50px 1px;
-            background-repeat: repeat-x;
-            background-position-x: 80px;
-        }
-
-        #otp:focus {
-            border: none;
-        }
-
-        .verify-buttons {
-            margin-left: 36%;
-        }
-
-        .container {
-            margin-top: 70px;
-        }
-
-        .panel-heading {
-            margin-bottom: 1rem;
-        }
-
-        #tab_nav {
-            position: relative;
-            overflow: hidden;
-            margin: 0 auto;
-            margin-top: 25px;
-            word-spacing: -5px;
-            width: 700px;
-            height: 300px;
-            margin-bottom: 25px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        #tab_nav ul {
-            margin: 0 auto;
-            padding: 0;
-            display: inline-block;
-        }
-
-        #tab_nav li {
-            background: #222;
-            color: white;
-            word-spacing: 0;
-            width: 134.7px;
-            list-style: none;
-            display: inline-block;
-            margin: 0 auto;
-            padding: 20px;
-            border-right: 1px solid rgba(0, 0, 0, 0.1);
-            font-family: Helvetica, Arial, sans-serif;
-            letter-spacing: 3px;
-            cursor: pointer;
-        }
-
-        #tab_nav li:first-of-type {
-            box-shadow: inset 0 -50px 50px -50px rgba(0, 0, 0, 0.2),
-                inset -1px 0 0 rgba(0, 0, 0, .5);
-        }
-
-        #tab_nav li:last-of-type {
-            box-shadow: inset 0 -50px 50px -50px rgba(0, 0, 0, 0.2),
-                inset 1px 0 0 rgba(250, 255, 255, .1);
-        }
-
-        #tab_nav li:hover {
-            background: #191919;
-        }
-
-        #tab_nav li:active {
-            background: rgba(200, 170, 118, .5);
-        }
-
-        #tab_nav li span {
-            float: right;
-            font-weight: bold;
-            display: none;
-        }
-
-        .dgk {
-            color: #000 !important;
-            padding: 30px 24px;
-        }
-
-        .dgk h4 {
-            font-weight: 600;
-            color: #000 !important;
-        }
-
-        #tab_nav li:hover span {
-            display: block;
-        }
-
-        #tab_nav div {
-            position: relative;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            padding: 25px;
-            font-family: Helvetica, Arial, sans-serif;
-            word-spacing: 3px;
-        }
-
-        .dgk h6 {
-            font-size: 14px;
-        }
-
-        #tab_nav li div {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            padding: 25px;
-            font-family: calibri;
-            letter-spacing: 1px;
-            z-index: 10;
-        }
-
-        #tab_nav div h1 {
-            margin: 0 auto;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 25px;
-        }
-
-        #tab_nav li:focus {
-            outline: none;
-            background: white;
-            color: black;
-            box-shadow: 0 -5px 0 white;
-        }
-
-        #tab_nav li:focus div {
-            display: block;
-        }
-
-        .phselect {
-            width: 100px !important;
-            height: 45px !important;
-            background: transparent !important;
-            color: var(--iq-white) !important;
-        }
-
-        .custom-file-upload {
-            border: 1px solid #ccc;
-            display: inline-block;
-            padding: 6px 12px;
-            cursor: pointer;
-        }
-
-        .catag {
-            padding-right: 150px !important;
-        }
-
-        i.fa.fa-google-plus {
-            padding: 10px !important;
-        }
-
-        option {
-            background: #474644 !important;
-        }
-
-        .reveal {
-            margin-left: -92px !important;
-            height: 45px !important;
-            background: transparent !important;
-            color: #fff !important;
-        }
-
-        .error {
-            color: brown;
-            font-family: 'remixicon';
-        }
-
-        .meth {
-            color: #fff;
-            font-weight: 500;
-            font-size: 20px;
-        }
-
-        .small-heading {
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .medium-heading {
-            font-size: 30px;
-            font-weight: 700;
-        }
-
-        .container1 {
-            background-color: #000;
-            border-radius: 25px;
-            padding: 20px;
-            color: #fff;
-        }
-
-        .vl {
-            border-left: 2px solid #000;
-            height: 60px;
-        }
-
-        .btn1 {
-            /* background: rgba(138, 3, 3, 1) !important; */
-            border: none;
-            border-radius: 30px;
-            padding: 15px;
-        }
-
-        label {
-            color: #fff !important;
-            /* line-height: 0; */
-
-        }
-
-        .buttonClass {
-            font-size: 15px;
-
-            width: 200px;
-            height: 57px;
-            border-width: 0px;
-            ontolor: #fff;
-            border-color: #18ab29;
-            font-weight: bold;
-            margin-top: 20px;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-            background: rgba(138, 3, 3, 1) !important;
-            color: #fff;
-        }
-
-        .buttonClass:hover {
-            background: rgba(124, 20, 20, 0.8) !important;
-        }
-
-        .dg {
-            color: #000 !important;
-            background-color: #fff;
-            margin: 5px;
-            border: 5px solid #ddd;
-        }
-
-        .actives {
-            border: 5px solid rgba(138, 3, 3, 1) !important;
-            padding: 0;
-        }
-
-        .dg:hover {
-            color: #000 !important;
-            border: {{ '5px solid' . button_bg_color() . '!important' }};
-            transition: 0.5s;
-        }
-
-        .cont {
-            background-color: #232c30;
-            padding: 36px 47px 70px;
-            margin-bottom: 35px;
-        }
-
-        #card-element {
-            height: 50px;
-            background: #f4f6f7;
-            padding: 10px;
-        }
-
-        .blk li {
-            font-size: 14px;
-        }
-
-        .blk p {
-            font-size: 14px;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        .plan_details {
-            min-height: 300px;
-        }
-
-        .blk {
-            /* height: 200px; */
-            padding: 10px;
-        }
-
-        body.dark-theme .blk p{color: <?php echo GetLightText(); ?> !important}
-        body.dark-theme .dgk h4{color: <?php echo GetLightText(); ?> !important}
-        body.dark-theme .dgk p{color: <?php echo GetLightText(); ?> !important}
-
-        body.light-theme .blk p{color: <?php echo $GetLightText; ?>!important;}
-        body.light-theme .dgk h4{color: <?php echo $GetDarkText; ?>!important;}
-        body.light-theme .dgk p{color: <?php echo $GetDarkText; ?>!important;}
-
-        body.dark-theme .ambk {
-            background: <?php echo $GetDarkText; ?>!important;
-            color: <?php echo $GetDarkBg; ?>!important;
-            padding: 10px !important;
-        }
-        body.dark-theme .ambk h6, body.dark-theme .ambk p{
-            color: <?php echo $GetDarkBg; ?>!important;
-        }
-
-        body.dark-theme .small-heading, body.dark-theme .medium-heading{
-            color: <?php echo $GetDarkText; ?>!important;
-        }
-
-        body.light-theme p{
-            color: <?php echo GetLightText(); ?> !important;
-        }
-        body.light-theme .bg-white{
-            background: <?php echo $GetDarkBg; ?>!important;
-        }
-        body.light-theme .small-heading, body.light-theme .medium-heading{
-            color: <?php echo GetLightText(); ?> !important;
-        }
-        body.light-theme p{
-            color: <?php echo GetLightText(); ?> !important;
-        }
-        body.light-theme .text-white{
-            color: <?php echo GetLightText(); ?> !important;
-        }
-        /* p{color: #fff !important;}  */
-
-    </style>
-
-
-    @php
-        $SubscriptionPlan = App\SubscriptionPlan::first();
-
-        $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
-        $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
-
-        $Stripe_payment_settings = App\PaymentSetting::where('payment_type', 'Stripe')->first();
-        $PayPal_payment_settings = App\PaymentSetting::where('payment_type', 'PayPal')->first();
-        $Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
-        $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
-        $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
-        $Paydunya_payment_settings = App\PaymentSetting::where('payment_type','Paydunya')->first();
-        $recurly_payment_settings = App\PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
-
-        // label
-        $stripe_label = App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() : 'Stripe';
-        $paypal_label = App\PaymentSetting::where('payment_type', 'PayPal')->pluck('paypal_lable')->first() ? App\PaymentSetting::where('payment_type', 'PayPal')->pluck('paypal_lable')->first() : 'PayPal';
-        $paystack_label = App\PaymentSetting::where('payment_type', 'Paystack')->pluck('paystack_lable')->first() ? App\PaymentSetting::where('payment_type', 'Paystack')->pluck('paystack_lable')->first() : 'paystack';
-        $Razorpay_label = App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() : 'Razorpay';
-        $CinetPay_lable = App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() : 'CinetPay';
-        $Paydunya_label = App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() ? App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() : "Paydunya";
-        $recurly_label = App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() ? App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() : "Recurly";
+@endif
+
+<style>
+:root {
+    --primary-color: #8a0303;
+    --primary-hover: #7c1414;
+    --secondary-color: #4895d1;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --dark-color: #343a40;
+    --light-color: #f8f9fa;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    box-sizing: border-box;
+    color: white;
+}
+
+.payment-container {
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.payment-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.payment-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.back-btn {
+    position: absolute;
+    top: 5rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(-3px);
+}
+
+.step-indicator {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+.welcome-text {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.95;
+}
+
+.main-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.payment-body {
+    padding: 2rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--light-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+/* Payment Methods */
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.payment-method {
+    position: relative;
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    background: white;
+}
+
+.payment-method:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+.payment-method.selected {
+    border-color: var(--primary-color);
+    background: rgba(138, 3, 3, 0.05);
+}
+
+.payment-method input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.payment-method-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.payment-method-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+}
+
+/* Plans Grid */
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Enhanced Plan Card Selection Styles - Replace the existing plan-card styles with these */
+
+.plan-card {
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: var(--transition);
+    background: white;
+    position: relative;
+}
+
+.plan-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow);
+}
+
+.plan-card.selected {
+    border-color: var(--primary-color);
+    border-width: 3px;
+    box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.15);
+    background: linear-gradient(135deg, rgba(138, 3, 3, 0.05), rgba(138, 3, 3, 0.02));
+    transform: translateY(-5px);
+}
+
+/* Add a selected indicator badge */
+.plan-card.selected::before {
+    content: '✓';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary-color);
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 2;
+    box-shadow: 0 2px 10px rgba(138, 3, 3, 0.3);
+}
+
+/* Enhanced plan header for selected state */
+.plan-card.selected .plan-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+}
+
+/* Make the plan name more prominent when selected */
+.plan-card.selected .plan-name {
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Add a subtle glow effect for selected cards */
+.plan-card.selected {
+    animation: selectedGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes selectedGlow {
+    from {
+        box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.15), 0 4px 20px rgba(138, 3, 3, 0.1);
+    }
+    to {
+        box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.25), 0 6px 25px rgba(138, 3, 3, 0.2);
+    }
+}
+
+/* Dark theme support for selected cards */
+body.dark-theme .plan-card.selected {
+    background: linear-gradient(135deg, rgba(138, 3, 3, 0.15), rgba(138, 3, 3, 0.05));
+    border-color: var(--primary-color);
+}
+
+body.dark-theme .plan-card.selected .plan-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+}
+
+.plan-header {
+    background: linear-gradient(135deg, var(--dark-color), #495057);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.plan-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.plan-price {
+    font-size: 2.5rem;
+    opacity: 0.9;
+    margin-bottom: 0.25rem;
+    background-color: #ffffff02 !important;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #22bb33;
+}
+
+.plan-duration {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.plan-features {
+    padding: 1.5rem;
+}
+
+.plan-features p {
+    margin: 0;
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* Summary Section */
+.summary-card {
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-left: 4px solid var(--primary-color);
+}
+
+.summary-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.summary-label {
+    color: var(--light-color);
+}
+
+.summary-value {
+    font-weight: 500;
+    color: var(--success-color);
+}
+
+/* Payment Buttons */
+.payment-actions {
+    margin-top: 2rem;
+}
+
+.payment-btn {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: 1rem;
+}
+
+.payment-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(138, 3, 3, 0.3);
+}
+
+.payment-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.secondary-btn:hover {
+    background: rgba(72, 149, 209, 0.1);
+    text-decoration: none;
+    color: var(--secondary-color);
+}
+
+/* PayPal Container */
+#paypal-button-container {
+    margin-top: 1rem;
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Form Inputs */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    background: white;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(138, 3, 3, 0.1);
+}
+
+/* Payment Pending Modal Styles */
+.payment-pending-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeInModal 0.3s ease-out;
+}
+
+.payment-pending-content {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 520px;
+    width: 90%;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    position: relative;
+    animation: slideInModal 0.4s ease-out;
+}
+
+.payment-pending-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 2.5rem;
+    animation: pendingPulse 2s infinite ease-in-out;
+}
+
+.payment-pending-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #343a40;
+    margin-bottom: 1.5rem;
+}
+
+.payment-pending-message {
+    color: #6c757d;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+}
+
+.payment-pending-highlight {
+    background: #898989;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1.5rem 0;
+    border-left: 4px solid #ff6b35;
+}
+
+.payment-pending-highlight strong {
+    color: #8a0303;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(138, 3, 3, 0.3);
+    text-decoration: none;
+    color: white;
+}
+
+.payment-disabled-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(138, 3, 3, 0.1);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+}
+
+.payment-disabled-message {
+    background: rgba(138, 3, 3, 0.9);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInModal {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px) scale(0.9); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+@keyframes pendingPulse {
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4);
+    }
+    50% { 
+        transform: scale(1.05); 
+        box-shadow: 0 0 0 10px rgba(255, 107, 53, 0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .payment-container {
+        padding: 1rem;
+    }
+    
+    .payment-body {
+        padding: 1.5rem;
+    }
+    
+    .main-title {
+        font-size: 1.5rem;
+    }
+    
+    .plans-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-methods {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-pending-content {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .payment-pending-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Dark Theme Support */
+body.dark-theme .payment-card {
+    background: #2c3e50;
+    color: #ecf0f1;
+}
+
+body.dark-theme .plan-card,
+body.dark-theme .payment-method {
+    background: #34495e;
+    border-color: #4a6741;
+}
+
+body.dark-theme .summary-card {
+    background: #34495e;
+}
+
+body.dark-theme .form-control {
+    background: #34495e;
+    border-color: #4a6741;
+    color: #ecf0f1;
+}
+
+body.dark-theme .payment-pending-content {
+    background: #2c3e50;
+    color: #ecf0f1;
+}
+
+body.dark-theme .payment-pending-title {
+    color: #ecf0f1;
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+</style>
+
+@php
+    $SubscriptionPlan = App\SubscriptionPlan::first();
+    $signup_payment_content = App\SiteTheme::pluck('signup_payment_content')->first();
+    $signup_step2_title = App\SiteTheme::pluck('signup_step2_title')->first();
+    
+    // Payment Settings
+    $Stripe_payment_settings = App\PaymentSetting::where('payment_type', 'Stripe')->first();
+    $PayPal_payment_settings = App\PaymentSetting::where('payment_type', 'PayPal')->first();
+    $Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
+    $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
+    $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
+    $Paydunya_payment_settings = App\PaymentSetting::where('payment_type','Paydunya')->first();
+    $recurly_payment_settings = App\PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
+    
+    // Payment Labels
+    $stripe_label = App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ?: 'Stripe';
+    $paypal_label = App\PaymentSetting::where('payment_type', 'PayPal')->pluck('paypal_lable')->first() ?: 'PayPal';
+    $paystack_label = App\PaymentSetting::where('payment_type', 'Paystack')->pluck('paystack_lable')->first() ?: 'PayStack';
+    $Razorpay_label = App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() ?: 'Razorpay';
+    $CinetPay_lable = App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() ?: 'CinetPay';
+    $Paydunya_label = App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() ?: 'Paydunya';
+    $recurly_label = App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() ?: 'Recurly';
+    
+    $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first();
+@endphp
+
+<!-- Payment Pending Modal -->
+@if($payment_pending)
+<div class="payment-pending-modal" id="paymentPendingModal">
+    <div class="payment-pending-content">
+        <div class="payment-pending-icon">
+            ⏳
+        </div>
         
-        $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first();
-    @endphp
+        <h3 class="payment-pending-title">Payment In Progress</h3>
+        
+        <div class="payment-pending-message">
+            A payment has already been initiated for your account. Please wait for the current transaction to complete before trying again.
+        </div>
+        
+        <div class="payment-pending-highlight" >
+            <strong>If your last payment was successful:</strong>
+            <p>Please wait a couple of minutes for the system to update your subscription status.</p>
+            
+            <br><br>
+            <strong>If you need to try again:</strong>
+            <p>Please wait at least 5 minutes before attempting another payment.</p>
+        </div>
+        
+        <button class="home-btn" onclick="window.location.href='{{ URL::to('/home') }}'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+            </svg>
+            Go to Home
+        </button>
+    </div>
+</div>
+@endif
 
-    <section class="flick p-4">
-
-        <div class="col-sm-12">
-            <button href="" onclick="history.back()" style="background: transparent;border:none;cursor: pointer;">
-                <svg style="{{ 'color:'. front_End_text_color() }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
+<div class="payment-container">
+    <div class="payment-card fade-in" @if($payment_pending) style="position: relative;" @endif>
+        @if($payment_pending)
+        <div class="payment-disabled-overlay">
+            <div class="payment-disabled-message">
+                Payment Pending - Please Wait
+            </div>
+        </div>
+        @endif
+        
+        <!-- Header Section -->
+        <div class="payment-header">
+            <button class="back-btn" onclick="history.back()" aria-label="Go back" @if($payment_pending) disabled @endif>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                </svg>
             </button>
+            
+            <div class="welcome-text">Welcome {{ Auth::user()->username ?? 'User' }}</div>
+            <h1 class="main-title">{{ $signup_step2_title ?? 'Choose Your Payment Method' }}</h1>
         </div>
 
-        <div class="container">
+        <!-- Body Section -->
+        <div class="payment-body">
+            <!-- Payment Methods -->
+            <div class="section-title">
+                💳 Select Payment Methods
+            </div>
+            
+            <div class="payment-methods">
+                @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
+                <div class="payment-method" data-payment="stripe" @if($payment_pending) style="pointer-events: none; opacity: 0.5;" @endif>
+                    <input type="radio" id="stripe_radio" name="payment_gateway" value="stripe" @if($payment_pending) disabled @endif>
+                    <label class="payment-method-label" for="stripe_radio">
+                        <div class="payment-method-icon">💳</div>
+                        <span>{{ $stripe_label }}</span>
+                    </label>
+                </div>
+                @endif
 
-            <div align="center"></div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-6 p-0">
-                    <div class="flick1">
+                @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
+                <div class="payment-method" data-payment="paypal" @if($payment_pending) style="pointer-events: none; opacity: 0.5;" @endif>
+                    <input type="radio" id="paypal_radio" name="payment_gateway" value="paypal" @if($payment_pending) disabled @endif>
+                    <label class="payment-method-label" for="paypal_radio">
+                        <div class="payment-method-icon">🅿️</div>
+                        <span>{{ $paypal_label }}</span>
+                    </label>
+                </div>
+                @endif
 
-                        
-                        <div class="small-heading">Step 2 of<span class="ml-2">2</span></div>
+                @if (!empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1)
+                <div class="payment-method" data-payment="razorpay" @if($payment_pending) style="pointer-events: none; opacity: 0.5;" @endif>
+                    <input type="radio" id="razorpay_radio" name="payment_gateway" value="Razorpay" @if($payment_pending) disabled @endif>
+                    <label class="payment-method-label" for="razorpay_radio">
+                        <div class="payment-method-icon">💰</div>
+                        <span>{{ $Razorpay_label }}</span>
+                    </label>
+                </div>
+                @endif
 
-                        <p style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
-                        
-                        <div class="medium-heading pb-3"> {{ $signup_step2_title }} </div>
+                @if (!empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1)
+                <div class="payment-method" data-payment="paystack" @if($payment_pending) style="pointer-events: none; opacity: 0.5;" @endif>
+                    <input type="radio" id="paystack_radio" name="payment_gateway" value="paystack" @if($payment_pending) disabled @endif>
+                    <label class="payment-method-label" for="paystack_radio">
+                        <div class="payment-method-icon">🏦</div>
+                        <span>{{ $paystack_label }}</span>
+                    </label>
+                </div>
+                @endif
 
-                        <div class="col-md-12 p-0">
-                            <p class="meth"> Payment Method</p>
-                            <div class="d-flex">
+                @if (!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
+                <div class="payment-method" data-payment="cinetpay" @if($payment_pending) style="pointer-events: none; opacity: 0.5;" @endif>
+                    <input type="radio" id="cinetpay_radio" name="payment_gateway" value="CinetPay" @if($payment_pending) disabled @endif>
+                    <label class="payment-method-label" for="cinetpay_radio">
+                        <div class="payment-method-icon">🏪</div>
+                        <span>{{ $CinetPay_lable }}</span>
+                    </label>
+                </div>
+                @endif
 
-                                            <!-- Stripe -->
+                @if (!empty($Paydunya_payment_settings) && $Paydunya_payment_settings->paydunya_status == 1)
+                <div class="payment-method" data-payment="paydunya" @if($payment_pending) style="pointer-events: none; opacity: 0.5;" @endif>
+                    <input type="radio" id="paydunya_radio" name="payment_gateway" value="Paydunya" @if($payment_pending) disabled @endif>
+                    <label class="payment-method-label" for="paydunya_radio">
+                        <div class="payment-method-icon">💸</div>
+                        <span>{{ $Paydunya_label }}</span>
+                    </label>
+                </div>
+                @endif
 
-                                @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
-                                    <div class="align-items-center ">
-                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe">
-                                        <label class="ml-2 mt-2"><p> {{ $stripe_label }} </p> </label> <br />
-                                    </div>
-                                @endif
-                                
-                                            <!-- Razorpay -->
+                @if (!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
+                <div class="payment-method" data-payment="recurly" @if($payment_pending) style="pointer-events: none; opacity: 0.5;" @endif>
+                    <input type="radio" id="recurly_radio" name="payment_gateway" value="Recurly" @if($payment_pending) disabled @endif>
+                    <label class="payment-method-label" for="recurly_radio">
+                        <div class="payment-method-icon">🔄</div>
+                        <span>{{ $recurly_label }}</span>
+                    </label>
+                </div>
+                @endif
+            </div>
 
-                                @if (!empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1)
-                                    <div class="align-items-center  ml-2">
-                                        <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
-                                        <label class="ml-2 mt-2"> <p> {{ $Razorpay_label }} </p></label><br />
-                                    </div>
-                                @endif
-
-                                            <!-- Paystack -->
-
-                                @if (!empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1)
-                                    <div class=" align-items-center ml-2">
-                                        <input type="radio" id="paystack_radio_button" class="payment_gateway"  name="payment_gateway" value="paystack">
-                                        <label class="ml-2 mt-2"><p>{{ $paystack_label }} </p></label> <br />
-                                    </div>
-                                @endif
-
-                                            <!-- PayPal -->
-
-                                @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
-                                    <div class="align-items-center  ml-2">
-                                        <input type="radio" id="paypaul_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                        <label class="ml-2 mt-2"><p>{{ $paypal_label }} </p> </label> <br />
-                                    </div>
-                                @endif
-                                            <!-- CinetPay -->
-
-                                @if (!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
-                                    <div class=" align-items-center ml-2">
-                                        <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay">
-                                        <label class="ml-2 mt-2"><p>{{ $CinetPay_lable }} </p></label><br />
-                                    </div>
-                                @endif
-                                
-                                     {{-- Paydunya --}}
-                                @if(!empty($Paydunya_payment_settings) && $Paydunya_payment_settings->paydunya_status == 1)
-                                    <div class=" align-items-center ml-2">
-                                        <input type="radio" id="paydunya_radio_button" class="payment_gateway" name="payment_gateway" value="Paydunya" >
-                                        <label class="ml-2 mt-2"> <p>{{ __($Paydunya_label) }} </p></label> 
-                                    </div>
-                                @endif
-
-                                      {{-- Recurly --}}
-                                @if(!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
-                                    <div class=" align-items-center ml-2">
-                                        <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" >
-                                        <label class="ml-2 mt-2"> <p>{{ __($recurly_label) }} </p></label> 
-                                    </div>
-                                @endif
-                            </div>
+            <!-- Subscription Plans -->
+            <div class="section-title">
+                📋 Choose Your Plan
+            </div>
+            
+            <div class="plans-grid data-plans">
+                @foreach ($plans_data_signup_checkout as $key => $plan)
+                <div class="plan-card" 
+                     data-plan-id="{{ $plan->id }}" 
+                     data-plan-price="{{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : currency_symbol() . round($plan->price, 2) }}"
+                     data-plan_id="{{ $plan->plan_id }}" 
+                     data-pay-type="{{ $plan->type }}" 
+                     data-payment-type="{{ $plan->payment_type }}"
+                     @if($payment_pending) style="pointer-events: none; opacity: 0.5;" @endif>
+                    
+                    <div class="plan-header">
+                        <h3 class="plan-name">{{ $plan->plans_name }}</h3>
+                        <div class="plan-price">
+                            {{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : currency_symbol() . round($plan->price, 2) }}
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="data-plans row align-items-center m-0 p-0">
-                                    @foreach ($plans_data_signup_checkout as $key => $plan)
-
-                                        @php
-                                            $plan_name = $plan->plans_name;
-                                        @endphp
-
-                                        <div style="" class="col-md-4 plan_details p-0" data-plan-id="{{ 'active' . $plan->id }}" data-plan-price="{{ $CurrencySetting == 1 ? (Currency_Convert($plan->price)) : currency_symbol(). round($plan->price,2) }}"
-                                            data-plan_id={{ $plan->plan_id }} data-pay-type={{ $plan->type }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
-
-
-                                            <a href="#payment_card_scroll">
-
-                                                <div class="row dg align-items-center mb-4" id={{ 'active' . $plan->id }}>
-                                                    <div class="col-md-12 ambk p-0 text-center">
-                                                        <div>
-                                                            <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
-                                                            <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol(). round($plan->price,2) }} Membership</p>
-                                                            <span class='mb-0'> {{ $plan->days }} Days Membership</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12 blk">
-                                                        <p > {!! html_entity_decode($plan->plan_content) !!} </p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="d-flex justify-content-between align-items-center ">
-                                                    <div class="bgk"></div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                                                {{-- Summary --}}
-                            <div class="col-md-12 mt-5" id="payment_card_scroll">
-
-                                <h4>Summary</h4>
-
-                                <div class="bg-white mt-4 dgk">
-                                    <h4> Due today: 
-                                        <span class='plan_price Summary'>
-
-                                            @if (  $CurrencySetting == 1 && $SubscriptionPlan )
-                                                {{Currency_Convert($SubscriptionPlan->price) }}
-                                            @elseif($SubscriptionPlan )
-                                                {{  currency_symbol() . round($SubscriptionPlan->price,2 )  }}
-                                            @else
-                                                {{'0:0'}}
-                                            @endif
-
-                                        </span> 
-                                    </h4>
-                                    <hr />
-                                    <p class="text-center mt-3">All state sales taxes apply</p>
-                                </div>
-
-                                <p class="text-white mt-3 dp">
-                                    {{ $signup_payment_content ? $signup_payment_content : ' ' }}
-                                </p>
-                            </div>
-
-                                                {{-- Payment Buttons --}}
-                           
-                            {{-- Stripe --}}  
-                            <div class="col-md-12 stripe_payment" style="display: none;">
-                                <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 stripe_button processing_alert"> Pay Now</button>
-                            </div>
-                           
-
-                            {{-- Razorpay --}}
-                            <div class="col-md-12 Razorpay_payment" style="display: none;">
-                                <button type="submit"
-                                    class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 Razorpay_button processing_alert">
-                                    Pay Now
-                                </button>
-                            </div>
-
-                            {{-- Paystack --}}
-                            <div class="col-md-12 paystack_payment" style="display: none;">
-                                <button type="submit"
-                                    class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 paystack_button processing_alert">
-                                    Pay Now
-                                </button>
-                            </div>
-
-                            {{-- CinetPay --}}
-                            <div class="col-md-12 cinetpay_payment" style="display: none;">
-                                <button onclick="cinetpay_checkout()" data-subscription-price='100' type="submit"
-                                    class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 cinetpay_button">
-                                    Pay Now
-                                </button>
-                            </div>
-
-                            {{-- Paydunya --}}
-                            <div class="col-md-12 Paydunya_payment" style="display: none;">
-                                <button  type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 Paydunya_button processing_alert" >
-                                    {{ __('Pay Now') }}
-                                </button>
-                            </div>
-
-                            {{-- Recurly --}}
-                            <div class="col-md-12 Recurly_payment" style="display: none;">
-                                <form action="{{ route('Recurly.checkout_page') }}" method="post">
-                                    @csrf
-                                    <input type="hidden" id="plan_name" name="recurly_plan_id" value="{{ $plan_name ?? '' }}">
-                                    <input type="hidden" id="payment_current_route_uri" name="payment_current_route_uri" value="{{ $payment_current_route_uri ?? '' }}">
-                                    <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 processing_alert">
-                                        {{ __('Pay Now') }}
-                                    </button>
-                                </form>
-                            </div>
-
-                            <div class="d-flex justify-content-center" style="margin-right:auto;margin-left:auto;">
-                                <a class="btn bd  text-white mt-3" href="{{ URL::to('/home') }}">
-                                    <span> <i class="ri-home-4-line"></i></span>  {{ __('Go to Home') }}
-                                </a>
-                            </div>
-
-                            <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
-                            <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
-                        </div>
-
-                            {{-- PaypalPayment --}}
-
-                        <div class="col-md-12 mt-5 PaypalPayment" id="Paypal_Payment">
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h3>Payment</h3>
-                                </div>
-
-                                <div>
-                                    <label for="fname">Accepted Cards</label>
-                                    <div class="icon-container">
-                                        <i class="fa fa-cc-visa" style="color: navy;"></i>
-                                        <i class="fa fa-cc-amex" style="color: blue;"></i>
-                                        <i class="fa fa-cc-mastercard" style="color: red;"></i>
-                                        <i class="fa fa-cc-discover" style="color: orange;"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-3"></div>
-                            <div id="paypal-button-container"></div>
-                        </div>
+                        <div class="plan-duration">{{ $plan->days }} Days Membership</div>
                     </div>
+                    
+                    <div class="plan-features">
+                        <p>{!! html_entity_decode($plan->plan_content) !!}</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <!-- Summary -->
+            <div class="summary-card slide-up" id="payment_summary">
+                <h3 class="summary-title">Order Summary</h3>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Plan:</span>
+                    <span class="summary-value" id="selected_plan_name">Select a plan</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Payment Method:</span>
+                    <span class="summary-value" id="selected_payment_method">Select payment method</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Total Due Today:</span>
+                    <span class="summary-value plan_price">
+                        Select a plan
+                    </span> 
+                </div>
+                
+                @if($signup_payment_content)
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #dee2e6;">
+                    <small class="text-muted">{{ $signup_payment_content }}</small>
+                </div>
+                @endif
+            </div>
+
+            <!-- Payment Actions -->
+            <div class="payment-actions">
+                <!-- Stripe -->
+                <div class="stripe_payment" style="display: none;">
+                    <button type="button" class="payment-btn stripe_button" @if($payment_pending) disabled @endif>
+                        <span class="btn-text">Complete Payment</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+                </div>
+
+                <!-- PayPal -->
+                <div class="PaypalPayment" style="display: none;">
+                    <div id="paypal-button-container"></div>
+                </div>
+
+                <!-- Razorpay -->
+                <div class="Razorpay_payment" style="display: none;">
+                    <button type="button" class="payment-btn Razorpay_button" @if($payment_pending) disabled @endif>
+                        <span class="btn-text">Pay with Razorpay</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+                </div>
+
+                <!-- Paystack -->
+                <div class="paystack_payment" style="display: none;">
+                    <button type="button" class="payment-btn paystack_button" @if($payment_pending) disabled @endif>
+                        <span class="btn-text">Pay with PayStack</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+                </div>
+
+                <!-- CinetPay -->
+                <div class="cinetpay_payment" style="display: none;">
+                    <button type="button" class="payment-btn cinetpay_button" onclick="cinetpay_checkout()" @if($payment_pending) disabled @endif>
+                        <span class="btn-text">Pay with CinetPay</span>
+                    </button>
+                </div>
+
+                <!-- Paydunya -->
+                <div class="Paydunya_payment" style="display: none;">
+                    <button type="button" class="payment-btn Paydunya_button" @if($payment_pending) disabled @endif>
+                        <span class="btn-text">Pay with Paydunya</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+                </div>
+
+                <!-- Recurly -->
+                <div class="Recurly_payment" style="display: none;">
+                    <form action="{{ route('Recurly.checkout_page') }}" method="post">
+                        @csrf
+                        <input type="hidden" id="recurly_plan_name" name="recurly_plan_id" value="{{ $plan->plans_name ?? '' }}">
+                        <input type="hidden" id="payment_current_route_uri" name="payment_current_route_uri" value="{{ $payment_current_route_uri ?? '' }}">
+                        <button type="submit" class="payment-btn" @if($payment_pending) disabled @endif>
+                            <span class="btn-text">Pay with Recurly</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="{{ URL::to('/home') }}" class="secondary-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                        </svg>
+                        Go to Home
+                    </a>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <input type="hidden" id="base_url" value="<?php echo URL::to('/'); ?>">
-    <input type="hidden" id="stripe_coupon_code" value="<?php echo NewSubscriptionCouponCode(); ?>">
-    <input type="hidden" value="<?php echo DiscountPercentage(); ?>" id="discount_percentage" class="discount_percentage">
-    <input type="hidden" value="<?php echo NewSubscriptionCoupon(); ?>" id="discount_status" class="discount_status">
+<!-- Hidden Inputs -->
+<input type="hidden" id="base_url" value="{{ URL::to('/') }}">
+<input type="hidden" id="plan_name" name="plan_name" value="{{ $SubscriptionPlan ? $SubscriptionPlan->plan_id : '' }}">
+<input type="hidden" id="payment_type" name="payment_type" value="{{ $SubscriptionPlan ? $SubscriptionPlan->payment_type : '' }}">
+<input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
+<input type="hidden" id="Cinetpay_Price" name="Cinetpay_Price" value="">
+<input type="hidden" id="payment_image" value="{{ URL::to('/') }}/public/Thumbnai_images">
+<input type="hidden" id="payment_pending_status" value="{{ $payment_pending ? 'true' : 'false' }}">
 
+<!-- Scripts -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script src="https://cdn.cinetpay.com/seamless/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
-    <script>
-        $(function() {
-            $("#tabs").tabs();
-            $("tabs li:first").addClass("active");
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    const planCards = document.querySelectorAll('.plan-card');
+    const paymentSections = document.querySelectorAll('[class*="_payment"], .PaypalPayment');
+    const base_url = document.getElementById('base_url').value;
+    const payment_images = document.getElementById('payment_image').value;
+    const paymentPending = document.getElementById('payment_pending_status').value === 'true';
+    
+    let selectedPlan = null;
+    let selectedPayment = null;
+
+    // Check if payment is pending and disable interactions
+    if (paymentPending) {
+        showPaymentPendingAlert();
+        return; // Don't initialize any payment functionality
+    }
+
+    // Auto-select if only one payment method is available
+    if (paymentMethods.length === 1) {
+        const singleMethod = paymentMethods[0];
+        const radio = singleMethod.querySelector('input[type="radio"]');
+        const paymentType = radio.value;
+        
+        // Auto-select the single payment method
+        singleMethod.classList.add('selected');
+        radio.checked = true;
+        selectedPayment = paymentType;
+        
+        updateSummary();
+        loadPlansForPayment(paymentType);
+        showPaymentSection(paymentType);
+    }
+
+    // Payment Method Selection
+    paymentMethods.forEach(method => {
+        method.addEventListener('click', function() {
+            if (paymentPending) return;
+            
+            const radio = this.querySelector('input[type="radio"]');
+            const paymentType = radio.value;
+            
+            // Update UI
+            paymentMethods.forEach(m => m.classList.remove('selected'));
+            this.classList.add('selected');
+            radio.checked = true;
+            
+            selectedPayment = paymentType;
+            updateSummary();
+            loadPlansForPayment(paymentType);
+            showPaymentSection(paymentType);
         });
-    </script>
+    });
 
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            $('#submit-new-cat').click(function() {
-                $('#payment-form').submit();
-            });
-        });
-    </script>
-
-    {{-- cinetpay  Payment Price --}}
-
-    <input type="hidden" id="Cinetpay_Price" name="Cinetpay_Price" value=" ">
-
-
-    {{-- Stripe Payment --}}
-    <input type="hidden" id="plan_name" name="plan_name" value={{ $SubscriptionPlan ? $SubscriptionPlan->plan_id : ' ' }}>
-    <input type="hidden" id="payment_type" name="payment_type" value={{ $SubscriptionPlan ? $SubscriptionPlan->payment_type : ' ' }}>
-    <input type="hidden" id="base_url" value="<?php echo URL::to('/'); ?>">
-
-    <script src="https://js.stripe.com/v3/"></script>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://checkout.stripe.com/checkout.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
-    <script>
-
-       var base_url = $('#base_url').val();
-
-       function plan_details(ele) {
-            // Get data attributes from the clicked element
-            var plans_id = $(ele).attr('data-plan_id');
-            var plan_payment_type = $(ele).attr('data-payment-type');
-            var plan_pay_type = $(ele).attr('data-pay-type');
-            var plan_price = $(ele).attr('data-plan-price');
-            var plan_id_class = $(ele).attr('data-plan-id');
-            var currency_symbols = document.getElementById("currency_symbol").value;
-
-
-            $('#paypal-button-container').empty().hide();
-
-            if (plan_pay_type === 'PayPal') {
-                $('#paypal-button-container').show();
-                $('.Stripe_Payment').hide();
-                var classname = 'paypal-button-container-' + plans_id;
-                $('#paypal-button-container').addClass(classname);
-                $("#paypal-button-container").append('<div id="' + classname + '"></div>');
-
-                $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
-                $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
-                $('.plan_price').empty().append(plan_price);
-                $('.dg').removeClass('actives');
-                $('#' + plan_id_class).addClass('actives');
-
-                var plan_data = $("#plan_name").val();
-                var coupon_code = $("#coupon_code").val();
-                var payment_type = $("#payment_type").val();
-                var final_payment = $(".final_payment").val();
-                var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
-
-                paypal.Buttons({
-                    style: {
-                        shape: 'pill',
-                        color: 'white',
-                        layout: 'vertical',
-                        label: 'subscribe',
-                    },
-                    createSubscription: function (data, actions) {
-                        return actions.subscription.create({
-                            plan_id: plans_id
-                        });
-                    },
-                    onApprove: function(data, actions) {
-                        if (data.subscriptionID) {
-                            $.post(base_url + '/paypal-subscription', {
-                                payment_type: payment_type,
-                                amount: final_payment,
-                                plan: plan_data,
-                                plans_id: plans_id,
-                                subscriptionID: data.subscriptionID,
-                                orderID: data.orderID,
-                                coupon_code: final_coupon_code_stripe,
-                                userId: '{{ Auth::user()->id }}',
-                                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            })
-                            .done(function (response) {
-                                $('#loader').css('display', 'block');
-                                swal({
-                                    title: "Subscription Purchased Successfully!",
-                                    text: "Your Payment was Successful!",
-                                    icon: payment_images + '/Successful_Payment.gif',
-                                    buttons: false,
-                                    closeOnClickOutside: false,
-                                });
-                                setTimeout(function () {
-                                    window.location.replace(base_url + '/myprofile');
-                                }, 2000);
-                            })
-                            .fail(function (xhr, status, error) {
-                                swal("Error", "Payment failed. Please try again.", "error");
-                            });
-                        }
-                    }
-                }).render('#' + classname);
+    // Plan Selection
+    planCards.forEach(card => {
+        card.addEventListener('click', function() {
+            if (paymentPending) return;
+            
+            planCards.forEach(c => c.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            selectedPlan = {
+                id: this.dataset.planId,
+                name: this.querySelector('.plan-name').textContent,
+                price: this.dataset.planPrice,
+                plan_id: this.dataset.plan_id,
+                payment_type: this.dataset.paymentType,
+                pay_type: this.dataset.payType
+            };
+            
+            updateHiddenInputs();
+            updateSummary();
+            
+            if (selectedPlan.pay_type === 'PayPal') {
+                initializePayPal();
             }
-            else{
-                $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
-                $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
-                $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' + plan_price + '">');
-                $('.plan_price').empty().append(plan_price);
-                $('#coupon_amt_deduction').empty().append(plan_price);
+        });
+    });
 
+    // function showPaymentPendingAlert() {
+    //     showAlert('Payment is currently pending. Please wait for the current transaction to complete or wait 5 minutes before trying again. If your last payment was successful, please wait a couple of minutes for the system to update.', 'warning');
+    // }
 
-                $('.dg').removeClass('actives');
-                $('#' + plan_id_class).addClass('actives');
+    function updateSummary() {
+        document.getElementById('selected_plan_name').textContent = selectedPlan ? selectedPlan.name : 'Select a plan';
+        document.getElementById('selected_payment_method').textContent = selectedPayment ? selectedPayment : 'Select payment method';
+        
+        if (selectedPlan) {
+            document.querySelectorAll('.plan_price').forEach(el => {
+                el.textContent = selectedPlan.price;
+            });
+        }
+    }
+
+    function updateHiddenInputs() {
+        if (selectedPlan) {
+            document.getElementById('plan_name').value = selectedPlan.plan_id;
+            document.getElementById('payment_type').value = selectedPlan.payment_type;
+            document.getElementById('Cinetpay_Price').value = selectedPlan.price;
+            document.getElementById('recurly_plan_name').value = selectedPlan.name;
+        }
+    }
+
+    function showPaymentSection(paymentType) {
+        // Hide all payment sections
+        paymentSections.forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Show selected payment section
+        const sectionMap = {
+            'stripe': '.stripe_payment',
+            'paypal': '.PaypalPayment',
+            'Razorpay': '.Razorpay_payment',
+            'paystack': '.paystack_payment',
+            'CinetPay': '.cinetpay_payment',
+            'Paydunya': '.Paydunya_payment',
+            'Recurly': '.Recurly_payment'
+        };
+
+        const sectionSelector = sectionMap[paymentType];
+        if (sectionSelector) {
+            const section = document.querySelector(sectionSelector);
+            if (section) {
+                section.style.display = 'block';
             }
         }
+    }
 
+    function loadPlansForPayment(paymentType) {
+        showLoading();
 
-        window.onload = function() {
-            $('#active2').addClass('actives');
-        }
+        fetch('{{ route("BecomeSubscriber_Plans") }}?' + new URLSearchParams({
+            payment_gateway: paymentType,
+            _token: '{{ csrf_token() }}'
+        }))
+        .then(response => response.json())
+        .then(data => {
+            hideLoading();
+            
+            if (data.data && data.data.status && data.data.plans_data.length > 0) {
+                updatePlansDisplay(data.data.plans_data);
+            } else {
+                showAlert('No plans found for this payment method', 'warning');
+            }
+        })
+        .catch(error => {
+            hideLoading();
+            showAlert('Error loading plans', 'error');
+            console.error('Error:', error);
+        });
+    }
 
-        // Processing Alert 
+    function updatePlansDisplay(plansData) {
+        const plansContainer = document.querySelector('.data-plans');
+        plansContainer.innerHTML = '';
 
-        var payment_images = $('#payment_image').val();
+        plansData.forEach(plan => {
+            const planCard = document.createElement('div');
+            planCard.className = 'plan-card';
+            planCard.dataset.planId = `${plan.id}`;
+            planCard.dataset.planPrice = plan.price;
+            planCard.dataset.plan_id = plan.plan_id;
+            planCard.dataset.payType = plan.type;
+            planCard.dataset.paymentType = plan.payment_type;
 
-        $(".processing_alert").click(function() {
+            planCard.innerHTML = `
+                <div class="plan-header">
+                    <h3 class="plan-name">${plan.plans_name}</h3>
+                    <div class="plan-price">${plan.price}</div>
+                    <div class="plan-duration">${plan.days || ''} Days Membership</div>
+                </div>
+                <div class="plan-features">
+                    <p>${plan.plan_content || ''}</p>
+                </div>
+            `;
 
-            swal({
-                title: "Processing Payment!",
-                text: "Please wait untill the proccessing completed!",
-                icon: payment_images + '/processing_payment.gif',
-                buttons: false,
-                closeOnClickOutside: false,
+            planCard.addEventListener('click', function() {
+                if (paymentPending) return;
+                
+                document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                selectedPlan = {
+                    id: this.dataset.planId,
+                    name: plan.plans_name,
+                    price: plan.price,
+                    plan_id: plan.plan_id,
+                    payment_type: plan.payment_type,
+                    pay_type: plan.type
+                };
+                
+                updateHiddenInputs();
+                updateSummary();
+                
+                if (selectedPlan.pay_type === 'PayPal') {
+                    initializePayPal();
+                }
             });
 
+            plansContainer.appendChild(planCard);
+        });
+    }
+
+    function initializePayPal() {
+        if (!selectedPlan || !window.paypal || paymentPending) return;
+
+        const container = document.getElementById('paypal-button-container');
+        container.innerHTML = '';
+
+        paypal.Buttons({
+            style: {
+                shape: 'pill',
+                color: 'blue',
+                layout: 'vertical',
+                label: 'subscribe',
+                height: 50
+            },
+            createSubscription: function(data, actions) {
+                return actions.subscription.create({
+                    plan_id: selectedPlan.plan_id
+                });
+            },
+            onApprove: function(data, actions) {
+                showLoading('Processing payment...');
+                
+                fetch(base_url + '/paypal-subscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        payment_type: selectedPlan.payment_type,
+                        amount: selectedPlan.price,
+                        plan: selectedPlan.plan_id,
+                        plans_id: selectedPlan.plan_id,
+                        subscriptionID: data.subscriptionID,
+                        orderID: data.orderID,
+                        userId: '{{ Auth::user()->id }}'
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    hideLoading();
+                    showAlert('Subscription purchased successfully!', 'success');
+                    setTimeout(() => {
+                        window.location.href = base_url + '/myprofile';
+                    }, 2000);
+                })
+                .catch(error => {
+                    hideLoading();
+                    showAlert('Payment failed. Please try again.', 'error');
+                    console.error('Error:', error);
+                });
+            },
+            onError: function(err) {
+                console.error('PayPal Error:', err);
+                showAlert('Payment failed. Please try again.', 'error');
+            }
+        }).render('#paypal-button-container');
+    }
+
+    // Payment Button Handlers
+    document.addEventListener('click', function(e) {
+        if (paymentPending) {
+            showPaymentPendingAlert();
+            return;
+        }
+        
+        if (e.target.closest('.stripe_button')) {
+            handleStripePayment();
+        } else if (e.target.closest('.Razorpay_button')) {
+            handleRazorpayPayment();
+        } else if (e.target.closest('.paystack_button')) {
+            handlePaystackPayment();
+        } else if (e.target.closest('.Paydunya_button')) {
+            handlePaydunyaPayment();
+        }
+    });
+
+    function handleStripePayment() {
+        if (!selectedPlan || paymentPending) {
+            showAlert('Please select a plan first', 'warning');
+            return;
+        }
+
+        const button = document.querySelector('.stripe_button');
+        setButtonLoading(button, true);
+
+        fetch('{{ route("Stripe_authorization_url") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                Stripe_Plan_id: selectedPlan.plan_id
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            setButtonLoading(button, false);
+            if (data.status) {
+                window.location.href = data.authorization_url;
+            } else {
+                showAlert(data.message || 'Payment failed', 'error');
+            }
+        })
+        .catch(error => {
+            setButtonLoading(button, false);
+            showAlert('Payment failed. Please try again.', 'error');
+            console.error('Error:', error);
+        });
+    }
+
+    function handleRazorpayPayment() {
+        if (!selectedPlan || paymentPending) {
+            showAlert('Please select a plan first', 'warning');
+            return;
+        }
+
+        const button = document.querySelector('.Razorpay_button');
+        setButtonLoading(button, true);
+
+        // Updated to redirect to the new route format
+        const razorpayUrl = base_url + '/subscribe/razorpay/' + selectedPlan.id;
+        window.location.href = razorpayUrl;
+    }
+
+    function handlePaystackPayment() {
+        if (!selectedPlan || paymentPending) {
+            showAlert('Please select a plan first', 'warning');
+            return;
+        }
+
+        const button = document.querySelector('.paystack_button');
+        setButtonLoading(button, true);
+
+        fetch('{{ route("Paystack_CreateSubscription") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                paystack_plan_id: selectedPlan.plan_id
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            setButtonLoading(button, false);
+            if (data.status) {
+                window.location.href = data.authorization_url;
+            } else {
+                showAlert(data.message || 'Payment failed', 'error');
+            }
+        })
+        .catch(error => {
+            setButtonLoading(button, false);
+            showAlert('Payment failed. Please try again.', 'error');
+            console.error('Error:', error);
+        });
+    }
+
+    function handlePaydunyaPayment() {
+        if (!selectedPlan || paymentPending) {
+            showAlert('Please select a plan first', 'warning');
+            return;
+        }
+
+        const button = document.querySelector('.Paydunya_button');
+        setButtonLoading(button, true);
+
+        fetch('{{ route("Paydunya_checkout") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                Paydunya_plan_id: selectedPlan.plan_id
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            setButtonLoading(button, false);
+            if (data.status) {
+                window.location.href = data.authorization_url;
+            } else {
+                showAlert(data.message || 'Payment failed', 'error');
+            }
+        })
+        .catch(error => {
+            setButtonLoading(button, false);
+            showAlert('Payment failed. Please try again.', 'error');
+            console.error('Error:', error);
+        });
+    }
+
+    // CinetPay Payment Handler
+    window.cinetpay_checkout = function() {
+        if (!selectedPlan || paymentPending) {
+            showAlert('Please select a plan first', 'warning');
+            return;
+        }
+
+        const user_name = '{{ Auth::user()->username ?? "" }}';
+        const email = '{{ Auth::user()->email ?? "" }}';
+        const mobile = '{{ Auth::user()->mobile ?? "" }}';
+        const CinetPay_APIKEY = '{{ $CinetPay_payment_settings->CinetPay_APIKEY ?? "" }}';
+        const CinetPay_SITE_ID = '{{ $CinetPay_payment_settings->CinetPay_SITE_ID ?? "" }}';
+        const user_id = '{{ Auth::user()->id ?? "" }}';
+        const transaction_id = Math.floor(Math.random() * 100000000).toString();
+        const currency = '{{ currency_symbol() }}';
+
+        if (typeof CinetPay === 'undefined') {
+            showAlert('CinetPay is not loaded', 'error');
+            return;
+        }
+
+        CinetPay.setConfig({
+            apikey: CinetPay_APIKEY,
+            site_id: CinetPay_SITE_ID,
+            notify_url: window.location.href,
+            return_url: window.location.href
         });
 
-        // BecomeSubscriber_Plans
-   
-        $(".payment_gateway").click(function() {
+        CinetPay.getCheckout({
+            transaction_id: transaction_id,
+            amount: selectedPlan.price,
+            currency: currency,
+            channels: 'ALL',
+            description: 'Subscription Payment',
+            customer_name: user_name,
+            customer_surname: user_name,
+            customer_email: email,
+            customer_phone_number: mobile,
+            customer_address: "Address",
+            customer_city: "City",
+            customer_country: "CM",
+            customer_state: "CM",
+            customer_zip_code: "00000"
+        });
 
-            let payment_gateway = $('input[name="payment_gateway"]:checked').val();
-            let currency_symbol = document.getElementById("currency_symbol").value;
+        CinetPay.waitResponse(function(data) {
+            if (data.status === "REFUSED") {
+                showAlert('Payment failed', 'error');
+            } else if (data.status === "ACCEPTED") {
+                fetch('{{ route("CinetPay_Subscription") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        amount: selectedPlan.price,
+                        plan_name: selectedPlan.plan_id,
+                        email: email,
+                        user_name: user_name,
+                        user_id: user_id,
+                        transaction_id: transaction_id
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    showAlert('Payment successful!', 'success');
+                    setTimeout(() => {
+                        window.location.href = base_url + '/myprofile';
+                    }, 2000);
+                })
+                .catch(error => {
+                    showAlert('Payment processing failed', 'error');
+                    console.error('Error:', error);
+                });
+            }
+        });
 
+        CinetPay.onError(function(data) {
+            showAlert('Payment error occurred', 'error');
+            console.error('CinetPay Error:', data);
+        });
+    };
+
+    // Utility Functions
+    function showLoading(message = 'Loading...') {
+        if (typeof swal !== 'undefined') {
             swal({
-                title: "Loading...",
+                title: message,
                 text: "Please wait",
                 icon: payment_images + '/Loading.gif',
                 buttons: false,
                 closeOnClickOutside: false,
-                closeOnEsc: false,
-            });
-
-            $.ajax({
-                url: "{{ route('BecomeSubscriber_Plans') }}",
-                type: "get",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    payment_gateway: payment_gateway,
-                    async: false,
-                },
-
-                success: function(response) {
-
-                    var count = response.data.plans_data.length;
-
-                    if (count <= 0) {
-                        swal({
-                            title: "No Plan Found !!",
-                            icon: "warning",
-                        }).then(function() {
-                            location.reload();
-                        })
-                    }
-
-                    if (count > 0 && response.data.status == true) {
-
-                        html = "";
-                        html += '<div class="col-md-12 p-0">';
-                        html += '<div class="row align-items-center m-0 p-0 data-plans">';
-
-                        $.each(response.data.plans_data, function(index, plan_data) {
-
-                            html +=
-                                '<div class="col-md-6 plan_details p-0"  data-plan-id="active' +
-                                plan_data.id + '" data-plan-price="' + plan_data.price +
-                                '"  data-plan_id="' + plan_data.plan_id +
-                                '"  data-payment-type="' + plan_data.payment_type + '"  data-pay-type="' +  plan_data.type  +
-                                '" onclick="plan_details(this)">';
-                            html +=
-                                '<a href="#payment_card_scroll"> <div class="row dg align-items-center mb-4" id="active' +
-                                plan_data.id + '" >';
-
-                            html += '<div class="col-md-12 ambk p-0 text-center">';
-                            html += '<h6 class="font-weight-bold">  ' + plan_data.plans_name +
-                                '   </h6>';
-                            html += '<p class="text-white mb-0">'  + plan_data
-                                .price + ' Membership </p>';
-                            html += '</div>';
-
-                            html += '<div class="col-md-12 blk" >';
-                            html += '<h4 class="text-black"> ' + plan_data.plan_content +
-                                ' </h4>';
-                            html += '</div>';
-
-                            html += '</div>';
-                            html +=
-                                ' <div class="d-flex justify-content-between align-items-center " > <div class="bgk"></div> </div> </a>';
-                            html += ' </div>';
-
-                        });
-                        html += '</div>';
-                        html += '</div>';
-
-
-                        $('.data-plans').empty('').append(html);
-
-                        swal.close();
-
-                    } else if (response.data.status == false) {
-
-                        swal.close();
-
-                        swal({
-                            title: "No Plan Found !!",
-                            icon: "warning",
-                        }).then(function() {
-                            location.reload();
-                        })
-                    }
-                }
-            });
-        });
-
-    </script>
-
-    {{-- Radio button for payment Gateway  --}}
-
-    <script>
-        window.onload = function() {
-
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment,.PaypalPayment').hide();
-            $('.Summary').empty();
-
-            // $("#stripe_radio_button").attr('checked', true);
-
-            if ($('input[name="payment_gateway"]:checked').val() == "stripe") {
-                $('.stripe_payment').show();
-            }
-
-            if ($('input[name="payment_gateway"]:checked').val() == "paystack") {
-                $('.paystack_payment').show();
-            }
-
-            if ($('input[name="payment_gateway"]:checked').val() == "Razorpay") {
-                $('.Razorpay_payment').show();
-            }
-
-            if ($('input[name="payment_gateway"]:checked').val() == "CinetPay") {
-                $('.cinetpay_button').show();
-            }
-
-            if ($('input[name="payment_gateway"]:checked').val() == "Paydunya") {
-                $('.Paydunya_payment').show();
-            }
-
-            if ($('input[name="payment_gateway"]:checked').val() == "Recurly") {
-                $('.Recurly_payment').show();
-            }
-
-            if ($('input[name="payment_gateway"]:checked').val() == "paypal") {
-                $('.PaypalPayment').show();
-            }
-        };
-
-        $(document).ready(function() {
-
-            $(".payment_gateway").click(function() {
-
-                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment,.PaypalPayment').hide();
-                
-                $('.Summary').empty();
-
-                let payment_gateway = $('input[name="payment_gateway"]:checked').val();
-
-                if (payment_gateway == "stripe") {
-
-                    $('.stripe_payment').show();
-
-                } else if (payment_gateway == "paystack") {
-
-                    $('.paystack_payment').show();
-
-                } else if (payment_gateway == "Razorpay") {
-
-                    $('.Razorpay_payment').show();
-
-                } else if (payment_gateway == "CinetPay") {
-
-                    $('.cinetpay_button').show();
-
-                } else if (payment_gateway == "Paydunya") {
-
-                    $('.Paydunya_payment').show();
-                }
-
-                else if (payment_gateway == "Recurly") {
-
-                    $('.Recurly_payment').show();
-                }
-                else if (payment_gateway == "paypal") {
-
-                    $('.PaypalPayment').show();
-                }
-                
-            });
-        });
-    </script>
-
-            {{-- Stripe Payment --}}
-            
-    <script>
-        $(".stripe_button").click(function() {
-
-            var Stripe_Plan_id = $("#plan_name").val();
-
-            $.ajax({
-                url: "{{ route('Stripe_authorization_url') }}",
-                type: "post",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    Stripe_Plan_id: Stripe_Plan_id,
-                    async: false,
-                },
-
-                success: function(data, textStatus) {
-
-                    if (data.status == true) {
-                        window.location.href = data.authorization_url;
-                    } else if (data.status == false) {
-                        swal({
-                            title: "Payment Failed!",
-                            text: data.message,
-                            icon: "warning",
-                        }).then(function() {
-                            location.reload();
-                        })
-                    }
-                }
-            });
-        });
-    </script>
-            
-
-            {{-- Razorpay Payment --}}
-    
-    <script>
-        $(".Razorpay_button").click(function() {
-
-            var Razorpay_plan_id = $("#plan_name").val();
-
-            $.ajax({
-                url: "{{ route('Razorpay_authorization_url') }}",
-                type: "post",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    Razorpay_plan_id: Razorpay_plan_id,
-                    async: false,
-                },
-
-                success: function(data, textStatus) {
-
-                    if (data.status == true) {
-                        window.location.href = data.authorization_url;
-                    } else if (data.status == false) {
-                        swal({
-                            title: "Payment Failed!",
-                            text: data.message,
-                            icon: "warning",
-                        }).then(function() {
-                            location.reload();
-                        })
-                    }
-                }
-            });
-        });
-    </script>
-
-            {{-- Paystack Payment --}}
-
-    <script>
-        $(".paystack_button").click(function() {
-
-            var paystack_plan_id = $("#plan_name").val();
-
-            $.ajax({
-                url: "{{ route('Paystack_CreateSubscription') }}",
-                type: "post",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    paystack_plan_id: paystack_plan_id,
-                    async: false,
-                },
-
-                success: function(data, textStatus) {
-
-                    if (data.status == true) {
-                        window.location.href = data.authorization_url;
-                    } else if (data.status == false) {
-                        swal({
-                            title: "Payment Failed!",
-                            text: data.message,
-                            icon: "warning",
-                        }).then(function() {
-                            location.reload();
-                        })
-                    }
-                }
-            });
-        });
-    </script>
-
-            <!-- Cinetpay Payment -->
-
-    <script src="https://cdn.cinetpay.com/seamless/main.js"></script>
-
-    <script>
-        function cinetpay_checkout() {
-
-
-            let Cinetpay_Price = $('#Cinetpay_Price').val();
-            let plan_name = $("#plan_name").val();
-            var user_name = '{{ @$intent_stripe->username }}';
-            var email = '{{ @$intent_stripe->email }}';
-            var mobile = '{{ @$intent_stripe->mobile }}';
-            var CinetPay_APIKEY = '{{ @$CinetPay_payment_settings->CinetPay_APIKEY }}';
-            var CinetPay_SecretKey = '{{ @$CinetPay_payment_settings->CinetPay_SecretKey }}';
-            var CinetPay_SITE_ID = '{{ @$CinetPay_payment_settings->CinetPay_SITE_ID }}';
-            var user_id = '{{ @$intent_stripe->id }}';
-            var transaction_id = Math.floor(Math.random() * 100000000).toString();
-            var currency = '{{ currency_symbol() }}'
-
-            CinetPay.setConfig({
-                apikey: CinetPay_APIKEY, //   YOUR APIKEY
-                site_id: CinetPay_SITE_ID, //YOUR_SITE_ID
-                notify_url: window.location.href,
-                return_url: window.location.href,
-                // mode: 'PRODUCTION'
-
-            });
-            CinetPay.getCheckout({
-                transaction_id: transaction_id, // YOUR TRANSACTION ID
-                amount: Cinetpay_Price,
-                currency: currency,
-                channels: 'ALL',
-                description: 'paiement',
-                //Provide these variables for credit card payments
-                customer_name: user_name, //Customer name
-                customer_surname: user_name, //The customer's first name
-                customer_email: email, //the customer's email
-                customer_phone_number: mobile, //the customer's email
-                customer_address: "BP 0024", //customer address
-                customer_city: "Antananarivo", // The customer's city
-                customer_country: "CM", // the ISO code of the country
-                customer_state: "CM", // the ISO state code
-                //  customer_country: "CI, BF, US, CA, FR",// the ISO code of the country
-                //  customer_state: "CM,CA,US",// the ISO state code
-                customer_zip_code: "06510", // postcode
-
-            });
-            CinetPay.waitResponse(function(data) {
-                if (data.status == "REFUSED") {
-
-                    if (alert("Your payment failed")) {
-                        window.location.reload();
-                    }
-                } else if (data.status == "ACCEPTED") {
-
-                    $.ajax({
-                        url: '{{ route('CinetPay_Subscription') }}',
-                        type: "post",
-                        data: {
-                            _token: '{{ csrf_token() }}  ',
-                            amount: Cinetpay_Price,
-                            plan_name: plan_name,
-                            email: email,
-                            user_name: user_name,
-                            user_id: user_id,
-                            transaction_id: transaction_id,
-                        },
-                        success: function(value) {
-                            alert("You have done  Payment !");
-                            setTimeout(function() {
-                                window.location = base_url + '/login';
-                            }, 2000);
-
-                        },
-                        error: (error) => {
-                            swal('error');
-                        }
-                    });
-                }
-            });
-            CinetPay.onError(function(data) {
-                console.log(data);
+                closeOnEsc: false
             });
         }
-    </script>
+    }
 
-                    {{--  Paydunya Payment  --}}
-    <script>
+    function hideLoading() {
+        if (typeof swal !== 'undefined') {
+            swal.close();
+        }
+    }
 
-        $(".Paydunya_button").click(function(){
+    function showAlert(message, type = 'info') {
+        if (typeof swal !== 'undefined') {
+            const iconMap = {
+                success: payment_images + '/Successful_Payment.gif',
+                error: 'error',
+                warning: 'warning',
+                info: 'info'
+            };
+            
+            swal({
+                title: type === 'success' ? 'Success!' : type === 'error' ? 'Error!' : 'Notice',
+                text: message,
+                icon: iconMap[type] || 'info'
+            });
+        } else {
+            alert(message);
+        }
+    }
 
-            var Paydunya_plan_id = $("#plan_name").val();
+    function setButtonLoading(button, loading) {
+        if (!button) return;
+        
+        const textSpan = button.querySelector('.btn-text');
+        const spinner = button.querySelector('.spinner');
+        
+        if (loading) {
+            button.disabled = true;
+            button.classList.add('loading');
+            if (textSpan) textSpan.style.display = 'none';
+            if (spinner) spinner.style.display = 'inline-block';
+        } else {
+            button.disabled = false;
+            button.classList.remove('loading');
+            if (textSpan) textSpan.style.display = 'inline';
+            if (spinner) spinner.style.display = 'none';
+        }
+    }
+});
+</script>
 
-            $.ajax({
-                url: "{{ route('Paydunya_checkout') }}",
-                type: "post",
-                data: {
-                        _token: '{{ csrf_token() }}',
-                        Paydunya_plan_id : Paydunya_plan_id ,
-                        async: false,
-                    },       
-                    
-                    success: function( data ){
-
-                    if( data.status == true ){
-                        window.location.href = data.authorization_url ;
-                    }
-
-                    else if( data.status == false ){
-                        swal({
-                            title: "Payment Failed!",
-                            text: data.message,
-                            icon: "warning",
-                            }).then(function() {
-                                location.reload();
-                            })
-                        }
-                    } 
-                });
-        });
-    </script>
-
-    @php include public_path('themes/default/views/footer.blade.php'); @endphp
+@php include public_path('themes/default/views/footer.blade.php'); @endphp
 
 @endsection

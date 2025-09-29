@@ -118,7 +118,6 @@ Route::group(
         Route::post('becomesubscriber', 'ApiAuthController@becomesubscriber');
 
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
-        Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('add_payperview', 'ApiAuthController@add_payperview');
         Route::post('create_razorpay_order', 'ApiAuthController@create_razorpay_order');
         Route::post('create_livestream_razorpay_order', 'ApiAuthController@create_livestream_razorpay_order');

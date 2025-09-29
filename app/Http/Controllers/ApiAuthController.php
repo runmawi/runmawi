@@ -12267,17 +12267,24 @@ class ApiAuthController extends Controller
 
   public function RazorpaySubscription(Request $request)
   {
-
+    
     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
     $countryName = $geoip->getCountry();
     $regionName = $geoip->getregion();
     $cityName = $geoip->getcity();
 
     $Plan_Id = $request->plan_id;
+    $subscription = SubscriptionPlan::find($Plan_Id);
+    if (!$subscription) {
+        return response()->json(['error' => 'Subscription plan not found'], 404);
+    }
+
+    // Step 3: Extract Razorpay Plan ID
+    $razorpayPlanId = $subscription->plan_id;
     $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
-    $planId = $api->plan->fetch($Plan_Id);
-
+    $planId = $api->plan->fetch($razorpayPlanId);
+    
     $subscription = $api->subscription->create(array(
       'plan_id' => $planId->id,
       'customer_notify' => 1,

@@ -308,8 +308,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         <div id="message-note" ></div>
 
         <div class="pageWrapper">
-                
-                            {{-- Breadcrumbs  --}}
+            {{-- Breadcrumbs  --}}
             <div class="scp-breadcrumb">
                 <ul class="breadcrumb">
                 

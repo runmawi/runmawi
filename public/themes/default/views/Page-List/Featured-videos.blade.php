@@ -30,7 +30,7 @@
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)
                                                     @switch(true)
                                                         @case($video->access == 'subscriber')
-                                                            <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
+                                                            <p class="p-tag"><i class="fas fa-crown" style="color:gold !important"></i></p>
                                                         @break
                                                         @case($video->access == 'registered')
                                                             <p class="p-tag">{{ __('Register Now') }}</p>
