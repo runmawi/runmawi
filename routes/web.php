@@ -23,6 +23,25 @@ Route::get('/video-chat', function () {
     $users = App\User::where('id', '<>', Auth::id())->get();
     return view('video-chat', ['users' => $users]);
 });
+
+
+// Required for gamezop google ads verification
+Route::get('/ads.txt', function () {
+    return response(
+        "google.com, pub-3452022011371122, DIRECT, f08c47fec0942fa0\n" .
+        "google.com, pub-8414854470825940, DIRECT, f08c47fec0942fa0\n" .
+        "google.com, pub-7766717304456825, DIRECT, f08c47fec0942fa0\n" .
+        "google.com, pub-2506150943914125, DIRECT, f08c47fec0942fa0\n" .
+        "google.com, pub-6968738577620513, DIRECT, f08c47fec0942fa0\n" .
+        "google.com, pub-4727832945977825, DIRECT, f08c47fec0942fa0\n" .
+        "google.com, pub-6598661725544892, DIRECT, f08c47fec0942fa0\n" .
+        "subdomain=games.runmawi.com",
+        200,
+        ['Content-Type' => 'text/plain']
+    );
+});
+
+
 // Route::get('video_chat', 'VideoChatController@index');
 Route::get('/FFplayoutlogin', 'AdminDashboardController@FFplayoutlogin');
 Route::get('/ffplayout-token-channel', 'AdminFFplayoutController@login');
