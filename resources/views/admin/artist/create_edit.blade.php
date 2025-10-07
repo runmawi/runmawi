@@ -119,6 +119,13 @@ border-radius: 0px 4px 4px 0px;
                                 <option value="Writer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Writer'){{ 'selected' }} @endif > {{ 'Writer' }} </option>
                                 <option value="Contributor" @if (!empty($artist->artist_type) && $artist->artist_type == 'Contributor'){{ 'selected' }} @endif > {{ 'Contributor' }} </option>
                                 <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Narrator'){{ 'selected' }} @endif > {{ 'Narrator' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Fight Choreographer'){{ 'selected' }} @endif > {{ 'Fight Choreographer' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Sound Designer'){{ 'selected' }} @endif > {{ 'Sound Designer' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Line Producer'){{ 'selected' }} @endif > {{ 'Line Producer' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Asst. Director'){{ 'selected' }} @endif > {{ 'Asst. Director' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Actress'){{ 'selected' }} @endif > {{ 'Actress' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Supporting Actor/Actress'){{ 'selected' }} @endif > {{ 'Supporting Actor/Actress' }} </option>
+                                
                             </select>
 
                         </div>
