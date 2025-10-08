@@ -563,8 +563,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     </span>
 
                                     <div class="share-box box-watchtrailer">
-                                        <div class="playbtn"  data-bs-toggle="modal" data-bs-target="#trailermodal">     {{-- Trailer --}}
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:84px">{{ __('Watch Trailer') }}</span>
+                                        <div class="playbtn"  data-bs-toggle="modal" data-bs-target="#trailermodal" >     {{-- Trailer --}}
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width: 80px !important;">{{ __('Watch Trailer') }}</span>
                                         </div>
                                     </div>
                                 </li>
