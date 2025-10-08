@@ -558,7 +558,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                             <ul class="list-inline p-0 m-0 share-icons music-play-lists">
                                 <li class="share sharemobres">
-                                    <span  data-bs-toggle="modal" data-bs-target="#trailermodal">   {{-- Trailer --}}
+                                    <span  data-bs-toggle="modal" data-bs-target="#trailermodal" style="width: 80px !important;">   {{-- Trailer --}}
                                         <i class="fal fa-play"></i> Watch trailer
                                     </span>
 
