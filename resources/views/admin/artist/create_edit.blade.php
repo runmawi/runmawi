@@ -125,6 +125,8 @@ border-radius: 0px 4px 4px 0px;
                                 <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Asst. Director'){{ 'selected' }} @endif > {{ 'Asst. Director' }} </option>
                                 <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Actress'){{ 'selected' }} @endif > {{ 'Actress' }} </option>
                                 <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Supporting Actor/Actress'){{ 'selected' }} @endif > {{ 'Supporting Actor/Actress' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Screen Writer'){{ 'selected' }} @endif > {{ 'Screen Writer' }} </option>
+                                <option value="Narrator" @if (!empty($artist->artist_type) && $artist->artist_type == 'Editor'){{ 'selected' }} @endif > {{ 'Editor' }} </option>
                                 
                             </select>
 
