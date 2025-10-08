@@ -1434,6 +1434,33 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         }
     });
 
+    $(document).ready(function() {
+        // Initialize Flickity for artist sections if they exist
+        var artistSections = document.querySelectorAll('.sectionArtists .listItems');
+        
+        artistSections.forEach(function(elem) {
+            // Check if there are enough items to warrant a carousel
+            var itemCount = elem.querySelectorAll('.listItem').length;
+            
+            if (itemCount > 0) {
+                var flktyArtists = new Flickity(elem, {
+                    cellAlign: 'left',
+                    contain: true,
+                    groupCells: false, // Show individual items
+                    pageDots: false,
+                    prevNextButtons: true, // Enable navigation arrows
+                    draggable: true,
+                    freeScroll: false,
+                    wrapAround: false, // Don't loop
+                    imagesLoaded: true,
+                    lazyload: true,
+                    // Responsive breakpoints
+                    cellSelector: '.listItem',
+                });
+            }
+        });
+    });
+
     
 </script>
 
