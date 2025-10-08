@@ -559,7 +559,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                             <ul class="list-inline p-0 m-0 share-icons music-play-lists">
                                 <li class="share sharemobres">
                                     <span  data-bs-toggle="modal" data-bs-target="#trailermodal">   {{-- Trailer --}}
-                                        <i class="fal fa-play"></i>
+                                        <i class="fal fa-play"></i> Watch trailer
                                     </span>
 
                                     <div class="share-box box-watchtrailer">
@@ -1432,33 +1432,6 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                 $('#trailermodal').modal('hide');
             });
         }
-    });
-
-    $(document).ready(function() {
-        // Initialize Flickity for artist sections if they exist
-        var artistSections = document.querySelectorAll('.sectionArtists .listItems');
-        
-        artistSections.forEach(function(elem) {
-            // Check if there are enough items to warrant a carousel
-            var itemCount = elem.querySelectorAll('.listItem').length;
-            
-            if (itemCount > 0) {
-                var flktyArtists = new Flickity(elem, {
-                    cellAlign: 'left',
-                    contain: true,
-                    groupCells: false, // Show individual items
-                    pageDots: false,
-                    prevNextButtons: true, // Enable navigation arrows
-                    draggable: true,
-                    freeScroll: false,
-                    wrapAround: false, // Don't loop
-                    imagesLoaded: true,
-                    lazyload: true,
-                    // Responsive breakpoints
-                    cellSelector: '.listItem',
-                });
-            }
-        });
     });
 
     
