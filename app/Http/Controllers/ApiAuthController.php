@@ -6209,9 +6209,18 @@ class ApiAuthController extends Controller
       
       $stripe_plan = SubscriptionPlan();
       
-      $user_details = User::where('id', $user_id)->first();
-      if ($user_details) {
-          $user_details->profile_url = URL::to('/') . '/public/uploads/avatars/' . $user_details->avatar;
+      $user_details = DB::table('users')->select('*')->where('id', $user_id)->latest()->get()->map(function ($item) {
+        $item->profile_url = URL::to('/') . '/public/uploads/avatars/' . $item->avatar;
+        return $item;
+      });
+
+      $subscriber = DB::table('subscriber')
+            ->where('user_id', $user_id)
+            ->where('end_date', '>=', now())
+            ->first();
+
+      if ($subscriber) {
+          $user_details[0]->role = 'subscriber';
       }
       
       $userdata = User::where('id', '=', $user_id)->first();
