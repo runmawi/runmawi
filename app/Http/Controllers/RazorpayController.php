@@ -2797,6 +2797,7 @@ class RazorpayController extends Controller
             return;
         }
 
+        // Log the webhook
         DB::table('payment_webhook')->insert([
             'order_id' => null,
             'payment_id' => null,
@@ -2813,6 +2814,7 @@ class RazorpayController extends Controller
         $startDate = isset($subscription['current_start']) ? Carbon::createFromTimestamp($subscription['current_start']) : null;
         $endDate = isset($subscription['current_end']) ? Carbon::createFromTimestamp($subscription['current_end']) : null;
 
+        // Update subscriber table
         DB::table('subscriber')
             ->where('gateway_subscription_id', $subscription['id'])
             ->update([
@@ -2822,12 +2824,27 @@ class RazorpayController extends Controller
                 'updated_at' => now(),
             ]);
 
+        // Update user role to 'subscriber'
+        $subscriber = DB::table('subscriber')
+            ->where('gateway_subscription_id', $subscription['id'])
+            ->first();
+
+        if ($subscriber && $subscriber->user_id) {
+            DB::table('users')
+                ->where('id', $subscriber->user_id)
+                ->update([
+                    'role' => 'subscriber',
+                    'updated_at' => now(),
+                ]);
+        }
+
         \Log::info('Razorpay Webhook: Subscription activated', [
             'subscription_id' => $subscription['id'],
             'start_date' => $startDate,
             'end_date' => $endDate,
         ]);
     }
+
 
 
 
@@ -2847,6 +2864,7 @@ class RazorpayController extends Controller
             return;
         }
 
+        // Log the webhook
         DB::table('payment_webhook')->insert([
             'order_id' => null,
             'payment_id' => $payment['id'],
@@ -2862,6 +2880,7 @@ class RazorpayController extends Controller
         $startDate = isset($subscription['current_start']) ? Carbon::createFromTimestamp($subscription['current_start']) : null;
         $endDate = isset($subscription['current_end']) ? Carbon::createFromTimestamp($subscription['current_end']) : null;
 
+        // Update subscriber table
         DB::table('subscriber')
             ->where('gateway_subscription_id', $subscription['id'])
             ->update([
@@ -2871,6 +2890,20 @@ class RazorpayController extends Controller
                 'end_date' => $endDate,
                 'updated_at' => now(),
             ]);
+
+        // Update user role to 'subscriber'
+        $subscriber = DB::table('subscriber')
+            ->where('gateway_subscription_id', $subscription['id'])
+            ->first();
+
+        if ($subscriber && $subscriber->user_id) {
+            DB::table('users')
+                ->where('id', $subscriber->user_id)
+                ->update([
+                    'role' => 'subscriber',
+                    'updated_at' => now(),
+                ]);
+        }
 
         \Log::info('Razorpay Webhook: Subscription charged', [
             'subscription_id' => $subscription['id'],
@@ -2896,6 +2929,7 @@ class RazorpayController extends Controller
             return;
         }
 
+        // Insert into webhook log table
         DB::table('payment_webhook')->insert([
             'order_id' => null,
             'payment_id' => null,
@@ -2908,6 +2942,7 @@ class RazorpayController extends Controller
             'updated_at' => now(),
         ]);
 
+        // Update subscriber table
         DB::table('subscriber')
             ->where('gateway_subscription_id', $subscription['id'])
             ->update([
@@ -2915,9 +2950,24 @@ class RazorpayController extends Controller
                 'updated_at' => now(),
             ]);
 
+        // Update User role to 'registered'
+        $subscriber = DB::table('subscriber')
+            ->where('gateway_subscription_id', $subscription['id'])
+            ->first();
+
+        if ($subscriber && $subscriber->user_id) {
+            DB::table('users')
+                ->where('id', $subscriber->user_id)
+                ->update([
+                    'role' => 'registered',
+                    'updated_at' => now(),
+                ]);
+        }
+
         \Log::info('Razorpay Webhook: Subscription cancelled', [
             'subscription_id' => $subscription['id'],
         ]);
     }
+
 
 }

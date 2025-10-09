@@ -113,20 +113,4 @@ class User extends Authenticatable
         return $this->belongsTo(CountryCode::class,'ccode','phonecode');
     }
 
-    /**
-     * ✅ New: Override role accessor to return "subscriber" dynamically
-     */
-    public function getRoleAttribute($value)
-    {   
-        $subscriber = \DB::table('subscriber')
-            ->where('user_id', $this->id)
-            ->where('end_date', '>=', now())
-            ->first();
-
-        if ($subscriber) {
-            return 'subscriber';
-        }
-
-        return $value;
-    }
 }

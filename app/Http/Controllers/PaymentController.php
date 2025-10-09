@@ -2438,19 +2438,19 @@ class PaymentController extends Controller
       ]);
 
       try {
-        $PaymentSetting = PaymentSetting::where('payment_type', 'Razorpay')->first();
+          $PaymentSetting = PaymentSetting::where('payment_type', 'Razorpay')->first();
 
-        if (!$PaymentSetting) {
-            return redirect('/home')->with('error', 'Razorpay configuration missing.');
-        }
+          if (!$PaymentSetting) {
+              return redirect('/home')->with('error', 'Razorpay configuration missing.');
+          }
 
-        $razorpaykeyId = $PaymentSetting->live_mode == 0
-            ? $PaymentSetting->test_publishable_key
-            : $PaymentSetting->live_publishable_key;
+          $razorpaykeyId = $PaymentSetting->live_mode == 0
+              ? $PaymentSetting->test_publishable_key
+              : $PaymentSetting->live_publishable_key;
 
-        $razorpaykeysecret = $PaymentSetting->live_mode == 0
-            ? $PaymentSetting->test_secret_key
-            : $PaymentSetting->live_secret_key;
+          $razorpaykeysecret = $PaymentSetting->live_mode == 0
+              ? $PaymentSetting->test_secret_key
+              : $PaymentSetting->live_secret_key;
 
           $api = new Api($razorpaykeyId, $razorpaykeysecret);
 
@@ -2465,11 +2465,19 @@ class PaymentController extends Controller
                   ->first();
 
               if ($subscriber) {
+                  // Update subscriber table
                   $subscriber->update([
                       'payment_status' => 'active',
                       'start_date' => $start,
                       'end_date' => $end,
                   ]);
+
+                  // Update User role to 'subscriber'
+                  $user = User::find($subscriber->user_id);
+                  if ($user) {
+                      $user->role = 'subscriber';
+                      $user->save();
+                  }
               }
 
               return response()->json([
