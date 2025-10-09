@@ -6213,12 +6213,11 @@ class ApiAuthController extends Controller
         $item->profile_url = URL::to('/') . '/public/uploads/avatars/' . $item->avatar;
         return $item;
       });
-      
-      $userdata = $user_details;
+      $user_details = $user_details[0];
+      $userdata = User::where('id', '=', $user_id)->first();
       $paymode_type = Subscription::where('user_id', $user_id)->latest()->pluck('PaymentGateway')->first();
       
       if ($paymode_type != null && $paymode_type == "Razorpay" && !empty($userdata) && $userdata->role == "subscriber") {
-
         
         $subscriber = Subscriber::where('user_id', $user_id)->first();
         $subscription_id = $subscriber->gateway_subscription_id;
