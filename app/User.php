@@ -121,7 +121,6 @@ class User extends Authenticatable
         $subscriber = \DB::table('subscriber')
             ->where('user_id', $this->id)
             ->where('end_date', '>=', now())
-            ->where('payment_status', 'active')
             ->first();
 
         if ($subscriber) {

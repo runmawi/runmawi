@@ -52,6 +52,7 @@ use \App\User as User;
 use App\AdminVideoAds;
 use App\Advertisement;
 use App\CategoryAudio;
+use App\Subscriber;
 use App\CategoryVideo;
 use App\EmailTemplate;
 use App\InappPurchase;
@@ -6205,23 +6206,26 @@ class ApiAuthController extends Controller
       );
 
     } else {
-
+      
       $stripe_plan = SubscriptionPlan();
-
-      $user_details = DB::table('users')->select('*')->where('id', $user_id)->latest()->get()->map(function ($item) {
-        $item->profile_url = URL::to('/') . '/public/uploads/avatars/' . $item->avatar;
-        return $item;
-      });
-
+      
+      $user_details = User::where('id', $user_id)->first();
+      if ($user_details) {
+          $user_details->profile_url = URL::to('/') . '/public/uploads/avatars/' . $user_details->avatar;
+      }
+      
       $userdata = User::where('id', '=', $user_id)->first();
       $paymode_type = Subscription::where('user_id', $user_id)->latest()->pluck('PaymentGateway')->first();
-
+      
       if ($paymode_type != null && $paymode_type == "Razorpay" && !empty($userdata) && $userdata->role == "subscriber") {
 
-        $subscription_id = User::where('id', '=', $user_id)->pluck('stripe_id')->first();
+        
+        $subscriber = Subscriber::where('user_id', $user_id)->first();
+        $subscription_id = $subscriber->gateway_subscription_id;
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
         if ($subscription_id != null) {
+          
           $subscription = $api->subscription->fetch($subscription_id);
           $nextPaymentAttemptDate = Carbon::createFromTimeStamp($subscription->current_end)->toFormattedDateString();
         } else {
@@ -6236,7 +6240,7 @@ class ApiAuthController extends Controller
           $nextPaymentAttemptDate = '';
         }
       }
-
+      
       $user = User::find($user_id);
 
       $stripe_plan = SubscriptionPlan();
