@@ -6214,13 +6214,9 @@ class ApiAuthController extends Controller
         return $item;
       });
 
-      $subscriber = DB::table('subscriber')
-            ->where('user_id', $user_id)
-            ->where('end_date', '>=', now())
-            ->first();
-
-      if ($subscriber) {
-          $user_details[0]->role = 'subscriber';
+      $user_details = User::where('id', $user_id)->first();
+      if ($user_details) {
+          $user_details->profile_url = URL::to('/') . '/public/uploads/avatars/' . $user_details->avatar;
       }
       
       $userdata = User::where('id', '=', $user_id)->first();
