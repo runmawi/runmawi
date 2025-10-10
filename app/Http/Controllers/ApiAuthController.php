@@ -6215,19 +6215,19 @@ class ApiAuthController extends Controller
       });
       $user_details = $user_details[0];
       $userdata = User::where('id', '=', $user_id)->first();
-      $paymode_type = Subscription::where('user_id', $user_id)->latest()->pluck('PaymentGateway')->first();
+      // $paymode_type = Subscription::where('user_id', $user_id)->latest()->pluck('PaymentGateway')->first();
 
       if (!empty($userdata) && $userdata->role == "subscriber") {
-        
-        $nextPaymentAttemptDate = Subscriber::select('end_date')->where("user_id", $user_id)->latest()->first();
-
+        $subscription_user = Subscriber::where("user_id", $user_id)->latest()->first();
+        $nextPaymentAttemptDate = $subscription_user->end_date;
+        $current_plan = SubscriptionPlan::select('plans_name')->where('id', $subscription_user->subscription_plan_id)->latest()->first();
       }
       else{
         $nextPaymentAttemptDate = '';
       }
       
       $user = User::find($user_id);
-
+      
 
       // if (!empty($userdata) && $userdata->role == "subscriber" || !empty($userdata) && ($userdata->subscribed($stripe_plan) && $userdata->role == "subscriber")) {
 
@@ -6259,7 +6259,7 @@ class ApiAuthController extends Controller
       $response = array(
         'status' => 'true',
         'message' => 'success',
-        'curren_stripe_plan' => $curren_stripe_plan,
+        'curren_stripe_plan' => $current_plan,
         'user_details' => $user_details,
         'next_billing' => $nextPaymentAttemptDate,
         'ends_at' => $nextPaymentAttemptDate,
