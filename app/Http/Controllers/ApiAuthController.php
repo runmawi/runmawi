@@ -6216,28 +6216,14 @@ class ApiAuthController extends Controller
       $user_details = $user_details[0];
       $userdata = User::where('id', '=', $user_id)->first();
       $paymode_type = Subscription::where('user_id', $user_id)->latest()->pluck('PaymentGateway')->first();
-      
-      if ($paymode_type != null && $paymode_type == "Razorpay" && !empty($userdata) && $userdata->role == "subscriber") {
+
+      if (!empty($userdata) && $userdata->role == "subscriber") {
         
-        $subscriber = Subscriber::where('user_id', $user_id)->first();
-        $subscription_id = $subscriber->gateway_subscription_id;
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+        $nextPaymentAttemptDate = Subscriber::select('end_date')->where("user_id", $user_id)->latest()->first();
 
-        if ($subscription_id != null) {
-          
-          $subscription = $api->subscription->fetch($subscription_id);
-          $nextPaymentAttemptDate = Carbon::createFromTimeStamp($subscription->current_end)->toFormattedDateString();
-        } else {
-          $nextPaymentAttemptDate = '';
-        }
-
-      } else {
-        if ($userdata && $userdata->subscription($stripe_plan)) {
-          $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
-          $nextPaymentAttemptDate = Carbon::createFromTimeStamp($timestamp)->toFormattedDateString();
-        } else {
-          $nextPaymentAttemptDate = '';
-        }
+      }
+      else{
+        $nextPaymentAttemptDate = '';
       }
       
       $user = User::find($user_id);
@@ -12270,7 +12256,7 @@ class ApiAuthController extends Controller
 
   public function RazorpaySubscription(Request $request)
   {
-    
+
     $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
     $countryName = $geoip->getCountry();
     $regionName = $geoip->getregion();
@@ -12288,18 +12274,30 @@ class ApiAuthController extends Controller
 
     $planId = $api->plan->fetch($razorpayPlanId);
     
-    $subscription = $api->subscription->create(array(
+    $subscription_create = $api->subscription->create(array(
       'plan_id' => $planId->id,
       'customer_notify' => 1,
       'total_count' => 6,
     ));
 
+    Subscriber::create([
+          'user_id' => $request->user_id,
+          'subscription_plan_id' => $Plan_Id,
+          'amount' => $subscription->amount ?? 0,
+          'payment_gateway' => 'Razorpay',
+          'gateway_subscription_id' => $subscription_create->id,
+          'payment_status' => 'pending',
+          'start_date' => null,
+          'end_date' => null,
+          'created_at' => now(),
+          'updated_at' => now(),
+    ]);
 
     $respond[] = array(
       'razorpaykeyId' => $this->razorpaykeyId,
       'name' => $planId['item']->name,
-      'subscriptionId' => $subscription->id,
-      'short_url' => $subscription->short_url,
+      'subscriptionId' => $subscription_create->id,
+      'short_url' => $subscription_create->short_url,
       'currency' => 'INR',
       'address' => $cityName,
       'description' => null,
@@ -12316,54 +12314,61 @@ class ApiAuthController extends Controller
 
   public function RazorpayStore(Request $request)
   {
-    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-    $countryName = $geoip->getCountry();
-    $regionName = $geoip->getregion();
-    $cityName = $geoip->getcity();
+      $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+      $countryName = $geoip->getCountry();
+      $regionName = $geoip->getRegion();
+      $cityName = $geoip->getCity();
 
-    try {
-      $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-      $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
-      $plan_id = $api->plan->fetch($subscription['plan_id']);
+      try {
+          $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+          $subscription = $api->subscription->fetch($request->razorpay_subscription_id);
+          $plan_id = $api->plan->fetch($subscription['plan_id']);
 
-      $Sub_Startday = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString();
-      $Sub_Endday = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString();
-      $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString();
+          $Sub_Startday = Carbon::createFromTimestamp($subscription['current_start'])->toDateTimeString();
+          $Sub_Endday   = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString();
 
+          $subscriber = Subscriber::where('user_id', $request->user_id)
+              ->where('gateway_subscription_id', $request->razorpay_subscription_id)
+              ->latest()
+              ->first();
 
-      Subscription::create([
-        'user_id' => $request->userId,
-        'name' => $plan_id['item']->name,
-        'price' => $plan_id['item']->amount / 100,   // Amount Paise to Rupees
-        'stripe_id' => $subscription['id'],
-        'stripe_status' => $subscription['status'],
-        'stripe_plan' => $subscription['plan_id'],
-        'quantity' => $subscription['quantity'],
-        'countryname' => $countryName,
-        'regionname' => $regionName,
-        'cityname' => $cityName,
-        'PaymentGateway' => 'Razorpay',
-      ]);
+          if ($subscriber) {
+              $subscriber->update([
+                  'payment_status' => 'active',
+                  'start_date' => $Sub_Startday,
+                  'end_date' => $Sub_Endday,
+                  'updated_at' => now(),
+              ]);
+          } else {
+              return response()->json([
+                  'status' => 'false',
+                  'Message' => 'No pending subscription found for this user'
+              ], 404);
+          }
 
-      User::where('id', $request->userId)->update([
-        'role' => 'subscriber',
-        'stripe_id' => $subscription['id'],
-        'subscription_start' => $Sub_Startday,
-        'subscription_ends_at' => $Sub_Endday,
-        'payment_gateway' => 'Razorpay',
-      ]);
+          User::where('id', $request->user_id)->update([
+              'role' => 'subscriber',
+              'stripe_id' => $subscription['id'],
+              'subscription_start' => $Sub_Startday,
+              'subscription_ends_at' => $Sub_Endday,
+              'payment_gateway' => 'Razorpay',
+              'countryname' => $countryName,
+              'regionname' => $regionName,
+              'cityname' => $cityName,
+          ]);
 
-      return response()->json([
-        'status' => 'true',
-        'Message' => 'Payment Done Successfully'
-      ], 200);
-    } catch (\Exception $e) {
-      return response()->json([
-        'status' => 'false',
-        'Message' => 'While Storing the value on Serve Error'
-      ], 200);
-    }
+          return response()->json([
+              'status' => 'true',
+              'Message' => 'Payment Done Successfully',
+          ], 200);
+      } catch (\Exception $e) {
+          return response()->json([
+              'status' => 'false',
+              'Message' => 'Error while storing payment details: ' . $e->getMessage(),
+          ], 500);
+      }
   }
+
 
   public function RazorpaySubscriptionCancel(Request $request)
   {
