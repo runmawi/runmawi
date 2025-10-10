@@ -6228,34 +6228,33 @@ class ApiAuthController extends Controller
       
       $user = User::find($user_id);
 
-      $stripe_plan = SubscriptionPlan();
 
-      if (!empty($userdata) && $userdata->role == "subscriber" || !empty($userdata) && ($userdata->subscribed($stripe_plan) && $userdata->role == "subscriber")) {
+      // if (!empty($userdata) && $userdata->role == "subscriber" || !empty($userdata) && ($userdata->subscribed($stripe_plan) && $userdata->role == "subscriber")) {
 
-        $paymode_type = Subscription::where('user_id', $user_id)->latest()->pluck('PaymentGateway')->first();
+      //   $paymode_type = Subscription::where('user_id', $user_id)->latest()->pluck('PaymentGateway')->first();
 
-        if ($paymode_type != null && $paymode_type == "Razorpay") {
-          $curren_stripe_plan = CurrentSubPlanName($user_id);
-          $ends_ats = Subscription::where('user_id', $user_id)->latest()->pluck('ends_at');
-          if (!empty($ends_ats[0])) {
-            $ends_at = $ends_ats[0];
-          } else {
-            $ends_at = "";
-          }
+      //   if ($paymode_type != null && $paymode_type == "Razorpay") {
+      //     $curren_stripe_plan = CurrentSubPlanName($user_id);
+      //     $ends_ats = Subscription::where('user_id', $user_id)->latest()->pluck('ends_at');
+      //     if (!empty($ends_ats[0])) {
+      //       $ends_at = $ends_ats[0];
+      //     } else {
+      //       $ends_at = "";
+      //     }
 
-        } else {
-          $curren_stripe_plan = CurrentSubPlanName($user_id);
-          $ends_ats = Subscription::where('user_id', $user_id)->pluck('ends_at');
-          if (!empty($ends_ats[0])) {
-            $ends_at = $ends_ats[0];
-          } else {
-            $ends_at = "";
-          }
-        }
-      } else {
-        $curren_stripe_plan = "No Plan Found";
-        $ends_at = "";
-      }
+      //   } else {
+      //     $curren_stripe_plan = CurrentSubPlanName($user_id);
+      //     $ends_ats = Subscription::where('user_id', $user_id)->pluck('ends_at');
+      //     if (!empty($ends_ats[0])) {
+      //       $ends_at = $ends_ats[0];
+      //     } else {
+      //       $ends_at = "";
+      //     }
+      //   }
+      // } else {
+      //   $curren_stripe_plan = "No Plan Found";
+      //   $ends_at = "";
+      // }
 
       $response = array(
         'status' => 'true',
@@ -6263,7 +6262,7 @@ class ApiAuthController extends Controller
         'curren_stripe_plan' => $curren_stripe_plan,
         'user_details' => $user_details,
         'next_billing' => $nextPaymentAttemptDate,
-        'ends_at' => $ends_at,
+        'ends_at' => $nextPaymentAttemptDate,
       );
     }
     return response()->json($response, 200);
