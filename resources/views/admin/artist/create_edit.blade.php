@@ -129,6 +129,7 @@ border-radius: 0px 4px 4px 0px;
                                 <option value="Screen_Writer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Screen_Writer'){{ 'selected' }} @endif > {{ 'Screen Writer' }} </option>
                                 <option value="Editor" @if (!empty($artist->artist_type) && $artist->artist_type == 'Editor'){{ 'selected' }} @endif > {{ 'Editor' }} </option>
                                 <option value="Production_Manager" @if (!empty($artist->artist_type) && $artist->artist_type == 'Production_Manager'){{ 'selected' }} @endif > {{ 'Production Manager' }} </option>
+                                <option value="Gaffer" @if (!empty($artist->artist_type) && $artist->artist_type == 'Gaffer'){{ 'selected' }} @endif > {{ 'Gaffer' }} </option>
                                 
                             </select>
 
