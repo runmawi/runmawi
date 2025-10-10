@@ -6220,7 +6220,7 @@ class ApiAuthController extends Controller
       if (!empty($userdata) && $userdata->role == "subscriber") {
         $subscription_user = Subscriber::where("user_id", $user_id)->latest()->first();
         $nextPaymentAttemptDate = $subscription_user->end_date;
-        $current_plan = SubscriptionPlan::select('plans_name')->where('id', $subscription_user->subscription_plan_id)->latest()->first();
+        $current_plan = SubscriptionPlan::where('id', $subscription_user->subscription_plan_id)->value('plans_name');
       }
       else{
         $nextPaymentAttemptDate = '';
