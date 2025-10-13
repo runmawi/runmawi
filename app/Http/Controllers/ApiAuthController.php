@@ -12351,9 +12351,6 @@ class ApiAuthController extends Controller
               'subscription_start' => $Sub_Startday,
               'subscription_ends_at' => $Sub_Endday,
               'payment_gateway' => 'Razorpay',
-              'countryname' => $countryName,
-              'regionname' => $regionName,
-              'cityname' => $cityName,
           ]);
 
           return response()->json([
