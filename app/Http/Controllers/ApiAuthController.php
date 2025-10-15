@@ -31285,7 +31285,7 @@ class ApiAuthController extends Controller
   {
     $user_id = $request->user_id;
     $device_type = $request->device_type;
-    $Razorpay = User::where('users.id', $user_id)->first();
+    $Razorpay = User::where('id', $user_id)->first();
 
     if ($Razorpay != null && $Razorpay->PaymentGateway == "Razorpay") {
       $subscription = Subscriber::where('user_id', $user_id)->orderBy('created_at')->first();
