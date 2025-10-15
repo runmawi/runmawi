@@ -31284,11 +31284,12 @@ class ApiAuthController extends Controller
   public function cancelsubscription(Request $request)
   {
     $user_id = $request->user_id;
-    $device_type = $request->device_type;
+    $device_type = $request->device_type ? $request->device_type : 'android';
     $Razorpay = User::where('id', $user_id)->first();
+    $subscription = Subscriber::where('user_id', $user_id)->orderBy('created_at')->first();
 
-    if ($Razorpay != null && $Razorpay->PaymentGateway == "Razorpay") {
-      $subscription = Subscriber::where('user_id', $user_id)->orderBy('created_at')->first();
+    if ($subscription != null && strtolower($subscription->payment_gateway) == "razorpay") {
+      
       $subscription_id = $subscription->gateway_subscription_id;
 
       $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
