@@ -31285,13 +31285,28 @@ class ApiAuthController extends Controller
   {
     $user_id = $request->user_id;
     $device_type = $request->device_type;
-    $Razorpay = User::where('users.id', $user_id)
-      ->Join("subscriptions", "subscriptions.user_id", "=", "users.id")
-      ->whereColumn('users.stripe_id', '=', 'subscriptions.stripe_id')
-      ->first();
+    $Razorpay = User::where('users.id', $user_id)->first();
 
     if ($Razorpay != null && $Razorpay->PaymentGateway == "Razorpay") {
-      return redirect::to('RazorpayCancelSubscriptions');
+      $subscription = Subscriber::where('user_id', $user_id)->orderBy('created_at')->first();
+      $subscription_id = $subscription->gateway_subscription_id;
+
+      $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+      $options = array('cancel_at_cycle_end' => 0);
+
+      $api->subscription->fetch($subscription_id)->cancel($options);
+
+      Subscriber::where('gateway_subscription_id', $subscription_id)->update([
+          'payment_status' => 'cancelled',
+      ]);
+
+      User::where('id', $user_id)->update([
+          'payment_status' => 'cancelled',
+          'role' => 'registered',
+          'stripe_id' => null,
+      ]);
+
     } else {
       // Subscription Cancel
       try {
