@@ -28,6 +28,14 @@
         z-index: 9999;
     }
 
+    .custom-alert p{
+        color: black !important;
+    }
+
+    #custom-alert-title{
+        color: #28a745 !important;
+    }
+
     .custom-alert {
         background: #fff;
         padding: 40px 30px;
