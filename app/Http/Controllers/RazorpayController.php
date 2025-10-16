@@ -316,13 +316,16 @@ class RazorpayController extends Controller
 
             $api->subscription->fetch($subscriptionId)->cancel($options);
 
-            Subscription::where('stripe_id', $subscriptionId)->update([
-                'stripe_status' => 'Cancelled',
+            DB::table('subscriber')
+            ->where('gateway_subscription_id', $subscriptionId)
+            ->update([
+                'payment_status' => 'cancelled',
             ]);
 
             User::where('id', Auth::user()->id)->update([
-                'payment_status' => 'Cancel',
+                'payment_status' => 'cancelled',
                 'role' => 'registered',
+                'stripe_id' => null,
             ]);
 
             $Error_msg = "Subscription has been Cancel Successfully";
