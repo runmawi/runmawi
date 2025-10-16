@@ -31287,9 +31287,9 @@ class ApiAuthController extends Controller
     $device_type = $request->device_type ? $request->device_type : 'android';
     $Razorpay = User::where('id', $user_id)->first();
     $subscription = Subscriber::where('user_id', $user_id)->orderBy('created_at')->first();
-
+    
     if ($subscription != null && strtolower($subscription->payment_gateway) == "razorpay") {
-      
+     
       $subscription_id = $subscription->gateway_subscription_id;
 
       $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
@@ -31307,6 +31307,14 @@ class ApiAuthController extends Controller
           'role' => 'registered',
           'stripe_id' => null,
       ]);
+
+      $response = array(
+        'status' => 'true',
+        'status_code' => 200,
+        'message' => 'Your subscription was successfully terminated!',
+      );
+
+      return $response;
 
     } else {
       // Subscription Cancel
