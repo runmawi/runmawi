@@ -98,7 +98,6 @@ $AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
 <div class="main-content">
         
 <div class="row">
-  
     <!-- TOP Nav Bar -->
   <div class="iq-top-navbar">
      <div class="iq-navbar-custom">
@@ -418,7 +417,7 @@ $AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
                           <h6 style="color: white !important;"><?php echo 'Registered'." " .__('Free'); ?> {{ __('Subscription') }}</h6>                                       
                           <h6></h6>                                       
                        <?php }elseif($user_role == 'subscriber'){ ?>
-                          <h6><?php echo $role_plan." " .__('Paid User'); ?></h6>
+                          <h6><?php echo $role_plan." " .__('(Paid User)'); ?></h6>
                           <br>       
                        <h4 class="card-title mb-0 text-white">{{ __('Available Specification') }} :</h4><br>
                        <h6> {{ __('Video Quality') }} : <p class="text-white"> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
@@ -454,22 +453,24 @@ $AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
                               </div>
                            @endif
                         </div>
-
-                        @if(Auth::user()->role == "subscriber" && Auth::user()->payment_status != "Cancel")
-
-                           @if($payment_package != null && $payment_package->payment_gateway  ==  "Razorpay")
-                              <a href="{{ route('RazorpayCancelSubscriptions') }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
+                        @if(Auth::user()->role == "subscriber")
+                           @if($payment_package != null && $payment_package  ==  "razorpay")
+                              <a href="javascript:void(0);" 
+                                 class="btn btn-primary btn-login nomargin noborder-radius text-white" 
+                                 id="cancel_subscription">
+                                 {{ __('Cancel Membership') }}
+                              </a>
                            
-                           @elseif ( $payment_package != null  && $payment_package->payment_gateway == "Paystack")
+                           @elseif ( $payment_package != null  && $payment_package == "Paystack")
                                  <a href="{{ route('Paystack_Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
                            
-                           @elseif ( $payment_package != null  && $payment_package->payment_gateway == "Recurly")
+                           @elseif ( $payment_package != null  && $payment_package == "Recurly")
                               <a href="{{ route('Recurly.Subscription_cancel', [ 'subscription_id' => $payment_package->stripe_id ]) }}" class="btn btn-primary btn-login nomargin noborder-radius text-white" > {{ __('Cancel Membership') }} </a>
                            
-                           @elseif( $payment_package != null  && $payment_package->payment_gateway == "Stripe")
+                           @elseif( $payment_package != null  && $payment_package == "Stripe")
                               <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn text-white" >{{ __('Cancel Membership') }}</a>
                            
-                           @elseif( $payment_package != null  && $payment_package->payment_gateway == "PayPal")
+                           @elseif( $payment_package != null  && $payment_package == "PayPal")
                               <a  href="{{ URL::to('/PayPalcancelSubscription') }}" class="btn btn-primary editbtn text-white" >{{ __('Cancel Membership') }}</a>
                            
                            @endif
@@ -714,7 +715,106 @@ $AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
 
          </div>
             </div></div>
-            
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+            <h5 style="color: #383838ff !important;">Confirm Cancellation</h5>
+            <span class="custom-modal-close">&times;</span>
+        </div>
+        <div class="custom-modal-body">
+            Are you sure you want to cancel your membership? This action cannot be undone.
+        </div>
+        <div class="custom-modal-footer">
+            <button id="cancelNo" class="btn btn-secondary">Keep Membership</button>
+            <a href="{{ route('RazorpayCancelSubscriptions') }}" class="btn btn-danger">Cancel Membership</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.custom-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s;
+}
+
+.custom-modal-content {
+    background: #fff;
+    border-radius: 0.5rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.3);
+    animation: slideIn 0.3s;
+}
+
+.custom-modal-header, .custom-modal-footer {
+    padding: 1rem;
+}
+
+.custom-modal-header {
+    color: #383838ff;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-modal-body {
+    padding: 1rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.custom-modal-footer {
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 0.5rem;
+}
+
+.custom-modal-close {
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: #fff;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: #fff;
+}
+
+.row.text-center div a{
+   margin-bottom: 5px;
+}
+
+/* Animations */
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+@keyframes slideIn { from {transform: translateY(-20px);} to {transform: translateY(0);} }
+</style>
+
+
 <style>
 .form-control {
 background-color: #F2F5FA;
@@ -914,6 +1014,32 @@ document.getElementById("avatar").style.display = "block";
  document.getElementById("recentviews").style.display = "block";
 }
 </script>
+
+<script>
+const modal = document.getElementById('confirmModal');
+const openBtn = document.getElementById('cancel_subscription');
+const closeBtn = document.querySelector('.custom-modal-close');
+const cancelBtn = document.getElementById('cancelNo');
+
+openBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
+});
+
+closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+cancelBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+modal.addEventListener('click', (e) => {
+    if(e.target === modal){
+        modal.style.display = 'none';
+    }
+});
+</script>
+
 
 <?php  if (isset($page) && $page =='admin-dashboard') { ?>
 <script>

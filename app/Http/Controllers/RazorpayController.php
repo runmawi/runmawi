@@ -309,24 +309,17 @@ class RazorpayController extends Controller
         try {
 
             $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            $user_id = $request->user_id ? $request->user_id : Auth::user()->id;
+            
+            $subscription =  DB::table('subscriber')->where('user_id', $user_id)->where('payment_status', 'active')->orderBy('created_at', 'desc')->first();
 
-            $subscriptionId = User::where('id', Auth::user()->id)->where('payment_gateway', 'Razorpay')->pluck('stripe_id')->first();
-
-            $options = array('cancel_at_cycle_end' => 0);
+            $subscriptionId = $subscription->gateway_subscription_id;
+            $options = ['cancel_at_cycle_end' => true];
 
             $api->subscription->fetch($subscriptionId)->cancel($options);
 
-            DB::table('subscriber')
-            ->where('gateway_subscription_id', $subscriptionId)
-            ->update([
-                'payment_status' => 'cancelled',
-            ]);
-
-            User::where('id', Auth::user()->id)->update([
-                'payment_status' => 'cancelled',
-                'role' => 'registered',
-                'stripe_id' => null,
-            ]);
+            $rzp_subscription = $api->subscription->fetch($subscriptionId);
+            $subscriptionEndsAt = date('Y-m-d H:i:s', $rzp_subscription->current_end);
 
             $Error_msg = "Subscription has been Cancel Successfully";
             $url = URL::to('/myprofile');
@@ -2963,6 +2956,9 @@ class RazorpayController extends Controller
                 ->where('id', $subscriber->user_id)
                 ->update([
                     'role' => 'registered',
+                    'subscription_start' => null,
+                    'subscription_ends_at' => null,
+                    'stripe_id' => null,
                     'updated_at' => now(),
                 ]);
         }

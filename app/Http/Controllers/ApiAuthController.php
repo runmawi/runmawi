@@ -31294,18 +31294,13 @@ class ApiAuthController extends Controller
 
       $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
-      $options = array('cancel_at_cycle_end' => 0);
-
+      $options = ['cancel_at_cycle_end' => true];
+      $rzp_subscription = $api->subscription->fetch($subscription_id);
       $api->subscription->fetch($subscription_id)->cancel($options);
-
-      Subscriber::where('gateway_subscription_id', $subscription_id)->update([
-          'payment_status' => 'cancelled',
-      ]);
+      $subscriptionEndsAt = date('Y-m-d H:i:s', $rzp_subscription->current_end);
 
       User::where('id', $user_id)->update([
-          'payment_status' => 'cancelled',
-          'role' => 'registered',
-          'stripe_id' => null,
+          'subscription_ends_at' => $subscriptionEndsAt,
       ]);
 
       $response = array(

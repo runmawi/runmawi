@@ -61,6 +61,7 @@ use App\RecentView;
 use \App\CountryCode;
 
 use App\Subscription;
+use App\Subscriber;
 use \App\MobileSlider;
 use App\SystemSetting;
 use App\VideoCategory;
@@ -2808,7 +2809,7 @@ class AdminUsersController extends Controller
         $SiteTheme = SiteTheme::first();
 
         if (Auth::guest()) {
-            return redirect('/login');
+            return redirect('/');
         }
         $data = Session::all();
 
@@ -2834,13 +2835,10 @@ class AdminUsersController extends Controller
 
             } elseif ($user_role == 'subscriber') {
 
-                $user_role = Subscription::select('subscription_plans.*')->join('subscription_plans', 'subscription_plans.plan_id', '=', 'subscriptions.stripe_plan')
-                    ->where('subscriptions.user_id', $user_id)->orderBy('created_at', 'DESC')
-                    ->get();
-
-                if (!empty($user_role[0])) {
-                    $role_plan = $user_role[0]->plans_name;
-                    $plans = SubscriptionPlan::where('plans_name', $role_plan)->first();
+                $plan = Subscriber::where('user_id', '=', Auth::User()->id)->where('payment_status', 'active')->orderBy('created_at','DESC')->first();
+                if (!empty($plan)) {
+                    $plans = SubscriptionPlan::where('id', $plan->subscription_plan_id)->first();
+                    $role_plan = $plans->plans_name;
                     $devices = Devices::all();
                     $permission = $plans->devices;
                     $user_devices = explode(",", $permission);
@@ -2866,7 +2864,6 @@ class AdminUsersController extends Controller
                 }
 
             }
-            $user_role = Auth::user()->role;
 
             $user_details = User::find($user_id);
             $recent_videos = RecentView::where('user_id', $user_id)->whereNotNull('video_id')->orderBy('id', 'desc')->take(10)
@@ -2933,10 +2930,16 @@ class AdminUsersController extends Controller
             $user_genrated_content_videos = UGCVideo::where('active', '=', '1')->whereIn('id', $user_genrated_content_array)->paginate(9);
 
             if ($user_role == 'subscriber') {
-                $subscriptions_created_at = Subscription::where('subscriptions.user_id', $user_id)->orderBy('created_at', 'DESC')->pluck('created_at')->first();
+                $user_subscription = Subscriber::where('user_id', $user_id)->where('payment_status', 'active')->orderBy('created_at', 'DESC')->first();
+                
+                $payment_package = $user_subscription->payment_gateway;
+                $subscriptions_created_at = $user_subscription->created_at;
             } else {
-                $subscriptions_created_at = User::where('id', $user_id)->pluck('created_at')->first();
+                $payment_package = '';
+                $subscriptions_created_at = '';
             }
+
+            
 
             $data = array(
                 'recent_videos' => $video,
@@ -2959,7 +2962,7 @@ class AdminUsersController extends Controller
                 'alldevices' => $alldevices,
                 'UserTVLoginCode' => $UserTVLoginCode,
                 'video_quality' => $video_quality,
-                'payment_package' => User::where('id', Auth::user()->id)->first(),
+                'payment_package' => strtolower($payment_package),
                 'LoggedusersCode' => TVLoginCode::where('email', Auth::User()->email)->orderBy('created_at', 'DESC')->get(),
                 'subscriptions_created_at' => $subscriptions_created_at,
             );
