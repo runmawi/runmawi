@@ -172,6 +172,7 @@ Route::group(
         Route::get('cast_lists', 'ApiAuthController@CastList');
         Route::post('mobile_signup', 'ApiAuthController@MobileSignup');
         Route::post('mobile_login', 'ApiAuthController@MobileLogin');
+        Route::post('android_tv_mobile_check', 'ApiAuthController@android_tv_mobile_check');
 
         // Episode like & Dislike
         Route::post('Episode_like', 'ApiAuthController@Episode_like');

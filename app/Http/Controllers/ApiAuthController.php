@@ -8820,6 +8820,62 @@ class ApiAuthController extends Controller
     return response()->json($response, 200);
   }
 
+  // Android TV Mobile Check Endpoint - Unique endpoint for TV app
+  public function android_tv_mobile_check(Request $request)
+  {
+    try {
+      $mobile = $request->mobile;
+      $ccode = $request->ccode ? $request->ccode : '+91';
+
+      $user = User::where('mobile', $mobile)->first();
+
+      if (!is_null($user)) {
+        // Update ccode if it's null or empty
+        if (empty($user->ccode)) {
+          $user->ccode = $ccode;
+          $user->save();
+        }
+
+        if ($user->active != 1) {
+          $mobile_number_status = "mobile_number_exists";
+          $message = "This mobile number is inactive !!";
+          $redirect_api = URL::to('api/auth/login');
+          $user_detail = null;
+        } else {
+          $mobile_number_status = "mobile_number_exists";
+          $message = "This mobile number already exists !!";
+          $redirect_api = URL::to('api/auth/login');
+          $user_detail = $user->toArray();
+        }
+
+      } else {
+        $mobile_number_status = "mobile_number_not_exists";
+        $message = "This mobile number not exists !!";
+        $redirect_api = URL::to('api/auth/signup');
+        $user_detail = null;
+      }
+
+      $response = array(
+        'status' => 'true',
+        'mobile_number_status' => $mobile_number_status,
+        'redirect_api' => $redirect_api,
+        'message' => $message,
+        'user_detail' => $user_detail,
+      );
+
+    } catch (\Throwable $th) {
+      $response = array(
+        'status' => 'false',
+        'mobile_number_status' => 'error',
+        'redirect_api' => '',
+        'message' => $th->getMessage(),
+        'user_detail' => null,
+      );
+    }
+
+    return response()->json($response, 200);
+  }
+
 
   /* Season and Episode details*/
   public function SeasonsEpisodes(Request $request)
