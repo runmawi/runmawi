@@ -53,7 +53,7 @@
 
             </div>
         </div>
-
+ 
         <div class="col s12 m6">
             <div class="icon-block">
                 <h5 class="center">Earnings</h5>
@@ -107,6 +107,8 @@
             </div>
         </div>
     </div>
+
+
     <br>
 
     <div class="mt-5">
