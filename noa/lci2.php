@@ -1,9 +1,12 @@
 <?php
 // Database connection
 $host = 'localhost';
-$dbname = 'runmawi_vod';
-$username = 'runmawi_noa';
-$password = 'Nanoa123@#$';
+
+
+
+$username = "RonalD"; // Replace with your phpMyAdmin username
+$password = "aDjaeMXMY8RI9gExCC1z!"; // Replace with your phpMyAdmin password
+$dbname = "Quinn"; // Replace with your database name (optional, can be empty if
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
