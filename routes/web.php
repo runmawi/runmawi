@@ -42,6 +42,11 @@ Route::get('/ads.txt', function () {
 });
 
 
+Route::get('/yt_embed', function () {
+    return view('yt_embed');
+});
+
+
 // Route::get('video_chat', 'VideoChatController@index');
 Route::get('/FFplayoutlogin', 'AdminDashboardController@FFplayoutlogin');
 Route::get('/ffplayout-token-channel', 'AdminFFplayoutController@login');
