@@ -35,8 +35,9 @@ class AdminLiveCategoriesController extends Controller
         $user_package =    User::where('id', $package_id)->first();
         $package = $user_package->package;
         $user =  User::where('id',1)->first();
-        $duedate = $user->package_ends;
+        // $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+        $duedate = $current_date;
         if ($current_date > $duedate)
         {
           $client = new Client();

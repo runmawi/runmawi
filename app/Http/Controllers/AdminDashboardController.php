@@ -68,8 +68,9 @@ class AdminDashboardController extends Controller
             return redirect('/');
         }
         $user = User::where('id', 1)->first();
-        // $duedate = $user->package_ends; Old error
+        // // $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+        $duedate = $current_date;
         $duedate = $current_date;
         if ($current_date > $duedate) {
 

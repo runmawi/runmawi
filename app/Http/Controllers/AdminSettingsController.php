@@ -41,8 +41,9 @@ class AdminSettingsController extends Controller
     public function index()
     {
         $user = User::where('id', 1)->first();
-        $duedate = $user->package_ends;
+        // $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+        $duedate = $current_date;
         if ($current_date > $duedate) {
             $client = new Client();
             $url = 'https://flicknexs.com/userapi/allplans';
@@ -596,8 +597,9 @@ class AdminSettingsController extends Controller
     public function playerui_index()
     {
         $user = User::where('id', 1)->first();
-        $duedate = $user->package_ends;
+        // $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+        $duedate = $current_date;
 
         if ($current_date > $duedate) {
             $client = new Client();
@@ -889,8 +891,9 @@ class AdminSettingsController extends Controller
     public function ThumbnailSetting(Request $request)
     {
         $user = User::where('id', 1)->first();
-        $duedate = $user->package_ends;
+        // $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+        $duedate = $current_date;
         if ($current_date > $duedate) {
             $client = new Client();
             $url = 'https://flicknexs.com/userapi/allplans';
@@ -967,8 +970,9 @@ class AdminSettingsController extends Controller
     public function footer_link(Request $request)
     {
         $user = User::where('id', 1)->first();
-        $duedate = $user->package_ends;
+        // $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+        $duedate = $current_date;
 
         if ($current_date > $duedate) {
             $client = new Client();
@@ -1069,8 +1073,9 @@ class AdminSettingsController extends Controller
     {
 
         $user = User::where('id', 1)->first();
-        $duedate = $user->package_ends;
+        // $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+        $duedate = $current_date;
         if ($current_date > $duedate) {
             $client = new Client();
             $url = 'https://flicknexs.com/userapi/allplans';
