@@ -297,7 +297,7 @@ class AdminAdvertiserController extends Controller
             $user = User::where('id', 1)->first();
             $duedate = $user->package_ends;
             $current_date = date('Y-m-d');
-
+            $duedate = $current_date;
             if ($current_date > $duedate) {
 
                 $client = new Client();
