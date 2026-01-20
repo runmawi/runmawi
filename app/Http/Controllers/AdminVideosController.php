@@ -2896,6 +2896,7 @@ $duedate = $current_date;
         $video->video_id_480p = ( !empty($data["video_id_480p"])) ? $data["video_id_480p"] : null;
         $video->video_id_720p = (!empty($data["video_id_720p"])) ? $data["video_id_720p"] : null;
         $video->video_id_1080p =( !empty($data["video_id_1080p"])) ? $data["video_id_1080p"] : null;
+        $video->video_id_bunny_net= ( !empty($data["video_id_bunny_net"])) ? $data["video_id_bunny_net"] : null;
 
         $video->save();
 
@@ -12867,6 +12868,7 @@ $duedate = $current_date;
             $video->video_id_480p = ( !empty($data["video_id_480p"])) ? $data["video_id_480p"] : null;
             $video->video_id_720p = (!empty($data["video_id_720p"])) ? $data["video_id_720p"] : null;
             $video->video_id_1080p =( !empty($data["video_id_1080p"])) ? $data["video_id_1080p"] : null;
+            $video->video_id_bunny_net =( !empty($data["video_id_bunny_net"])) ? $data["video_id_bunny_net"] : null;
             // $video->type = 'VideoCipher';
             $video->status = 1;
             // Ads videos

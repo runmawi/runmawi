@@ -776,7 +776,10 @@ border-radius: 0px 4px 4px 0px;
                         <label class="m-0">Choose video ID for 1080p:</label>
                         <input type="text" class="form-control" placeholder="Video ID for 1080" name="video_id_1080p"  value="@if(!empty($video->video_id_1080p)){{ $video->video_id_1080p }}@endif">
                      </div>
-
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">Choose video ID for Bunny net:</label>
+                        <input type="text" class="form-control" placeholder="Video ID for Bunny net" name="video_id_bunny_net"  value="@if(!empty($video->video_id_bunny_net)){{ $video->video_id_bunny_net }}@endif">
+                     </div>
                   </div>
                </div>
 

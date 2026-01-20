@@ -17,6 +17,7 @@ class AddPlayerVideoIdCipherVideos extends Migration
             $table->string('video_id_480p')->nullable()->after('ppv_price_1080p');
             $table->string('video_id_720p')->nullable()->after('video_id_480p');
             $table->string('video_id_1080p')->nullable()->after('video_id_720p');
+            $table->string('video_id_bunny_net')->nullable()->after('video_id_1080p');
         });
     }
 
@@ -31,6 +32,7 @@ class AddPlayerVideoIdCipherVideos extends Migration
             $table->dropColumn('video_id_480p');
             $table->dropColumn('video_id_720p');
             $table->dropColumn('video_id_1080p');
+            $table->dropColumn('video_id_bunny_net');
         });
     }
 }
