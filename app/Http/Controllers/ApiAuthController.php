@@ -3315,6 +3315,7 @@ class ApiAuthController extends Controller
         'ppv_exist' => $ppv_exist,
         'PPV_Plan' => $ppv_plan_response,
         'userrole' => $userrole,
+        'tv_play_url' => 'Testing play url for tv',
         'like' => $like,
         'dislike' => $dislike,
         'skiptime' => $skip_time,
