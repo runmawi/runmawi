@@ -33310,7 +33310,7 @@ class ApiAuthController extends Controller
               $videodetailaccess = Video::where('id', $video_id)->pluck('access')->first();
               $can_view = false;
               $user = User::where('id', $user_id)->first();
-              if ($ppv_exists_check_query > 0) {
+              if ($ppv_exists_check_query > 0 || $user->role == 'admin') {
                 if ($ppv_purchase && $ppv_purchase->to_time && $ppv_purchase->to_time > $current_date) {
                   $can_view = true;
                 } else {
@@ -33322,7 +33322,6 @@ class ApiAuthController extends Controller
                   'status' => 'success',
                   'user_agent' => $userAgent,
                   'has_access' => $can_view,
-                  'user'  => $user
               ]);
           }
           else{
