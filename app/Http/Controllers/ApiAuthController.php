@@ -33280,10 +33280,10 @@ class ApiAuthController extends Controller
 
   public function tv_play_url(Request $request){
     return response()->json([
-      'status' => 'success',
-      'request' => $request
+        'status' => 'success',
+        'user_agent' => $request->header('User-Agent')
     ]);
-  }
+}
 
 }
 
