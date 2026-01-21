@@ -33321,10 +33321,21 @@ class ApiAuthController extends Controller
                 $can_view = true;
               }
 
+              if($can_view){
+                $tokenSecurityKey = 'd7b396e8-d46a-4702-b8fa-7ae074ae2402';
+                $expiration = time() + (3 * 60 * 60);
+
+                $hashInput = $tokenSecurityKey . $video_id . $expiration;
+
+                // SHA256 HEX
+                $token = hash('sha256', $hashInput);
+              }
+
               return response()->json([
                   'status' => 'success',
                   'user_agent' => $userAgent,
                   'has_access' => $can_view,
+                  'video_id'  => $videodetailaccess->video_id_bunny_net
               ]);
           }
           else{
