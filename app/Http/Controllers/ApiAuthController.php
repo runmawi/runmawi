@@ -33309,6 +33309,7 @@ class ApiAuthController extends Controller
               $current_date = date('Y-m-d h:i:s a', time());
               $videodetailaccess = Video::where('id', $video_id)->pluck('access')->first();
               $can_view = false;
+              $user = User::where('id', $user_id)->first();
               if ($ppv_exists_check_query > 0) {
                 if ($ppv_purchase && $ppv_purchase->to_time && $ppv_purchase->to_time > $current_date) {
                   $can_view = true;
