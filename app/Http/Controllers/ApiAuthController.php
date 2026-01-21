@@ -33279,11 +33279,31 @@ class ApiAuthController extends Controller
   }
 
   public function tv_play_url(Request $request){
-    return response()->json([
-        'status' => 'success',
-        'user_agent' => $request->header('User-Agent')
-    ]);
-}
+      $userAgent = $request->userAgent();
+
+      $isLgWebOs = false;
+
+      if ($userAgent) {
+          $ua = strtolower($userAgent);
+
+          if (str_contains($ua, 'webos') || str_contains($ua, 'smarttv') || str_contains($ua, 'lg')) {
+              $isLgWebOs = true;
+              return response()->json([
+                  'status' => 'success',
+                  'user_agent' => $userAgent,
+                  'is_lg_webos_tv' => $isLgWebOs
+              ]);
+          }
+          else{
+            return response()->json([
+                'status' => 'error',
+                'message' => "Unsupported device"
+            ]);
+          }
+      }
+
+      
+  }
 
 }
 
