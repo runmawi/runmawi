@@ -33335,7 +33335,7 @@ class ApiAuthController extends Controller
                   'status' => 'success',
                   'user_agent' => $userAgent,
                   'has_access' => $can_view,
-                  'video_id'  => $videodetailaccess->video_id_bunny_net
+                  'video_id'  => $videodetailaccess
               ]);
           }
           else{
