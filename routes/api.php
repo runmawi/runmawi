@@ -43,6 +43,7 @@ Route::group(
         Route::post('Channel-series-list', 'ApiAuthController@Channel_series_list');
         Route::post('Channel-videos-list', 'ApiAuthController@Channel_videos_list');
         
+        Route::post('tv_play_url', 'ApiAuthController@tv_play_url');
         // Search 
         Route::post('search', 'ApiAuthController@search');
         Route::post('searchapi', 'ApiAuthController@searchapi');

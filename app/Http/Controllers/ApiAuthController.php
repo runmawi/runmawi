@@ -2485,7 +2485,6 @@ class ApiAuthController extends Controller
         'like' => $like,
         'dislike' => $dislike,
         'shareurl' => URL::to('category/videos') . '/' . @$videodetail[0]->slug,
-        'tv_direct_play' => 'testing direct play',
         'videodetail' => $videodetail,
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
@@ -33278,5 +33277,14 @@ class ApiAuthController extends Controller
       ], 500);
     }
   }
+
+  public function tv_play_url(Request $request){
+    return response()->json([
+      'status' => 'success',
+      'request' => $request
+    ]);
+  }
+
 }
+
 
