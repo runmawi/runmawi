@@ -33283,6 +33283,7 @@ class ApiAuthController extends Controller
       $user_id = $request->user_id ? $request->user_id : '';
       $isLgWebOs = false;
       $video_id = $request->video_id ? $request->video_id : 0;
+      $library_id = '499785';
       if ($userAgent && $user_id) {
           $ua = strtolower($userAgent);
 
@@ -33308,6 +33309,7 @@ class ApiAuthController extends Controller
               // Calculate PPV video status
               $current_date = date('Y-m-d h:i:s a', time());
               $videodetailaccess = Video::where('id', $video_id)->first();
+              $bunny_video_id = $videodetailaccess->video_id_bunny_net;
               $can_view = false;
               $user = User::where('id', $user_id)->first();
               if ($ppv_exists_check_query > 0) {
@@ -33325,17 +33327,17 @@ class ApiAuthController extends Controller
                 $tokenSecurityKey = 'd7b396e8-d46a-4702-b8fa-7ae074ae2402';
                 $expiration = time() + (3 * 60 * 60);
 
-                $hashInput = $tokenSecurityKey . $video_id . $expiration;
+                $hashInput = $tokenSecurityKey . $bunny_video_id . $expiration;
 
                 // SHA256 HEX
                 $token = hash('sha256', $hashInput);
               }
-
+              $embedUrl = "https://iframe.mediadelivery.net/embed/{$library_id}/{$bunny_video_id}?token={$token}&expires={$expiration}";
               return response()->json([
                   'status' => 'success',
                   'user_agent' => $userAgent,
                   'has_access' => $can_view,
-                  'video_id'  => $videodetailaccess->video_id_bunny_net
+                  'url'  => $embedUrl
               ]);
           }
           else{
