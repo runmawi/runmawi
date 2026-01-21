@@ -33280,31 +33280,56 @@ class ApiAuthController extends Controller
 
   public function tv_play_url(Request $request){
       $userAgent = $request->userAgent();
-
+      $user_id = $request->user_id ? $request->user_id : '';
       $isLgWebOs = false;
-
-      if ($userAgent) {
+      $video_id = $request->video_id ? $request->video_id : 0;
+      if ($userAgent && $user_id) {
           $ua = strtolower($userAgent);
 
           if (str_contains($ua, 'webos') || str_contains($ua, 'smarttv') || str_contains($ua, 'lg')) {
-              $isLgWebOs = true;
+               $ppv_purchase = PpvPurchase::where('video_id', $video_id)->orderBy('created_at', 'desc')
+                ->where('user_id', $user_id)
+                ->where('status', 'captured')
+                ->first();
+
+              if (!empty($ppv_purchase) && !empty($ppv_purchase->to_time)) {
+                try {
+                  $new_date = Carbon::parse($ppv_purchase->to_time);
+                  $currentdate = Carbon::now();
+
+                  $ppv_exists_check_query = $new_date->greaterThan($currentdate) ? 1 : 0;
+                } catch (\Exception $e) {
+                  $ppv_exists_check_query = 0;
+                }
+              } else {
+                $ppv_exists_check_query = 0;
+              }
+
+              // Calculate PPV video status
+              $current_date = date('Y-m-d h:i:s a', time());
+              $videodetailaccess = Video::where('id', $video_id)->pluck('access')->first();
+              $can_view = false;
+              if ($ppv_exists_check_query > 0) {
+                if ($ppv_purchase && $ppv_purchase->to_time && $ppv_purchase->to_time > $current_date) {
+                  $can_view = true;
+                } else {
+                  $can_view = false;
+                }
+              }
+
               return response()->json([
                   'status' => 'success',
                   'user_agent' => $userAgent,
-                  'is_lg_webos_tv' => $isLgWebOs
+                  'has_access' => $can_view
               ]);
           }
           else{
             return response()->json([
                 'status' => 'error',
-                'message' => "Unsupported device"
             ]);
           }
       }
-
-      
   }
-
 }
 
 
