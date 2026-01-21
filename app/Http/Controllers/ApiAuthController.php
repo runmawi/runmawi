@@ -33337,7 +33337,7 @@ class ApiAuthController extends Controller
                   'status' => 'success',
                   'user_agent' => $userAgent,
                   'has_access' => $can_view,
-                  'url'  => $embedUrl
+                  'embed_url'  => $embedUrl
               ]);
           }
           else{
