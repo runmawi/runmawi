@@ -33307,7 +33307,7 @@ class ApiAuthController extends Controller
 
               // Calculate PPV video status
               $current_date = date('Y-m-d h:i:s a', time());
-              $videodetailaccess = Video::where('id', $video_id)->pluck('access')->first();
+              $videodetailaccess = Video::where('id', $video_id)->first();
               $can_view = false;
               $user = User::where('id', $user_id)->first();
               if ($ppv_exists_check_query > 0) {
@@ -33335,7 +33335,7 @@ class ApiAuthController extends Controller
                   'status' => 'success',
                   'user_agent' => $userAgent,
                   'has_access' => $can_view,
-                  'video_id'  => $videodetailaccess
+                  'video_id'  => $videodetailaccess->video_id_bunny_net
               ]);
           }
           else{
