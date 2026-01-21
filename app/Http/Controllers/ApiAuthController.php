@@ -33321,7 +33321,8 @@ class ApiAuthController extends Controller
               return response()->json([
                   'status' => 'success',
                   'user_agent' => $userAgent,
-                  'has_access' => $can_view
+                  'has_access' => $can_view,
+                  'user'  => $user
               ]);
           }
           else{
