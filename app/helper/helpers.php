@@ -590,15 +590,19 @@ function Geofencing(){
 
 function current_timezone()
 {
+    $current_timezone = null;
+
     $response = Http::withOptions([
         'verify' => false, 
     ])->get('https://get.geojs.io/v1/ip/geo.json');
-
-    if ($response->successful() && $response->json('timezone')) {
-        return $response->json('timezone'); // string only
+    
+    if ($response->successful()) {
+        $current_timezone = $response->json('timezone'); 
+    } else {
+        $current_timezone = App\Setting::pluck('default_time_zone')->first();
     }
-
-    return App\Setting::value('default_time_zone'); // fallback string
+    dd($current_timezone);
+    return $current_timezone['timezone'];
 }
 
 function Country_name(){
