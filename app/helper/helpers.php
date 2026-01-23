@@ -597,12 +597,12 @@ function current_timezone()
     ])->get('https://get.geojs.io/v1/ip/geo.json');
     
     if ($response->successful()) {
-        $current_timezone = $response->json('timezone'); 
+        $current_timezone = $response->json('timezone'); // already a string
     } else {
-        $current_timezone = App\Setting::pluck('default_time_zone')->first();
+        $current_timezone = App\Setting::pluck('default_time_zone')->first(); // string
     }
 
-    return $current_timezone['timezone'];
+    return $current_timezone;
 }
 
 function Country_name(){
