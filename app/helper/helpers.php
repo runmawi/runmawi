@@ -601,7 +601,7 @@ function current_timezone()
     } else {
         $current_timezone = App\Setting::pluck('default_time_zone')->first();
     }
-    if(isset($current_timezone)){
+    if(isset($current_timezone['timezone'])){
         return $current_timezone['timezone'];
     }
     
