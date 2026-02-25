@@ -362,7 +362,7 @@ i.fa.fa-google-plus {
                                             </div>
 
                                             <div class="col-md-7 col-sm-8">
-                                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" required pattern="\d*" maxlength="15" inputmode="numeric" minlength="10" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                                <input id="mobile" type="text" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" required pattern="\d*" maxlength="15" inputmode="numeric" minlength="8" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                                 <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
                                                 @error('mobile')
                                                     <span class="invalid-feedback" role="alert">

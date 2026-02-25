@@ -393,7 +393,7 @@ i.fa.fa-google-plus {
                             </select>
                             </div>
                             <div class="col-md-7 col-sm-8">
-                                <!-- <input id="text" type="text"  onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <!-- <input id="text" type="text"  onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" maxlength="10" minlength="8" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span> -->
                                 <input type="text" id="mobile" onkeypress="return IsNumeric(event);" ondrop="return false;" onpaste="return false;" class="form-control" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" required autocomplete="off" autofocus/>
                                 <span id="error" style="color: Red; display: none">* {{ __('Enter Only Numbers') }}</span>
