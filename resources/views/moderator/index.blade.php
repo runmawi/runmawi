@@ -271,8 +271,8 @@
 
     var ret = (keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) !== -1;
 
-    if (digitCount >= 10) {
-        alert('Please enter at least 10 characters');
+    if (digitCount >= 8) {
+        alert('Please enter at least 8 characters');
         ret = ret || specialKeys.indexOf(keyCode) !== -1;
         document.getElementById("error").style.display = ret ? "none" : "inline";
         return false;
