@@ -381,7 +381,7 @@ i.fa.fa-google-plus {
                                                 </div>
 
                                                 <div class="mt-2 d-flex justify-content-end links">
-                                                    <button type="button" class="btn btn-hover ab" id="send_otp_button" data-toggle="collapse" data-target="#demo" style="line-height:20px" disabled>Send OTP</button>
+                                                    <button type="button" class="btn btn-hover ab" id="send_otp_button" data-toggle="collapse" data-target="#demo" style="line-height:20px">Send OTP</button>
                                                 </div>                        
 
                                                 <span id="demo" class="collapse">
