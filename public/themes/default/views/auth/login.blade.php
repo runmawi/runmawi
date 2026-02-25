@@ -885,7 +885,7 @@
                     const mobile = $('#mobile').val().trim();
                     const ccode = $('#ccode').val();
                     
-                    if (mobile.length < 10 && mobile.length > 1) {
+                    if (mobile.length < 8 && mobile.length > 1) {
                         showMessage('#mobileStatus', 'Please enter a valid mobile number', 'error');
                         $('#sendOtpBtn').prop('disabled', true);
                         return false;
